@@ -1,0 +1,36 @@
+.btnLogout:hover{
+    background-color: var(--primary-100);
+}
+.btnLogout:active{
+    background-color: var(--primary-300);
+}
+.btnLogout{
+    background-color: var(--primary-400);
+    width: fit-content;
+}
+
+.appDisplay:hover{
+    background-color: var(--primary-100);
+}
+.appDisplay{
+    width: fit-content;
+    text-align: center;
+}
+
+.listMenu{
+    width: fit-content;
+    border-radius: 20px;
+}
+
+.listMenu img{
+    border-radius: 20px;
+    width: 6vw;
+}
+
+.listMenu:hover{
+    background-color: var(--primary-100);
+}
+
+.listMenu:active{
+    background-color: var(--primary-400);
+}
