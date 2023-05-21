@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function TextFieldPassword({placeholder, label, id , name, value, onChange, classNameLabel, classNameDiv}){
+function TextFieldPassword({placeholder, label, id , name, value, onChange}){
 
     const [passwordType, setPasswordType] = useState("password");
     const togglePassword =()=>{
@@ -13,20 +13,20 @@ function TextFieldPassword({placeholder, label, id , name, value, onChange, clas
     }
     return(
         <>
-        <label htmlFor={label} className={classNameLabel}>{label}</label>
-        <div className={classNameDiv? classNameDiv : "input-group rounded border"} 
+        <label htmlFor={label} className='textPassword'>{label}</label>
+        <div className="input-group rounded borderPassword col-12"
         >
             <input 
                 type={passwordType} 
                 onChange={onChange}
                 value={value} 
                 name={name} 
-                id={id}                className="form-control"
+                id={id}                className="form-control pointer"
                 placeholder={placeholder} 
             />
             <div className="input-group-btn">
                 <button 
-                className="btn" 
+                className="btn pointer" 
                 onClick={togglePassword}>
                 { passwordType==="password"? 
                     <i className="bi bi-eye-slash"></i> 
@@ -61,12 +61,5 @@ const handlePasswordChange =(evnt)=>{
     id='password'
     value={passwordInput}
     onChange={handlePasswordChange}
-    classNameDiv="input-group rounded borderPassword"
     />
-
-    - CSS -
-
-.borderPassword{
-    border: 1px solid var(--primary-500) !important;
-}
 */
