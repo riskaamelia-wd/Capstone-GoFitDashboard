@@ -1,6 +1,7 @@
 import TagText from "../Tag/TagText"
 import './Card.css'
-const ListRecomended = ({img, text, icon, date, btn}) => {
+import deleteSvg from '../../assets/icons/delete.svg'
+const ListRecomended = ({img, text, date, btn}) => {
 
     return(
         <div className="d-flex justify-content-between p-2">
@@ -22,7 +23,7 @@ const ListRecomended = ({img, text, icon, date, btn}) => {
                 btn ?
                 <button>{btn}</button>
                 :
-                <img src={icon} width={'20px'} className="deleteSvg" alt="" />
+                <img src={deleteSvg} width={'20px'} className="deleteSvg" alt="" />
             }
         </div>
     )
