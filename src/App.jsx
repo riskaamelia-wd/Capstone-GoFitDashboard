@@ -5,6 +5,11 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
+import TagStatus from './elements/Tag/TagStatus'
+import TagMonthYear from "./elements/Tag/TagMonthYear";
+import TagText from "./elements/Tag/TagText";
+import TagRole from "./elements/Tag/TagRole";
+import TagBookingStatus from "./elements/Tag/TagBookingStatus";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -30,6 +35,42 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <TagStatus 
+        status={"pending"}
+      />
+      <TagStatus 
+        status={"cancel"}
+      />
+      <TagStatus 
+        status={"done"}
+      />
+      <TagMonthYear 
+        duration={"1 month"}
+      />
+      <TagMonthYear 
+        duration={"3 month"}
+      />
+      <TagMonthYear 
+        duration={"1 year"}
+      />
+      <TagText 
+        text={'Beginer'}
+      />
+      <TagRole 
+        role={'admin'}
+      />
+      <TagRole 
+        role={'manager'}
+      />
+      <TagRole 
+        role={'auditor'}
+      />
+      <TagBookingStatus 
+        status={"booked"}
+      />
+      <TagBookingStatus 
+        status={"cancel"}
+      />
     </>
   );
 }
