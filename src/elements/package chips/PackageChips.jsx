@@ -15,7 +15,6 @@ const PackageChips = ({ price, id, time }) => {
         onClick={() => {
           setPackageChipsIsActive(!packageChipsIsActive);
         }}>
-        {console.log(packageChipsIsActive)}
         <div className="fw-semibold lh-1">
           IDR {price} <br />/ {time}
         </div>

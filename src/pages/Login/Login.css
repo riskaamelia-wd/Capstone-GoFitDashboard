@@ -1,0 +1,10 @@
+.LoginRightSide {
+  background-color: var(--Neutral-White-200);
+  height: 100vh;
+}
+.ForgotPasswordText {
+  color: var(--Neutral-White-700);
+}
+.ForgotPasswordText:hover {
+  color: var(--Neutral-White-900);
+}
