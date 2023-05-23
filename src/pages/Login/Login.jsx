@@ -6,6 +6,7 @@ import TextField from "../../elements/TextField/TextField";
 import { NavLink } from "react-router-dom";
 import TextFieldPassword from "../../elements/TextField/TextFieldPassword";
 import { useState } from "react";
+import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   return (
@@ -68,23 +69,34 @@ const Login = () => {
                   {/* </NavLink> */}
                 </div>
               </div>
-              <button
-                className="w-100 btn-login fs-5"
-                type="submit"
+
+              <ButtonComponent
+                type={"submit"}
+                className={"btn-login fs-5"}
+                id={"login"}
                 onClick={() => {
                   console.log("logging in");
-                }}>
-                Log in
-              </button>
+                }}
+                buttonName={"Log in"}
+              />
               <div className="LineTextMiddle mt-5 mb-5">
                 <span className="fs-5">or</span>
               </div>
-              <button className="btnGoogle p-2">
-                <img src={google} alt="" width={"30em"} />
-                <span className="fs-5 ms-3 fw-semibold">
-                  Continue with Google
-                </span>
-              </button>
+
+              <ButtonComponent
+                type={"button"}
+                className={"btnGoogle p-2"}
+                id={"googlelogin"}
+                onClick={() => {
+                  console.log("login with google");
+                }}
+                imgUrlStart={google}
+                buttonName={
+                  <span className="fs-5 ms-3 fw-semibold">
+                    Continue with Google
+                  </span>
+                }
+              />
             </div>
           </div>
         </div>
