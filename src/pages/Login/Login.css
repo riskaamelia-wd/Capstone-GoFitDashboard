@@ -8,3 +8,42 @@
 .ForgotPasswordText:hover {
   color: var(--Neutral-White-900);
 }
+.h1-rightside {
+  font-family: Josefin Sans;
+}
+.btn-login {
+  background-color: var(--primary-500);
+  color: var(--primary-100);
+}
+.btn-login:hover {
+  background-color: var(--primary-200);
+  color: var(--primary-900);
+}
+.LineTextMiddle {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid var(--Neutral-White-600);
+  line-height: 0.1em;
+  margin: 10px 0 20px;
+}
+
+.LineTextMiddle span {
+  background-color: var(--Neutral-White-200);
+  color: var(--Neutral-White-600);
+  padding: 0 10px;
+}
+.btnGoogle {
+  border: 1px solid var(--primary-500);
+  background-color: transparent;
+  padding: 0.2vw;
+  border-radius: 8px;
+  width: 100%;
+  color: var(--primary-500);
+}
+.btnGoogle:hover {
+  background-color: var(--primary-300);
+  color: var(--primary-900);
+}
+.btnGoogle:active {
+  background-color: var(--primary-200);
+}
