@@ -15,7 +15,6 @@ const PackageChips = ({ price, id, time }) => {
         onClick={() => {
           setPackageChipsIsActive(!packageChipsIsActive);
         }}>
-        {console.log(packageChipsIsActive)}
         <div className="fw-semibold lh-1">
           IDR {price} <br />/ {time}
         </div>
@@ -24,3 +23,13 @@ const PackageChips = ({ price, id, time }) => {
   );
 };
 export default PackageChips;
+
+// how to use
+
+/*
+<PackageChips 
+price={"50000"}
+time={"month"}
+id={"monthly"}
+/>
+*/
