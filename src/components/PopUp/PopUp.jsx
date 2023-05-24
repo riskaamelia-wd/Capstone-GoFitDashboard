@@ -5,7 +5,7 @@ import TextField from "../../elements/TextField/TextField";
 import brokenImage from '../../assets/icons/broken_image.svg'
 import './PopUp.css'
 
-export default function PopUp({body,name, id, onChangeInput, valueInput, btnText, onClick,className, classNameBtn}) {
+export default function PopUp({body,name, text, id, onChangeInput, valueInput, imgBtn, btnText, onClick,className, classNameBtn}) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -35,9 +35,11 @@ export default function PopUp({body,name, id, onChangeInput, valueInput, btnText
     return(
         <>
             <Button 
+
                 variant={className}
                 onClick={handleShow}>
-                +
+                <img src={imgBtn} alt="" />
+                {text}
             </Button>
             <Modal
                 show={show}
