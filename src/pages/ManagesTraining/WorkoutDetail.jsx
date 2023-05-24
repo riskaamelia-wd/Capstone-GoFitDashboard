@@ -7,6 +7,7 @@ import { useState } from "react";
 import AddLess from "../../components/AddLess/AddLess";
 import check from '../../assets/icons/check_success.svg'
 import trash from '../../assets/icons/delete_danger.svg'
+import PopUp from "../../components/PopUp/PopUp";
 
 const WorkoutDetail = () => {
     const [textarea, setTextarea] = useState('')
@@ -77,7 +78,7 @@ const WorkoutDetail = () => {
                                 <td>123.002.34</td>
                                 <td>13.002.34</td>
                                 <td>52.000</td>
-                                <td>Edit</td>
+                                <td><PopUp className={'link-underline'} text={'Edit'}/></td>
                             </tr>
                             <tr>
                                 <td><input type="checkbox"/></td>
@@ -86,7 +87,7 @@ const WorkoutDetail = () => {
                                 <td>123.002.34</td>
                                 <td>13.002.34</td>
                                 <td>52.000</td>
-                                <td>Edit</td>
+                                <td><PopUp className={'link-underline'} text={'Edit'}/></td>
                             </tr>
                             <tr>
                                 <td><input type="checkbox"/></td>
@@ -95,7 +96,7 @@ const WorkoutDetail = () => {
                                 <td>123.002.34</td>
                                 <td>13.002.34</td>
                                 <td>52.000</td>
-                                <td>Edit</td>
+                                <td><PopUp className={'link-underline'} text={'Edit'}/></td>
                             </tr>
                         </tbody>
                     </table>
