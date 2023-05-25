@@ -29,4 +29,4 @@ const SearchTopBar = ({ type, name, id, onChange, value, placeholder }) => {
   );
 };
 
-export default InputSearch;
+export default SearchTopBar;
