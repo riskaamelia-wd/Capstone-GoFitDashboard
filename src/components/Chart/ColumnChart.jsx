@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReactApexChart from "react-apexcharts";
-import './ColumnChart.css'
+import './Chart.css'
 
 class ColumnChart extends Component {
     constructor(props) {
@@ -9,13 +9,13 @@ class ColumnChart extends Component {
       this.state = {
       
         series: [{
-          name: 'Not interest',
+          name: 'Easy',
           data: [44, 55, 41, 67, 22, 43, 44, 55, 41, 67, 22, 43]
         }, {
           name: 'Usual',
           data: [13, 23, 20, 8, 13, 27, 13, 23, 20, 8, 13, 27]
         }, {
-          name: 'Interest',
+          name: 'Exhausted',
           data: [11, 17, 15, 15, 21, 14, 11, 17, 15, 15, 21, 14]
         }],
         options: {
@@ -28,7 +28,7 @@ class ColumnChart extends Component {
             },
             zoom: {
               enabled: true
-            }
+            },
           },
           responsive: [{
             breakpoint: 480,
@@ -42,29 +42,50 @@ class ColumnChart extends Component {
           }],
           plotOptions: {
             bar: {
+              columnWidth: '20%',
               horizontal: false,
+              // borderRadius: [10, 20, 15, 25, 5, 30, 0, 35, 40, 45, 50, 55],
               borderRadius: 10,
+              // borderRadiusApplication: 'around',
+              borderRadiusWhenStacked:'last',
               dataLabels: {
                 total: {
                   enabled: false,
-                //   style: {
-                //     fontSize: '13px',
-                //     fontWeight: 900
-                //   }
                 }
               }
             },
           },
+          grid: {
+            xaxis: {
+              lines: {
+                show: false
+              }
+            },
+            yaxis:{
+                lines:{
+                    show:false
+                }
+            }
+          },
+          dataLabels: {
+            enabled: false,
+          },
           xaxis: {
-            // type: 'monthtime',
             categories: ['01', '02', '03', '04',
               '05', '06', '07', '08', '09','10','11','12'
             ],
-            // categories:['1','2','3','4','5','6','7','8','9','10','11','12']
+            axisTicks: {
+              show: false,
+            },
+            axisBorder: {
+              show: false,
+            },
           },
           legend: {
-            position: 'right',
-            offsetY: 40
+            position: 'top',
+            offsetY: 20,
+            offsetX: '10px',
+            
           },
           fill: {
             opacity: 1
@@ -80,6 +101,7 @@ class ColumnChart extends Component {
     render() {
       return (
         <div className="columnChart mb-5 mt-5">
+            <p className="ps-3 pt-3 p-0 m-0 fs-3 fw-semibold">Satisfaction Level</p>
             <div id="chart">
             <ReactApexChart options={this.state.options} series={this.state.series} type="bar" height={350} />
             </div>
