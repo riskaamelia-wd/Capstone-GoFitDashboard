@@ -1,6 +1,6 @@
 import Cover from "../../elements/Card/Cover";
 import imgCover from '../../assets/icons/Appreciation 1.svg'
-import ColumnChart from "../../components/ColumnChart/ColumnChart";
+import ColumnChart from "../../components/Chart/ColumnChart"
 import './ManagesTraining.css'
 import Textarea from "../../elements/TextField/Textarea";
 import { useState } from "react";
@@ -8,6 +8,7 @@ import AddLess from "../../components/AddLess/AddLess";
 import check from '../../assets/icons/check_success.svg'
 import trash from '../../assets/icons/delete_danger.svg'
 import PopUp from "../../components/PopUp/PopUp";
+import add from '../../assets/icons/add.svg'
 
 const WorkoutDetail = () => {
     const [textarea, setTextarea] = useState('')
@@ -26,38 +27,15 @@ const WorkoutDetail = () => {
             />
             <ColumnChart/> 
             <div className="workoutDetailData row d-flex justify-content-around">
-                <div className="col-6">
-                    <p className="fw-semibold">Introduction</p>
-                    <Textarea
-                        name='textarea'
-                        id='textarea'
-                        value={textarea}
-                        onChange={handleTextarea}
-                        count={`${textareaCount} / 200 word`}
-                    />
-                    </div>
-                    <div className="col-5">
-                        <p className="fw-semibold col-12">Info</p>
-                        <div className="row">
-                            <div className="col-5">
-                                <p>How long will it take?</p>
-                                <AddLess
-                                    qty={'1'}
-                                />
-                            </div>
-                            <div className="col-4">
-                                <p>How much workouts?</p>
-                                <AddLess
-                                    qty={'0'}
-                                />
-                            </div>
-                            <div className="col-2 mt-4">
-                                <img src={check} className="me-5 mt-4" alt="" />
-                                <img className="mt-4" src={trash} alt="" />
-                        </div>
-                    </div>
-                </div>
                 <div className="col-11 mt-5">
+                    <div className="d-flex flex-row justify-content-between add">
+                        <p className="fs-2 fw-bold">Arm Beginner</p>
+                        <PopUp 
+                            className={'add'} 
+                            imgBtn={add}
+                        />
+                        {/* <img src={add} width={'14px'} className="me-5" alt="" /> */}
+                    </div>
                     <table className="table">
                         <thead>
                             <tr>

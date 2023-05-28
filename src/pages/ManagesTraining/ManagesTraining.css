@@ -11,3 +11,13 @@
 .bg-popUp:hover{
     background-color: var(--primary-500);
 }
+
+.shadow{
+    background: #FFFFFF;
+    box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.12), 0px 10px 32px -4px rgba(24, 39, 75, 0.1);
+    border-radius: 10px;
+}
+
+.add button.btn.btn-add img{
+    width: 14px;
+}
