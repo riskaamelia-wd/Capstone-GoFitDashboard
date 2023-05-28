@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import CardHeaderBooking from "../../components/CardHeader/CardHeader";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
