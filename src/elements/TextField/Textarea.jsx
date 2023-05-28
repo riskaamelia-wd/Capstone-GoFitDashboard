@@ -1,16 +1,16 @@
 import './TextField.css'
 
-const Textarea = ({name, id, value, onChange, count}) => {
+const Textarea = ({name, id, value, onChange, count, classNameTextarea, label, classNameLabel}) => {
     return(
-        <div className='divTextarea' style={{width:'100%'}}>
+        <div className='divTextarea'>
+            <label className={classNameLabel} htmlFor={name}>{label}</label>
             <textarea 
                 name={name} 
                 id={id}
                 onChange={onChange}
-                className='form-control borderInput'
+                className={classNameTextarea ? classNameTextarea: 'form-control borderInput rounded-3'}
                 value={value}
                 placeholder={'The best weapon against viruses is your immunity. This low-impact cardio exercise help bolster up your immune system.'}
-                style={{height:'121px'}}
                 maxLength={200}
             >
             </textarea>

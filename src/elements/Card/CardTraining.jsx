@@ -1,9 +1,9 @@
 import './Card.css'
 
-const CardTraining = ({img, text,className, classNameText}) => {
+const CardTraining = ({img, text,className, classNameText, onClick}) => {
 
     return(
-        <div className='card p-0 parentCardTraining'>
+        <div className='card p-0 parentCardTraining' onClick={onClick}>
             <div className="p-0 cardTraining">
                 <img 
                     src={img} 
