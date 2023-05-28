@@ -1,11 +1,10 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
 
-const Bar = ({colorBar,colorBackgroundBar}) => {
+const Bar = ({colorBar,colorBackgroundBar, className, text,series}) => {
   const dataChart = {
     series: [{
-      name: 'Daily',
-      data: [145],
+      data: series,
     },
     // {
     //     name: 'Target',
@@ -34,27 +33,44 @@ const Bar = ({colorBar,colorBackgroundBar}) => {
       },
       plotOptions: {
         bar: {
+          dataLabels: {
+            position: 'top'
+          },
           horizontal: true,
           distributed:true,
-          borderRadius:10,
+          borderRadius:5,
           borderRadiusApplication: 'around',
           colors: {
               backgroundBarColors: [colorBackgroundBar],
               backgroundBarOpacity: 1,
-              backgroundBarRadius: 10
+              backgroundBarRadius: 5
             }
         },
       },
       yaxis:{
         labels:{
-            show:false,
+            show:true,
+            align:'right',
+            offsetX:110,
+            offsetY:-20,
+            style:{
+              fontFamily: 'Josefin Sans,sans-serif',
+              fontSize:'14px',
+              fontWeight:400,
+            }
         },
+        floating:true,
       },
       dataLabels: {
-        enabled: false,
+        enabled: true,
+        offsetX: 50,
+        offsetY:-20,
+        style:{
+          colors: [colorBar],
+        }
       },
       xaxis: {
-        categories: ['Monthly'],
+        categories: [text],
         labels:{
             show:false,
         },
@@ -77,12 +93,12 @@ const Bar = ({colorBar,colorBackgroundBar}) => {
   };
 
   return (
-    <div>
+    <div className={'p-0 m-0'}>
       <ReactApexChart
         options={dataChart.options}
         series={dataChart.series}
         type="bar"
-        height={70}
+        height={60}
       />
     </div>
   );
