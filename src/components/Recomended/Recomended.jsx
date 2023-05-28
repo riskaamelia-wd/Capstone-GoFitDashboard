@@ -7,9 +7,13 @@ const Recomended = ({}) => {
     return(
         <div className="recomended p-4">
             <div className="d-flex flex-row justify-content-between">
-                <p className="fs-2 fw-semibold">Recomended</p>
+                <p className="fs-2 fw-bold">Recomended</p>
                 <img src={add} width={'15vw'} className="me-2" alt="" />
             </div>
+            <ListRecomended
+                img={img}
+                text={'Full Burning Fitness'}
+            />
             <ListRecomended
                 img={img}
                 text={'Full Burning Fitness'}

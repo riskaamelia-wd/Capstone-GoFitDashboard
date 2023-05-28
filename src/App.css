@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter&family=Josefin+Sans&family=Poppins&family=Roboto&family=Work+Sans&display=swap");
+
 :root{
   --primary-100 : #FFEFCC;
   --primary-200 : #FFDB99;
@@ -67,7 +69,7 @@
   --Neutral-Black-600: #C6C6C6;
   --Neutral-Black-700: #B5B5B5;
   --Neutral-Black-800: #919191;
-  --Neutral-Black-900: #6D6D6D;
+  --Neutral-Black-900: #030303;
   
   --Neutral-White-0: #FFFFFF;
   --Neutral-White-100: #F6F6F6;
@@ -81,44 +83,3 @@
   --Neutral-White-900: #6D6D6D;
 }
 
-/* #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-} */

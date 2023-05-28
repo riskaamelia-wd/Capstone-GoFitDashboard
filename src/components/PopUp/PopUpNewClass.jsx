@@ -2,11 +2,12 @@ import React, {useState} from "react";
 import Button from 'react-bootstrap/Button'
 import {Modal} from 'react-bootstrap'
 import TextField from "../../elements/TextField/TextField";
-import video from '../../assets/icons/videocam_gray.svg'
+import brokenImage from '../../assets/icons/broken_image_gray.svg'
 import './PopUp.css'
 import Textarea from "../../elements/TextField/Textarea";
+import AddLess from "../AddLess/AddLess";
 
-export default function PopUp({body,name, text, id, onChangeInput, valueInput, imgBtn, btnText, onClick,className, classNameBtn, btnClose, btnCreate}) {
+export default function PopUpNewClass({body,name, text, id, onChangeInput, valueInput, imgBtn, btnText, onClick,className, classNameBtn, onChangeTeaxtarea, count, incrementLong, incrementMuch, decrementLong, decrementMuch, qtyLong, qtyMuch }) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -35,29 +36,7 @@ export default function PopUp({body,name, text, id, onChangeInput, valueInput, i
   }
     return(
         <>
-            <style type="text/css">
-                {
-                    `
-                    .btn-closebtn{
-                        color: var(--primary-500);
-                        border: 1px solid var(--primary-500);
-                        border-radius:8px;
-                        padding-right:34px;
-                        padding-left:34px
-                      }
-                      
-                      .btn-createbtn{
-                        background-color: var(--primary-500);
-                        color: var(--primary-100);
-                        border-radius:8px;
-                        padding-right:34px;
-                        padding-left:34px
-                      }
-                      `
-                }
-            </style>
             <Button 
-
                 variant={className}
                 onClick={handleShow}>
                 <img src={imgBtn} alt="" />
@@ -73,25 +52,22 @@ export default function PopUp({body,name, text, id, onChangeInput, valueInput, i
                 <Modal.Header closeButton>
                 <Modal.Title>New parts</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="modalBody">
                 {/* {body} */}
-                <div className=" mb-4 box">
+                <div className=" mb-4 box" style={{borderRadius:'20px'}}>
                     <label  
                         style={{
+                            borderRadius:'20px',
                             cursor:'pointer',
+                            backgroundImage:`url(${brokenImage})`,
+                            backgroundRepeat:'no-repeat',
+                            height:'fit-content',
+                            width:'100%',
+                            backgroundPosition:'center'
                         }}>
-                            <div style={{marginBottom:'-230px'}}>
-
-                            <img src={video} alt="" />
-                            <p className="mt-3" style={{color:'var(--Neutral-White-800)'}}>Input Video</p>
-                            </div>
                         <input 
                             type="file" 
                             onChange={handleImg} 
-                            style={{
-                                width:'100%', 
-                                display:'none'
-                            }} 
                             // value={image}
                             
                             name="image"
@@ -113,17 +89,50 @@ export default function PopUp({body,name, text, id, onChangeInput, valueInput, i
                         onChange={onChangeInput}
                         value={valueInput}
                     />
-                    <div className="styleTextarea">
+                    <div className="styleTextarea col-12 mt-4 m-0">
                         <Textarea
-                        
-                        classNameTextarea={'form-control rounded-3 borderInput'}/>
+                            classNameLabel={'fw-semibold mb-3'}
+                            label={'Introduction'}
+                            name={'intro'}
+                            id={'intro'}
+                            classNameTextarea={'form-control rounded-3 borderInput'}
+                            onChange={onChangeTeaxtarea}
+                            count={`${count} / 200 word`}
+                        />
+                    </div>
+                    <div>
+                        <p className="fw-semibold">Info</p>
+                        <div className="row">
+                            <div className="col-7">
+                                <p>How long will it take?</p>
+                                <div className="d-flex flex-row">
+                                    <AddLess
+                                        decrement={decrementLong}
+                                        increment={incrementLong}
+                                        qty={qtyLong}
+                                    />
+                                    <select className="form-select selectTextarea" aria-label="Default select example">
+                                    <option selected value={'Minutes'}>Minutes</option>
+                                    <option value="Hours">Hours</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="col-5">
+                                <p>How much workouts?</p>
+                                <AddLess
+                                    decrement={decrementMuch}
+                                    increment={incrementMuch}
+                                    qty={qtyMuch}   
+                                />
+                            </div>
+                        </div>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant='closebtn' onClick={handleClose}>
+                <Button variant={'btn me-4 fw-semibold'} onClick={handleClose}>
                     Close
                 </Button>
-                <Button variant='createbtn' onClick={onClick}>Create</Button>
+                <Button variant={'btn fw-semibold'} onClick={onClick}>Create</Button>
                 </Modal.Footer>
             </Modal>
         </>

@@ -1,0 +1,21 @@
+.StatisticDashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px 0px 24px;
+    gap: 12px;
+
+    width: 666px;
+    height: 398px;
+    border-radius: 10px;
+    background-color: var(--Neutral-White-0);
+}
+
+.Statistic-text {
+    font-family: 'Josefin Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 32px;
+    color: var(--Neutral-Black-900);
+}
