@@ -188,3 +188,11 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
 };
 
 export default SidebarComp;
+
+//kalau mau pake sidebar jangan lupa panggil atau buat di app.jsx 
+
+// buat state state membesar kecilkan sidebar. bisa dibesar kecilkan dengan mengarahkan cursor ke sidebarnya saja.
+// const [isExpanded, setExpandState] = useState(false);
+// ga tau cara ngehilangkan underline dari navlink
+
+//catatan sidebar sudah sama css responsivenya kurang underline aja
