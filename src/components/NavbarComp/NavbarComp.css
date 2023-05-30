@@ -1,6 +1,6 @@
 .top-nav-container {
-    background-color: var(--Neutral-Black-100);
-    /* background-color: var(--Neutral-white-0); */
+    /* background-color: var(--Neutral-Black-100); */
+    background-color: var(--Neutral-white-0);
     height: 105px;
     width: 1125px;
     display: flex;
@@ -41,7 +41,7 @@
     cursor: pointer;
 
     /* margin: auto -35px; */
-    background-color: var(--Neutral-Black-100);
+    background-color: var(--Neutral-White-0);
     /* border: 2px solid black; */
     padding: 14px;
     border-radius: 44px;
@@ -82,7 +82,7 @@
     cursor: pointer;
 
     /* margin: auto -35px; */
-    background-color: var(--Neutral-Black-100);
+    background-color: var(--Neutral-White-0);
     /* border: 2px solid black; */
     padding: 14px;
     border-radius: 44px;
