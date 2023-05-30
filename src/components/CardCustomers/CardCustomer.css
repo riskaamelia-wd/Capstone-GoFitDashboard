@@ -1,0 +1,39 @@
+.card-customers {
+    width: 380px;
+    height: 78px;
+    border-radius: 10px;
+    border-color: white;
+    padding: 8px;
+}
+
+.rounded-circle {
+    width: 50px;
+    height: 50px;
+    margin: 5px 5px 5px 2px;
+}
+
+.card-customers:hover {
+    border-color: var(--Neutral-White-700);
+}
+.card-customers.active {
+    background-color: aqua;
+  }
+.name-customers {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 24px;
+    color: black;
+}
+
+.text-customer {
+    color: var(--Neutral-White-700);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 14px;
+}
+
+.tight-col {
+    margin-right: -16px;
+}

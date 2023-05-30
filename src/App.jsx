@@ -5,11 +5,13 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
+import ManageCustomers from "./pages/ManagesCustomers/ManageCustomers";
 
 function App() {
   const [count, setCount] = useState(0);
   return (
     <>
+    <ManageCustomers />
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
