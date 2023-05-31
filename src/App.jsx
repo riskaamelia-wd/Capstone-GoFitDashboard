@@ -5,7 +5,10 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
+import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import ManageMembership from "./pages/Manages Membership/ManageMembership";
+import ManageMembershipDetail from "./pages/Manages Membership/ManageMembershipDetail";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -31,7 +34,12 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p> */}
-      <ManageMembership />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<ManageMembership />} />
+          <Route path="membership/:id" element={<ManageMembershipDetail />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
