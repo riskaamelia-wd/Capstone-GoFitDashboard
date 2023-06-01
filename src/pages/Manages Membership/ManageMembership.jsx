@@ -12,97 +12,9 @@ import ReactApexChart from "react-apexcharts";
 import { Datepicker } from "@mobiscroll/react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment/moment";
+import useAxios from "../../api/useAxios";
+import { membershipApi } from "../../api/Api";
 const ManageMembership = () => {
-  const dummydata = [
-    {
-      img: test,
-      receiver: "Emma Ryan rj",
-      type: "1 year",
-      status: "pending",
-      date: "2023-4-16",
-      amount: "99,860",
-    },
-    {
-      img: test,
-      receiver: "udin",
-      type: "1 year",
-      status: "pending",
-      date: "2023-4-17",
-      amount: "99,860",
-    },
-    {
-      img: test,
-      receiver: "udan",
-      type: "1 year",
-      status: "pending",
-      date: "2023-4-19",
-      amount: "99,860",
-    },
-    {
-      img: test,
-      receiver: "Emma Ryan rj",
-      type: "3 month",
-      status: "active",
-      date: "2023-4-18",
-      amount: "99,860",
-    },
-    {
-      img: test,
-      receiver: "Emma Ryan rj",
-      type: "1 month",
-      status: "expired",
-      date: "2023-4-14",
-      amount: "99,860",
-    },
-    {
-      img: test,
-      receiver: "Emma Ryan rj",
-      type: "1 year",
-      status: "pending",
-      date: "2023-4-26",
-      amount: "99,860",
-    },
-    {
-      img: test,
-      receiver: "Emma Ryan rj",
-      type: "3 month",
-      status: "active",
-      date: "2023-4-20",
-      amount: "99,860",
-    },
-    {
-      img: test,
-      receiver: "Emma Ryan rj",
-      type: "1 month",
-      status: "expired",
-      date: "2023-4-10",
-      amount: "99,860",
-    },
-    {
-      img: test,
-      receiver: "Emma Ryan rj",
-      type: "1 year",
-      status: "pending",
-      date: "2023-4-16",
-      amount: "99,860",
-    },
-    {
-      img: test,
-      receiver: "Emma Ryan rj",
-      type: "3 month",
-      status: "active",
-      date: "2023-4-16",
-      amount: "99,860",
-    },
-    {
-      img: test,
-      receiver: "Emma Ryan rj",
-      type: "1 month",
-      status: "expired",
-      date: "2023-4-16",
-      amount: "99,860",
-    },
-  ];
   const dummydata2 = [
     {
       img: test,
@@ -153,6 +65,11 @@ const ManageMembership = () => {
       amount: "99,860",
     },
   ];
+  const { response, isLoading } = useAxios({
+    api: membershipApi,
+    method: "get",
+    url: "/membership",
+  });
   const [inputSearch, setInputSearch] = useState("");
   const [pickedDate, setPickedDate] = useState();
   const [filteredDate, setFilteredDate] = useState([]);
@@ -160,7 +77,8 @@ const ManageMembership = () => {
   const [filteredThreeMonth, setFilteredThreeMonth] = useState(0);
   const [filteredOneYear, setFilteredOneYear] = useState(0);
   // const [filteredrangedata, setFilteredRangeData] = useState([]);
-  const [data, setData] = useState(dummydata);
+  const [data, setData] = useState([]);
+  const [dataMiniCard, setDataMiniCard] = useState([]);
   const navigate = useNavigate();
   const opt = {
     series: [
@@ -253,7 +171,7 @@ const ManageMembership = () => {
     const StartDate = moment(valuedate[0]).format("YYYY-M-DD");
     const EndDate = moment(valuedate[1]).format("YYYY-M-DD");
 
-    const FilteredPickedDate = dummydata.filter(
+    const FilteredPickedDate = data.filter(
       (data) => StartDate <= data.date && data.date <= EndDate
     );
     const TempOneMonth = FilteredPickedDate.filter(
@@ -289,9 +207,18 @@ const ManageMembership = () => {
   };
   // pakai use effect
   // useEffect()
+  useEffect(() => {
+    if (response !== null) {
+      const sorted = response.sort(
+        (objA, objB) => Number(objB.date) - Number(objA.date)
+      );
+      setData(response);
+      setDataMiniCard(sorted);
+    }
+  }, [response]);
   return (
     <>
-      {console.log(filteredDate)}
+      {/* {console.log(filteredDate)} */}
       <div className="container mt-5">
         <div className="mb-5">
           <Cover
@@ -309,24 +236,32 @@ const ManageMembership = () => {
             <hr />
 
             <div className="row">
-              {dummydata2.map((e) => {
-                return (
-                  <>
-                    <div className="col-md-6 col-xl-4">
-                      <div className="row">
-                        <div className="col-12">
-                          <MiniCard
-                            img={e.img}
-                            name={e.receiver}
-                            date={moment(e.date).format("MMM DD, YYYY")}
-                            tag={<TagStatus status={e.status} />}
-                          />
+              {dataMiniCard &&
+                dataMiniCard
+                  .sort((a, b) => {
+                    if (new Date(a.date) < new Date(b.date)) {
+                      return 1;
+                    }
+                  })
+                  .slice(0, 6)
+                  .map((e) => {
+                    return (
+                      <>
+                        <div className="col-md-6 col-xl-4">
+                          <div className="row">
+                            <div className="col-12">
+                              <MiniCard
+                                img={e.img}
+                                name={e.receiver}
+                                date={moment(e.date).format("MMM DD, YYYY")}
+                                tag={<TagStatus status={e.status} />}
+                              />
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </>
-                );
-              })}
+                      </>
+                    );
+                  })}
             </div>
           </div>
         </div>
@@ -351,7 +286,6 @@ const ManageMembership = () => {
                     dateFormat="MMMM DD"
                   />
                 </p>
-                {/* {console.log(pickedDate)} */}
               </div>
               <div className="col-12">
                 <ReactApexChart
@@ -369,7 +303,7 @@ const ManageMembership = () => {
           <div className="container">
             {/* header */}
             <div className="row">
-              <div className="col-12 col-xl-6 text-center text-xl-start">
+              <div className="col-12 col-xl-6 text-center text-xl-start ">
                 <p className="fw-semibold fs-4">Membership</p>
               </div>
               <div className="col-12 col-xl-6 d-flex justify-content-end">
@@ -429,14 +363,19 @@ const ManageMembership = () => {
                         ? filtered
                         : filtered.receiver.toLowerCase().includes(inputSearch);
                     })
-                    .map((e, i) => {
+                    .map((e) => {
                       return (
                         <>
-                          <tr key={i}>
+                          <tr key={e.id}>
                             <td>
                               <div className="row">
                                 <div className="col-2 me-2">
-                                  <img src={e.img} alt="" />
+                                  <img
+                                    src={e.img}
+                                    alt=""
+                                    width={"50vw"}
+                                    className="rounded-3"
+                                  />
                                 </div>
                                 <div className="col-6 fw-semibold fs-5">
                                   {e.receiver}
@@ -457,7 +396,7 @@ const ManageMembership = () => {
                                 className={"btn-detail fs-5"}
                                 id={"detail"}
                                 onClick={() => {
-                                  navigate(`membership/${i}`);
+                                  navigate(`membership/${e.id}`);
                                 }}
                                 buttonName={"Details"}
                               />

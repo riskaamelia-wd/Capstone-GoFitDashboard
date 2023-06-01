@@ -19,7 +19,6 @@
   border: 1px solid var(--primary-500);
   padding: 0.3vw;
   border-radius: 13px;
-  /* width: 25%; */
 }
 .btn-detail:hover {
   background-color: var(--primary-300);

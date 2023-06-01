@@ -5,12 +5,28 @@ import test from "../../assets/test.svg";
 import "./ManageMembership.css";
 import TagMonthYear from "../../elements/Tag/TagMonthYear";
 import TagStatus from "../../elements/Tag/TagStatus";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useAxios from "../../api/useAxios";
+import { membershipApi } from "../../api/Api";
+import moment from "moment";
 const ManageMembershipDetail = () => {
   const { id } = useParams();
   const [isVisibleStatus, setIsVisibleStatus] = useState(false);
   const [isVisibleType, setIsVisibleType] = useState(false);
+  const [dataUser, setDataUser] = useState({});
   const navigate = useNavigate();
+  const { response, isLoading } = useAxios({
+    api: membershipApi,
+    method: "get",
+    url: `/membership/${id}`,
+    // config: JSON.stringify({ requireAuthentication: true }),
+  });
+  useEffect(() => {
+    if (response !== null) {
+      console.log(response);
+      setDataUser(response);
+    }
+  }, [response]);
   return (
     <>
       <div className="container mt-5">
@@ -50,7 +66,7 @@ const ManageMembershipDetail = () => {
                       <div className="row">
                         <div className="col-3">
                           <img
-                            src={test}
+                            src={dataUser.img}
                             alt=""
                             className="rounded-circle"
                             width={"90vw"}
@@ -59,10 +75,14 @@ const ManageMembershipDetail = () => {
                         <div className="col-8">
                           <div className="row ">
                             <div className="col-12 lh-1">
-                              <p className="fs-1 fw-bold">Emma Ryan rj.</p>
+                              <p className="fs-1 fw-bold">
+                                {dataUser.receiver}
+                              </p>
                             </div>
                             <div className="col-12 lh-1">
-                              <p className="fs-2 fw-semibold">Male</p>
+                              <p className="fs-2 fw-semibold">
+                                {dataUser.gender}
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -75,7 +95,7 @@ const ManageMembershipDetail = () => {
                           <p className="fs-5 text-secondary">Email address</p>
                         </div>
                         <div className="col-12 lh-1">
-                          <p className="fs-5 fw-semibold">emma123@gmail.com</p>
+                          <p className="fs-5 fw-semibold">{dataUser.email}</p>
                         </div>
                       </div>
                     </div>
@@ -89,7 +109,9 @@ const ManageMembershipDetail = () => {
                               <p className="text-secondary fs-4">Height</p>
                             </div>
                             <div className="col-12 lh-1">
-                              <p className="fw-semibold fs-3">176 cm</p>
+                              <p className="fw-semibold fs-3">
+                                {dataUser.height} cm
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -100,7 +122,9 @@ const ManageMembershipDetail = () => {
                               <p className="text-secondary fs-4">Weight</p>
                             </div>
                             <div className="col-12 lh-1">
-                              <p className="fw-semibold fs-3">68 kg</p>
+                              <p className="fw-semibold fs-3">
+                                {dataUser.weight} kg
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -111,7 +135,9 @@ const ManageMembershipDetail = () => {
                               <p className="text-secondary fs-4">Goal Weight</p>
                             </div>
                             <div className="col-12 lh-1">
-                              <p className="fw-semibold fs-3">60 kg</p>
+                              <p className="fw-semibold fs-3">
+                                {dataUser.goal_weight} kg
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -121,7 +147,7 @@ const ManageMembershipDetail = () => {
                 </div>
               </div>
             </div>
-            <div className="col-7">
+            <div className="col-xl-7">
               <div className="p-3">
                 <div className="row">
                   <div className="col-12 mb-4">
@@ -130,17 +156,23 @@ const ManageMembershipDetail = () => {
                   {/* type */}
                   <div className="col-12 ">
                     <div className="row">
-                      <div className="col-8">
+                      <div
+                        className={`${
+                          isVisibleType ? "col-6 col-xl-8" : "col-6 col-xl-9"
+                        }`}>
                         <p className="fw-semibold fs-5">Type</p>
                       </div>
-                      <div className="col-4">
-                        <span className="fw-semibold me-3">:</span>
+                      <div
+                        className={`${
+                          isVisibleType ? "col-6 col-sm-4  " : "col-6 col-xl-3"
+                        }`}>
+                        <span className="fw-semibold me-2">:</span>
                         <button
                           className="special-button"
                           onClick={() => {
                             setIsVisibleType(!isVisibleType);
                           }}>
-                          <TagMonthYear duration={"1 month"} />
+                          <TagMonthYear duration={dataUser.type} />
                         </button>
                         {isVisibleType === true ? (
                           <>
@@ -148,8 +180,7 @@ const ManageMembershipDetail = () => {
                               className="special-button"
                               type="button"
                               data-bs-toggle="dropdown">
-                              {/* <p className="special-tag-visible">+3</p> */}
-                              <span className="special-tag-visible">+2</span>
+                              <span className="special-tag-visible">+3</span>
                             </button>
                             <ul className="dropdown-menu pt-2 shadow">
                               <li className="container">
@@ -190,17 +221,23 @@ const ManageMembershipDetail = () => {
                   {/* status */}
                   <div className="col-12">
                     <div className="row">
-                      <div className="col-8">
+                      <div
+                        className={`${
+                          isVisibleStatus ? "col-6 col-xl-8" : "col-6 col-xl-9"
+                        }`}>
                         <p className="fw-semibold fs-5">Status</p>
                       </div>
-                      <div className="col-4">
-                        <span className="fw-semibold me-3">:</span>
+                      <div
+                        className={`${
+                          isVisibleStatus ? "col-6 col-sm-4 " : "col-6 col-xl-3"
+                        }`}>
+                        <span className="fw-semibold me-2">:</span>
                         <button
                           className="special-button"
                           onClick={() => {
                             setIsVisibleStatus(!isVisibleStatus);
                           }}>
-                          <TagStatus status={"pending"} />
+                          <TagStatus status={dataUser.status} />
                         </button>
                         {isVisibleStatus === true ? (
                           <>
@@ -250,13 +287,15 @@ const ManageMembershipDetail = () => {
                   {/* dates */}
                   <div className="col-12 px-3 ">
                     <div className="row bg-white200 d-flex align-items-center rounded-2">
-                      <div className="col-8">
+                      <div className="col-6 col-xl-9">
                         <p className="fw-semibold fs-5 mt-2">Dates</p>
                       </div>
-                      <div className="col-4">
+                      <div className="col-6 col-xl-3">
                         <span className="fw-semibold me-3">:</span>
                         <div className={`special-tag`}>
-                          <span className="fw-semibold">Apr 16th, 2023</span>
+                          <span className="fw-semibold">
+                            {moment(dataUser.date).format("MMM DD, YYYY")}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -264,13 +303,15 @@ const ManageMembershipDetail = () => {
                   {/* amount */}
                   <div className="col-12 px-3 mt-2">
                     <div className="row bg-white200 d-flex align-items-center rounded-2">
-                      <div className="col-8">
+                      <div className="col-6 col-xl-9">
                         <p className="fw-semibold fs-5">Amount</p>
                       </div>
-                      <div className="col-4">
+                      <div className="col-6 col-xl-3">
                         <span className="fw-semibold me-3">:</span>
                         <div className={`special-tag`}>
-                          <span className="fw-semibold">Rp 99,860</span>
+                          <span className="fw-semibold">
+                            Rp {dataUser.amount}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -278,13 +319,15 @@ const ManageMembershipDetail = () => {
                   {/* payment method */}
                   <div className="col-12 px-3 mt-2">
                     <div className="row bg-white200 d-flex align-items-center rounded-2">
-                      <div className="col-8">
+                      <div className="col-6 col-xl-9">
                         <p className="fw-semibold fs-5">Payment Method</p>
                       </div>
-                      <div className="col-4">
+                      <div className="col-6 col-xl-3">
                         <span className="fw-semibold me-3">:</span>
                         <div className={`special-tag`}>
-                          <span className="fw-semibold">Credit card</span>
+                          <span className="fw-semibold">
+                            {dataUser.payment}
+                          </span>
                         </div>
                       </div>
                     </div>
