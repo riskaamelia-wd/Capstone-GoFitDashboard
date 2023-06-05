@@ -4,33 +4,92 @@ import './OnlineClass.css'
 import { useNavigate } from "react-router-dom"
 import InputSearch from "../../elements/InputSearch/InputSearch"
 import DetailProduct from "../../components/DetailProduct.jsx/DetailProduct"
-import img from '../../assets/img/back.svg'
-import addSmall from '../../assets/icons/add_small.svg'
 import './ManagesOnlineClass.css'
 import { Col,  Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
-import { deleteOnlineClass } from "../../redux/Slice/OnlineClassSlice"
+import { addOnlineClass, deleteOnlineClass } from "../../redux/Slice/OnlineClassSlice"
+import AddOnlineClass from "../../components/Form/AddOnlineClass"
+import { classApi } from "../../api/Api"
+import { useEffect, useState } from "react"
+import useAxios from "../../api/UseAxios"
+import axios from "axios"
 
 const OnlineClassData = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    
+    const {response, isLoading} = useAxios({
+        api: classApi,
+        method: 'get',
+        url:`/class`
+    })
+
+    const [data, setData]= useState([])
     const onlineClasses = useSelector((state) => state.onlineClass)
+    const [isLoad, setIsLoad] = useState(false);
+    
+    // useEffect(() => {
+    //     if(response !== null){
+    //         setData(response)
+    //     }
+    //     console.log(onlineClasses, 'online class');
+    // }, [response, onlineClasses])
+    useEffect(() => {
+        fetchData();
+      }, []);
+
+      const fetchData = async () => {
+        try {
+          setIsLoad(true);
+          const response = await axios.get('https://647612b1e607ba4797dd420e.mockapi.io/class');
+          setData(response.data);
+          setIsLoad(false);
+        } catch (error) {
+          console.log(error);
+          setIsLoad(false);
+        }
+      };
 
 
-    const handleDelete =(id) => {
-        if(window.confirm('Are you sure you want to delete?'))
-        console.log(id);
-        dispatch(deleteOnlineClass(id))
-    }
+    // const handleDelete =(id) => {
+    //     if(window.confirm('Are you sure you want to delete?'))
+    //     console.log(id);
+    //     // dispatch(deleteOnlineClass(id))
+    //     deleteOnlineClass(id)
+    // }
+
+    const handleDelete = async (id) => {
+        try {
+          if (window.confirm('Are you sure you want to delete?')) {
+            await axios.delete(`https://647612b1e607ba4797dd420e.mockapi.io/class/${id}`);
+            setData((prevClasses) =>
+              prevClasses.filter((onlineClass) => onlineClass.id !== id)
+            );
+            console.log('Data deleted successfully');
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+    // async function deleteOnlineClass(id){
+    //     try{
+    //         const deleteOnlineClass = await axios.delete(`https://647612b1e607ba4797dd420e.mockapi.io/class/${id}`)
+    //         setData(response)
+    //         alert('Product deleted successfully')
+    //     }catch (error){
+    //         alert(error.message)
+    //     }
+    // }
 
     const handleEdit= (id) => {
         console.log(id,' id');
-        navigate('/DataClass'
-        ,{state:{data:id}}
+        navigate('/'
+        ,
+        {state:{data:id}}
         )
     }
+    const combinedArray = data.concat(onlineClasses);
     
     return(
         <>
@@ -39,6 +98,7 @@ const OnlineClassData = () => {
                 list1={'Class Data'}
                 img={imgCover}
             />
+            
             <Row className=' mt-5 mb-5'>
                 <Col md={12} className=" d-flex flex-row justify-content-between">
                     <p style={{color:'var(--Neutral-Black-100)', fontSize:'28px', fontWeight:'700'}} className="p-0 m-0">Class Data</p>
@@ -48,48 +108,26 @@ const OnlineClassData = () => {
                                 placeholder={'Search Class'}
                             />
                         </div>
-                        <button 
-                            className="btn btn-save btn-add pe-4 ps-4 ms-3" 
-                            onClick={() => navigate('/DataClass')}
-                        >
-                            Add Class
-                            <img src={addSmall} className="ms-4" alt="" />
-                        </button>
-{/* 
-                        <button type="button" className="btn btn-save btn-add pe-4 ps-4 ms-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Add Class
-                            <img src={addSmall} className="ms-4" alt="" />
-                        </button>
-
-                    <div class="modal fade" style={{backgroundColor:'black'}} id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" >
-                        <div class="modal-content" style={{backgroundColor:'black'}}>
-                        <div class="modal-body" style={{backgroundColor:'black'}}>
-                            <AddOnlineClass/>
-                        </div>
-                        </div>
-                    </div>
-                    </div> */}
-
+                        <AddOnlineClass/>
                     </div>
                 </Col>
                 <Row>
                 <Col md={6} >
                     {
-                        onlineClasses.length > 0 ? (
-                            onlineClasses.map((onlineClass, id) =>{
+                        combinedArray.length > 0 ? (
+                            combinedArray?.map((onlineClass, id) =>{
                                 return(
                                     
                                     <div className="mb-3">
                                         <DetailProduct
-                                            img={img}
+                                            img={onlineClass.imageFile}
                                             key={id}
-                                            text={onlineClass.onlineClassName}
-                                            date={onlineClass.onlineClassDate}
-                                            timeSession={onlineClass.onlineClassTime}
-                                            referralCode={onlineClass.onlineClassReferralCode}
-                                            onClickDelete={()=>handleDelete(onlineClass.onlineClassId)}
-                                            onClickEdit={() => handleEdit(onlineClass.onlineClassId)}
+                                            text={onlineClass.name}
+                                            date={onlineClass.classDate}
+                                            timeSession={onlineClass.timeSession}
+                                            referralCode={onlineClass.referralCode}
+                                            onClickDelete={()=>handleDelete(onlineClass.id)}
+                                            onClickEdit={() => handleEdit(onlineClass.id)}
                                         />
                                     </div>
                                 )
