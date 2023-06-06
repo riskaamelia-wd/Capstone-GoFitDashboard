@@ -9,6 +9,14 @@ import { useState } from "react";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const handleLogin = (e) => {
+    e.preventDefault();
+    console.log("loggin in");
+    console.log(email);
+    console.log(password);
+  };
   return (
     <>
       <div className="overflow-hidden overflow-x-hidden">
@@ -29,8 +37,10 @@ const Login = () => {
                 type={"text"}
                 name={"email"}
                 id={"email"}
-                onChange={() => {}}
-                // value={}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                value={email}
                 placeholder={"userName@gmail.com"}
                 classNameLabel={"mb-2 text-secondary"}
               />
@@ -41,8 +51,10 @@ const Login = () => {
                   label="Password"
                   id={"password"}
                   name={"password"}
-                  // value={}
-                  onChange={() => {}}
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                   classNameLabel={"mb-2 text-secondary"}
                 />
               </div>
@@ -74,9 +86,7 @@ const Login = () => {
                 type={"submit"}
                 className={"btn-login fs-5"}
                 id={"login"}
-                onClick={() => {
-                  console.log("logging in");
-                }}
+                onClick={handleLogin}
                 buttonName={"Log in"}
               />
               <div className="LineTextMiddle mt-5 mb-5">
