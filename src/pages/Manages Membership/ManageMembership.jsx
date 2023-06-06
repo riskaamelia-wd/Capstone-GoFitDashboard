@@ -27,7 +27,7 @@ const ManageMembership = () => {
     method: "get",
     // url: inputSearch === null ? `/membership` : `/membership${inputSearch}`,
     url: `/membership`,
-    // filter: inputSearch,
+    filter: inputSearch,
   });
 
   const [dataMiniCard, setDataMiniCard] = useState([]);
@@ -132,41 +132,42 @@ const ManageMembership = () => {
   // pakai use effect
   // useEffect()
   useEffect(() => {
-    if (!inputSearch) {
+    if (response !== null) {
+      const sorted = response.sort(
+        (objA, objB) => Number(objB.date) - Number(objA.date)
+      );
+      // setDebounce(inputSearch);
       setData(response);
-      setDebounce(inputSearch);
-    } else {
-      if (response !== null) {
-        const sorted = response.sort(
-          (objA, objB) => Number(objB.date) - Number(objA.date)
-        );
-        // setDebounce(inputSearch);
-        setData(response);
-        setDataMiniCard(sorted);
-      }
-
-      if (startDate !== null && endDate !== null) {
-        const FilteredPickedDate = data.filter(
-          (data) =>
-            moment(startDate).format("YYYY-M-DD") <=
-              moment(data.date).format("YYYY-M-DD") &&
-            moment(data.date).format("YYYY-M-DD") <=
-              moment(endDate).format("YYYY-M-DD")
-        );
-        const TempOneMonth = FilteredPickedDate.filter(
-          (data) => data.type === "1 month"
-        );
-        const TempThreeMonth = FilteredPickedDate.filter(
-          (data) => data.type === "3 month"
-        );
-        const TempOneYear = FilteredPickedDate.filter(
-          (data) => data.type === "1 year"
-        );
-        console.log(TempOneMonth);
-        console.log(TempThreeMonth);
-        console.log(TempOneYear);
-      }
+      setDataMiniCard(sorted);
     }
+
+    if (startDate !== null && endDate !== null) {
+      const FilteredPickedDate = data.filter(
+        (data) =>
+          moment(startDate).format("YYYY-M-DD") <=
+            moment(data.date).format("YYYY-M-DD") &&
+          moment(data.date).format("YYYY-M-DD") <=
+            moment(endDate).format("YYYY-M-DD")
+      );
+      const TempOneMonth = FilteredPickedDate.filter(
+        (data) => data.type === "1 month"
+      );
+      const TempThreeMonth = FilteredPickedDate.filter(
+        (data) => data.type === "3 month"
+      );
+      const TempOneYear = FilteredPickedDate.filter(
+        (data) => data.type === "1 year"
+      );
+      console.log(TempOneMonth);
+      console.log(TempThreeMonth);
+      console.log(TempOneYear);
+    }
+    // if (inputSearch == "") {
+
+    // } else {
+    //   setData(response);
+    //   setDebounce(inputSearch);
+    // }
   }, [response, data, endDate, startDate, inputSearch, setDebounce]);
 
   const recentlyView = () => {

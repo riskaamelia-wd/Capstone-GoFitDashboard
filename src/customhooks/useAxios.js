@@ -15,39 +15,38 @@ export default function useAxios({ api, method, url, data = null, filter }) {
   const [isLoading, setIsLoading] = useState(true);
   const [debounce, setDebounce] = useDebounce("", 500);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        api[method](`${url}`)
-          .then((res) => {
-            setResponse(res.data);
-          })
-          .finally(() => {
-            setIsLoading(false);
-          });
-      } catch (err) {
-        setError(err);
-      }
-    };
-    fetchData();
-
-    if (filter) {
-      // const fetchData = async () => {
-      //   try {
-      //     api[method](`${url}${filter}`)
-      //       .then((res) => {
-      //         setDebounce(filter);
-
-      //         setResponse(res.data);
-      //       })
-      //       .finally(() => {
-      //         setIsLoading(false);
-      //       });
-      //   } catch (err) {
-      //     setError(err);
-      //   }
-      // };
-      // fetchData();
-      console.log(filter);
+    if (filter === filter) {
+      const fetchData = async () => {
+        try {
+          api[method](`${url}${filter}`)
+            .then((res) => {
+              setDebounce(filter);
+              setResponse(res.data);
+            })
+            .finally(() => {
+              setIsLoading(false);
+            });
+        } catch (err) {
+          setError(err);
+        }
+      };
+      fetchData();
+      // console.log(filter);
+    } else {
+      const fetchData = async () => {
+        try {
+          api[method](`${url}`)
+            .then((res) => {
+              setResponse(res.data);
+            })
+            .finally(() => {
+              setIsLoading(false);
+            });
+        } catch (err) {
+          setError(err);
+        }
+      };
+      fetchData();
     }
   }, [api, method, url, data, setDebounce, filter]);
 
