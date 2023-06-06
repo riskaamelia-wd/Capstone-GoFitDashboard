@@ -2,82 +2,34 @@
 import Cover from "../../elements/Card/Cover";
 import member1 from "../../assets/icons/Members 1.svg";
 import "./ManageMembership.css";
-import test from "../../assets/test.svg";
 import TagStatus from "../../elements/Tag/TagStatus";
 import InputSearch from "../../elements/InputSearch/InputSearch";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import TagMonthYear from "../../elements/Tag/TagMonthYear";
 import ReactApexChart from "react-apexcharts";
 import { Datepicker } from "@mobiscroll/react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment/moment";
-import useAxios from "../../api/useAxios";
 import { membershipApi } from "../../api/Api";
+import useAxios from "../../customhooks/useAxios";
+import useDebounce from "../../customhooks/useDebounce";
+import { Puff } from "react-loader-spinner";
+import ReactDatePicker from "react-datepicker";
 const ManageMembership = () => {
-  const dummydata2 = [
-    {
-      img: test,
-      receiver: "Emma Ryan rj",
-      type: "3 month",
-      status: "active",
-      date: "2023-4-16",
-      amount: "99,860",
-    },
-    {
-      img: test,
-      receiver: "Emma Ryan rj",
-      type: "1 month",
-      status: "expired",
-      date: "2023-4-16",
-      amount: "99,860",
-    },
-    {
-      img: test,
-      receiver: "Emma Ryan rj",
-      type: "1 year",
-      status: "pending",
-      date: "2023-4-16",
-      amount: "99,860",
-    },
-    {
-      img: test,
-      receiver: "Emma Ryan rj",
-      type: "3 month",
-      status: "active",
-      date: "2023-4-16",
-      amount: "99,860",
-    },
-    {
-      img: test,
-      receiver: "Emma Ryan rj",
-      type: "1 month",
-      status: "expired",
-      date: "2023-4-16",
-      amount: "99,860",
-    },
-    {
-      img: test,
-      receiver: "Emma Ryan rj",
-      type: "1 year",
-      status: "pending",
-      date: "2023-4-16",
-      amount: "99,860",
-    },
-  ];
+  const [inputSearch, setInputSearch] = useState("");
+  const [data, setData] = useState([]);
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, endDate] = dateRange;
+  const [debounce, setDebounce] = useDebounce("", 500);
   const { response, isLoading } = useAxios({
     api: membershipApi,
     method: "get",
-    url: "/membership",
+    // url: inputSearch === null ? `/membership` : `/membership${inputSearch}`,
+    url: `/membership`,
+    // filter: inputSearch,
   });
-  const [inputSearch, setInputSearch] = useState("");
-  const [pickedDate, setPickedDate] = useState();
-  const [filteredDate, setFilteredDate] = useState([]);
-  const [filteredOneMonth, setFilteredOneMonth] = useState(0);
-  const [filteredThreeMonth, setFilteredThreeMonth] = useState(0);
-  const [filteredOneYear, setFilteredOneYear] = useState(0);
-  // const [filteredrangedata, setFilteredRangeData] = useState([]);
-  const [data, setData] = useState([]);
+
   const [dataMiniCard, setDataMiniCard] = useState([]);
   const navigate = useNavigate();
   const opt = {
@@ -163,73 +115,63 @@ const ManageMembership = () => {
     );
   };
 
-  const placeholderpicker = { placeholder: "Insert the date" };
-
-  const onChangePickedDate = (e) => {
-    const valuedate = e.value;
-    setPickedDate(valuedate);
-    const StartDate = moment(valuedate[0]).format("YYYY-M-DD");
-    const EndDate = moment(valuedate[1]).format("YYYY-M-DD");
-
-    const FilteredPickedDate = data.filter(
-      (data) => StartDate <= data.date && data.date <= EndDate
-    );
-    const TempOneMonth = FilteredPickedDate.filter(
-      (data) => data.type === "1 month"
-    );
-    const TempThreeMonth = FilteredPickedDate.filter(
-      (data) => data.type === "3 month"
-    );
-    const TempOneYear = FilteredPickedDate.filter(
-      (data) => data.type === "1 year"
-    );
-
-    console.log(TempOneMonth);
-    console.log(TempThreeMonth);
-    console.log(TempOneYear);
-    setFilteredDate(
-      FilteredPickedDate.map((data) => moment(data.date).format("ddd"))
-    );
-  };
   const onSortingDate = () => {
-    data.sort((a, b) => {
+    const sorted = data.sort((a, b) => {
       if (new Date(a.date) < new Date(b.date)) {
         return -1;
+      } else if (new Date(a.date) > new Date(b.date)) {
+        return 1;
+      } else {
+        return 0;
       }
-      //  (new Date(a.date) < new Date(a.date)) {
-      //   return 1;
-      // } else {
-      //   return 0;
-      // }
     });
-    // setData(sorted);
-    console.log(data.map((e) => e.date));
+    setData(sorted);
+    console.log(sorted.map((e) => moment(e.date).format("DD MMMM")));
   };
+
   // pakai use effect
   // useEffect()
   useEffect(() => {
-    if (response !== null) {
-      const sorted = response.sort(
-        (objA, objB) => Number(objB.date) - Number(objA.date)
-      );
+    if (!inputSearch) {
       setData(response);
-      setDataMiniCard(sorted);
+      setDebounce(inputSearch);
+    } else {
+      if (response !== null) {
+        const sorted = response.sort(
+          (objA, objB) => Number(objB.date) - Number(objA.date)
+        );
+        // setDebounce(inputSearch);
+        setData(response);
+        setDataMiniCard(sorted);
+      }
+
+      if (startDate !== null && endDate !== null) {
+        const FilteredPickedDate = data.filter(
+          (data) =>
+            moment(startDate).format("YYYY-M-DD") <=
+              moment(data.date).format("YYYY-M-DD") &&
+            moment(data.date).format("YYYY-M-DD") <=
+              moment(endDate).format("YYYY-M-DD")
+        );
+        const TempOneMonth = FilteredPickedDate.filter(
+          (data) => data.type === "1 month"
+        );
+        const TempThreeMonth = FilteredPickedDate.filter(
+          (data) => data.type === "3 month"
+        );
+        const TempOneYear = FilteredPickedDate.filter(
+          (data) => data.type === "1 year"
+        );
+        console.log(TempOneMonth);
+        console.log(TempThreeMonth);
+        console.log(TempOneYear);
+      }
     }
-  }, [response]);
-  return (
-    <>
-      {/* {console.log(filteredDate)} */}
-      <div className="container mt-5">
-        <div className="mb-5">
-          <Cover
-            // list2={"list2"}
-            // list3={"list3"}
-            text={"Membership"}
-            list1={"Home"}
-            img={member1}
-          />
-        </div>
-        {/* recently payments */}
+  }, [response, data, endDate, startDate, inputSearch, setDebounce]);
+
+  const recentlyView = () => {
+    return (
+      <>
         <div className="membership-card mb-5">
           <div className="card-body">
             <h5 className="card-title fw-bold fs-4">Recently Payments</h5>
@@ -265,8 +207,12 @@ const ManageMembership = () => {
             </div>
           </div>
         </div>
-
-        {/* chart */}
+      </>
+    );
+  };
+  const chartView = () => {
+    return (
+      <>
         <div className="membership-card mt-5 mb-5 ">
           <div className="container">
             <div className="row">
@@ -274,16 +220,17 @@ const ManageMembership = () => {
                 <p className="fw-semibold fs-4">Calculation</p>
               </div>
               <div className="col-12 col-xl-3 text-center text-xl-center">
-                <p className="fw-semibold fs-4">
-                  <Datepicker
-                    controls={["calendar"]}
-                    select="range"
-                    touchUi={true}
-                    inputComponent="input"
-                    inputProps={placeholderpicker}
-                    value={pickedDate}
-                    onChange={onChangePickedDate}
-                    dateFormat="MMMM DD"
+                <p className="fw-semibold fs-4 ">
+                  <ReactDatePicker
+                    className="w-75 "
+                    selectsRange={true}
+                    startDate={startDate}
+                    endDate={endDate}
+                    onChange={(update) => {
+                      setDateRange(update);
+                    }}
+                    dateFormat="MMMM dd"
+                    placeholderText="Select the date"
                   />
                 </p>
               </div>
@@ -298,7 +245,12 @@ const ManageMembership = () => {
             </div>
           </div>
         </div>
-        {/* membership */}
+      </>
+    );
+  };
+  const membershipview = () => {
+    return (
+      <>
         <div className="membership-card mt-5 mb-5">
           <div className="container">
             {/* header */}
@@ -312,11 +264,14 @@ const ManageMembership = () => {
                   name={"searchmembership"}
                   id={"searchmembership"}
                   onChange={(e) => {
-                    setInputSearch(e.target.value);
+                    setInputSearch(`?receiver=${e.target.value.trim()}`);
+                    // setDebounce(`?receiver=${e.target.value.trim()}`)
+                    // setInputSearch(e.target.value.trim());
                   }}
-                  value={inputSearch}
+                  value={inputSearch.replace("?receiver=", "")}
                   placeholder={"Search by Receiver"}
                 />
+                {/* {console.log(inputSearch)} */}
               </div>
             </div>
             {/* table */}
@@ -358,11 +313,11 @@ const ManageMembership = () => {
                 </thead>
                 <tbody>
                   {data
-                    .filter((filtered) => {
-                      return inputSearch.toLowerCase() === ""
-                        ? filtered
-                        : filtered.receiver.toLowerCase().includes(inputSearch);
-                    })
+                    // .filter((filtered) => {
+                    //   return inputSearch.toLowerCase() === ""
+                    //     ? filtered
+                    //     : filtered.receiver.toLowerCase().includes(inputSearch);
+                    // })
                     .map((e) => {
                       return (
                         <>
@@ -410,6 +365,54 @@ const ManageMembership = () => {
             </div>
           </div>
         </div>
+      </>
+    );
+  };
+  const generalView = () => {
+    return (
+      <>
+        {recentlyView()}
+
+        {/* chart */}
+        {chartView()}
+        {/* membership */}
+        {membershipview()}
+      </>
+    );
+  };
+  return (
+    <>
+      {/* {console.log(filteredDate)} */}
+      <div className="container mt-5">
+        <div className="mb-5">
+          <Cover
+            // list2={"list2"}
+            // list3={"list3"}
+            text={"Membership"}
+            list1={"Home"}
+            img={member1}
+          />
+        </div>
+        {/* recently payments */}
+
+        {isLoading ? (
+          <>
+            <div className="d-flex align-items-center justify-content-center">
+              <Puff
+                height="80"
+                width="80"
+                radius={1}
+                color="#FFDB99"
+                ariaLabel="puff-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+              />
+            </div>
+          </>
+        ) : (
+          generalView()
+        )}
       </div>
     </>
   );

@@ -1,14 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Cover from "../../elements/Card/Cover";
 import member1 from "../../assets/icons/Members 1.svg";
-import test from "../../assets/test.svg";
+import test from "../../assets/gif/banana.gif";
 import "./ManageMembership.css";
 import TagMonthYear from "../../elements/Tag/TagMonthYear";
 import TagStatus from "../../elements/Tag/TagStatus";
 import { useEffect, useState } from "react";
-import useAxios from "../../api/useAxios";
+import useAxios from "../../customhooks/useAxios";
 import { membershipApi } from "../../api/Api";
 import moment from "moment";
+import { Puff } from "react-loader-spinner";
 const ManageMembershipDetail = () => {
   const { id } = useParams();
   const [isVisibleStatus, setIsVisibleStatus] = useState(false);
@@ -27,31 +28,9 @@ const ManageMembershipDetail = () => {
       setDataUser(response);
     }
   }, [response]);
-  return (
-    <>
-      <div className="container mt-5">
-        <p className="m-0 m-auto">Manage Membership Detail no {id}</p>
-
-        <div className="mb-5">
-          <Cover
-            list2={"Contact Details"}
-            // list3={"list3"}
-            text={"Membership"}
-            list1={
-              <>
-                <button
-                  className="back-button"
-                  onClick={() => {
-                    navigate(-1);
-                  }}>
-                  Home
-                </button>
-              </>
-            }
-            img={member1}
-          />
-        </div>
-
+  const generalView = () => {
+    return (
+      <>
         <div className="membership-detail-card mb-5">
           <div className="row">
             <div className="col-12 col-lg-5 border-end border-dark">
@@ -337,6 +316,49 @@ const ManageMembershipDetail = () => {
             </div>
           </div>
         </div>
+      </>
+    );
+  };
+  return (
+    <>
+      <div className="container mt-5">
+        <div className="mb-5">
+          <Cover
+            list2={"Contact Details"}
+            // list3={"list3"}
+            text={"Membership"}
+            list1={
+              <>
+                <button
+                  className="back-button"
+                  onClick={() => {
+                    navigate(-1);
+                  }}>
+                  Home
+                </button>
+              </>
+            }
+            img={member1}
+          />
+        </div>
+        {isLoading ? (
+          <>
+            <div className="d-flex align-items-center justify-content-center">
+              <Puff
+                height="80"
+                width="80"
+                radius={1}
+                color="#FFDB99"
+                ariaLabel="puff-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+              />
+            </div>
+          </>
+        ) : (
+          generalView()
+        )}
       </div>
     </>
   );
