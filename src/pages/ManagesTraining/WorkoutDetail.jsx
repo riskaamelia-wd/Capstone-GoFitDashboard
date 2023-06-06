@@ -7,10 +7,27 @@ import { useState } from "react";
 import AddLess from "../../components/AddLess/AddLess";
 import check from '../../assets/icons/check_success.svg'
 import trash from '../../assets/icons/delete_danger.svg'
-import PopUp from "../../components/PopUp/PopUp";
+import PopUp from "../../components/PopUp/AddVideoTraining";
 import add from '../../assets/icons/add.svg'
+import { useLocation } from "react-router-dom";
 
 const WorkoutDetail = () => {
+    const location = useLocation()
+    const {level, workout} = location.state
+
+    const dataColumnChart = [
+        {
+            name: 'Easy',
+            data: [44, 55, 41, 67, 22, 43, 44, 55, 41, 67, 22, 43]
+          }, {
+            name: 'Usual',
+            data: [13, 23, 20, 8, 13, 27, 13, 23, 20, 8, 13, 27]
+          }, {
+            name: 'Exhausted',
+            data: [11, 17, 15, 15, 21, 14, 11, 17, 15, 15, 21, 14]
+          }
+    ]
+
     const [textarea, setTextarea] = useState('')
     const handleTextarea = (e) => {
     setTextarea(e.target.value)
@@ -22,14 +39,18 @@ const WorkoutDetail = () => {
                 img={imgCover}
                 text={'Training'}
                 list1={'Home'}
-                list2={'Advanced'}
-                list3={'Arm'}
+                list2={level}
+                list3={workout}
             />
-            <ColumnChart/> 
+            <ColumnChart
+                series={dataColumnChart}
+            /> 
             <div className="workoutDetailData row d-flex justify-content-around">
                 <div className="col-11 mt-5">
                     <div className="d-flex flex-row justify-content-between add">
-                        <p className="fs-2 fw-bold">Arm Beginner</p>
+                        <p className="fs-2 fw-bold">                                
+                        <td>{workout} {level}</td>
+                        </p>
                         <PopUp 
                             className={'add'} 
                             imgBtn={add}
