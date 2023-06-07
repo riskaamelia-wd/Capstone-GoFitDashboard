@@ -1,12 +1,12 @@
+import './Form.css'
 import React, {useState} from "react";
 import Button from 'react-bootstrap/Button'
 import {Modal} from 'react-bootstrap'
 import TextField from "../../elements/TextField/TextField";
 import video from '../../assets/icons/videocam_gray.svg'
-import './PopUp.css'
 import Textarea from "../../elements/TextField/Textarea";
 
-export default function PopUp({body,name, text, id, onChangeInput, valueInput, imgBtn, btnText, onClick,className, classNameBtn, btnClose, btnCreate}) {
+export default function VideoTraining({name, text, id, onChangeInput, valueInput, imgBtn, onClick,className}) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
