@@ -23,3 +23,13 @@ const PackageChips = ({ price, id, time }) => {
   );
 };
 export default PackageChips;
+
+// how to use
+
+/*
+<PackageChips 
+price={"50000"}
+time={"month"}
+id={"monthly"}
+/>
+*/
