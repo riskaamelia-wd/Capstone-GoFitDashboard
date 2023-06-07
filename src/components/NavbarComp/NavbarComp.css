@@ -37,6 +37,10 @@
     transition: 0.4s;
 }
 
+.search {
+    transition: 0.4s;
+}
+
 .nav-end {
     position: absolute;
     right: 0;
