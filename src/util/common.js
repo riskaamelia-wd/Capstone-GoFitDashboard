@@ -1,7 +1,7 @@
-// return the admin data from the session storage
-export const getadmin = () => {
-  const adminStr = sessionStorage.getItem("admin");
-  if (adminStr) return JSON.parse(adminStr);
+// return the user data from the session storage
+export const getUser = () => {
+  const userStr = sessionStorage.getItem("user");
+  if (userStr) return JSON.parse(userStr);
   else return null;
 };
 
@@ -10,14 +10,14 @@ export const getToken = () => {
   return sessionStorage.getItem("token") || null;
 };
 
-// remove the token and admin from the session storage
+// remove the token and user from the session storage
 export const removeUserSession = () => {
   sessionStorage.removeItem("token");
-  sessionStorage.removeItem("admin");
+  sessionStorage.removeItem("user");
 };
 
-// set the token and admin from the session storage
-export const setUserSession = (token, admin) => {
+// set the token and user from the session storage
+export const setUserSession = (token, user) => {
   sessionStorage.setItem("token", token);
-  sessionStorage.setItem("admin", JSON.stringify(admin));
+  sessionStorage.setItem("user", JSON.stringify(user));
 };

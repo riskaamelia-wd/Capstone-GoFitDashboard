@@ -1,13 +1,13 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { getadmin } from "./common";
+import { getUser } from "./common";
 
 const PrivateRoute = () => {
-  const token = getadmin();
+  const token = getUser();
 
-  let admin;
-  token ? (admin = true) : (admin = false);
+  let user;
+  token ? (user = true) : (user = false);
 
-  if (!admin) {
+  if (!user) {
     return <Navigate to={"/"} replace />;
   } else {
     return <Outlet />;
