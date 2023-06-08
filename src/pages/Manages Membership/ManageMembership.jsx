@@ -11,24 +11,47 @@ import ReactApexChart from "react-apexcharts";
 import { Datepicker } from "@mobiscroll/react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment/moment";
-import { membershipApi } from "../../api/Api";
+import { adminApi, membershipApi } from "../../api/Api";
 import useAxios from "../../customhooks/useAxios";
 import useDebounce from "../../customhooks/useDebounce";
 import { Puff } from "react-loader-spinner";
 import ReactDatePicker from "react-datepicker";
+import useAxiosFunction from "../../customhooks/useAxiosFunction";
+import useCrudApi from "../../customhooks/useCrudApi";
 const ManageMembership = () => {
   const [inputSearch, setInputSearch] = useState("");
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
+  const [dataMembership, setDataMembership] = useState([]);
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
   const [debounce, setDebounce] = useDebounce("", 500);
-  const { response, isLoading } = useAxios({
-    api: membershipApi,
-    method: "get",
-    // url: inputSearch === null ? `/membership` : `/membership${inputSearch}`,
-    url: `/membership`,
-    filter: inputSearch,
-  });
+
+  const { data, isLoading, error } = useCrudApi(
+    membershipApi,
+    `/membership?receiver=${inputSearch}`
+  );
+  //   const { response, loading, error } = useAxios({
+  //     baseUrl:adminApi,
+  //     method: 'GET',
+  //     url: '/membership',
+  //     headers: { // no need to stringify
+  //       accept: '*/*'
+  //     },
+  //     // data: {  // no need to stringify
+  //     //     userId: 1,
+  //     //     id: 19392,
+  //     //     title: 'title',
+  //     //     body: 'Sample text',
+  //     // },
+  // });
+  // const [response, error, loading, axiosFetch] = useAxiosFunction();
+  // const getData = () => {
+  //   axiosFetch({
+  //     api: membershipApi,
+  //     method: "get",
+  //     url: "/membership",
+  //   });
+  // };
 
   const [dataMiniCard, setDataMiniCard] = useState([]);
   const navigate = useNavigate();
@@ -131,13 +154,16 @@ const ManageMembership = () => {
 
   // pakai use effect
   // useEffect()
+  // useEffect(() => {
+  //   getData();
+  // }, []);
   useEffect(() => {
-    if (response !== null) {
-      const sorted = response.sort(
+    if (data !== null) {
+      const sorted = data.sort(
         (objA, objB) => Number(objB.date) - Number(objA.date)
       );
       // setDebounce(inputSearch);
-      setData(response);
+      setDataMembership(data);
       setDataMiniCard(sorted);
     }
 
@@ -168,7 +194,9 @@ const ManageMembership = () => {
     //   setData(response);
     //   setDebounce(inputSearch);
     // }
-  }, [response, data, endDate, startDate, inputSearch, setDebounce]);
+  }, [dataMembership, data, endDate, startDate, inputSearch, setDebounce]);
+
+  // benerin pake timeout
 
   const recentlyView = () => {
     return (
@@ -221,7 +249,7 @@ const ManageMembership = () => {
                 <p className="fw-semibold fs-4">Calculation</p>
               </div>
               <div className="col-12 col-xl-3 text-center text-xl-center">
-                <p className="fw-semibold fs-4 ">
+                <div className="fw-semibold fs-4 ">
                   <ReactDatePicker
                     className="w-75 "
                     selectsRange={true}
@@ -233,7 +261,7 @@ const ManageMembership = () => {
                     dateFormat="MMMM dd"
                     placeholderText="Select the date"
                   />
-                </p>
+                </div>
               </div>
               <div className="col-12">
                 <ReactApexChart
@@ -265,7 +293,7 @@ const ManageMembership = () => {
                   name={"searchmembership"}
                   id={"searchmembership"}
                   onChange={(e) => {
-                    setInputSearch(`?receiver=${e.target.value.trim()}`);
+                    setInputSearch(e.target.value.trim());
                     // setDebounce(`?receiver=${e.target.value.trim()}`)
                     // setInputSearch(e.target.value.trim());
                   }}
@@ -352,7 +380,7 @@ const ManageMembership = () => {
                                 className={"btn-detail fs-5"}
                                 id={"detail"}
                                 onClick={() => {
-                                  navigate(`membership/${e.id}`);
+                                  navigate(`/membership/${e.id}`);
                                 }}
                                 buttonName={"Details"}
                               />
@@ -397,6 +425,7 @@ const ManageMembership = () => {
         {/* recently payments */}
 
         {isLoading ? (
+          // loading
           <>
             <div className="d-flex align-items-center justify-content-center">
               <Puff

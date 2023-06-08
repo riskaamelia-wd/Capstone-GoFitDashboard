@@ -3,7 +3,7 @@ import LoginImg from "../../assets/gif/Login.gif";
 import google from "../../assets/icons/google.svg";
 
 import TextField from "../../elements/TextField/TextField";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import TextFieldPassword from "../../elements/TextField/TextFieldPassword";
 import { useEffect, useState } from "react";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
@@ -12,13 +12,46 @@ import { adminApi, membershipApi } from "../../api/Api";
 import { setUserSession } from "../../util/common";
 import useAxiosFunction from "../../customhooks/useAxiosFunction";
 import useAxios from "../../customhooks/useAxios";
+import useCrudApi from "../../customhooks/useCrudApi";
 const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [bodyApi, setBodyApi] = useState();
+  const [bodyApi, setBodyApi] = useState({
+    api: adminApi,
+    method: "post",
+    url: "/login",
+    header: JSON.stringify({}),
+    body: {},
+  });
+  const navigate = useNavigate();
+  // const [response, error, loading, axiosFetch] = useAxiosFunction();
+  // const { data, isLoading, error, postData } = useCrudApi(adminApi);
+  const { data, isLoading, error, createData } = useCrudApi(adminApi, "/login");
+  // const { response, isLoading } = useAxios({
+  //   // bodyApi,
+  //   // bodyApi,
 
-  const [response, error, loading, axiosFetch] = useAxiosFunction();
+  //   api: adminApi,
+  //   method: "post",
+  //   url: bodyApi.url,
+  //   // `/login`,
+  //   headers: bodyApi.header,
+  //   //  JSON.stringify({
+  //   //   Accept: "application/json",
+  //   // }),
+  //   body: JSON.stringify({
+  //     email: email,
+  //     password: password,
+  //   }),
+  //   // JSON.stringify(
+  //   // bodyApi
+  //   // {
+  //   // email: email,
+  //   // password: password,
+  //   // }
+  //   // ),
+  // });
   // const getData = () => {
   //   axiosFetch({
   //     api: membershipApi,
@@ -34,21 +67,49 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    axiosFetch({
-      api: adminApi,
-      method: "POST",
-      url: "/login",
-      requestConfig: {
-        headers: {
-          Accept: "application/json",
-        },
-        data: {
-          email: email,
-          password: password,
-        },
-      },
-    });
+    // axiosFetch({
+    //   api: adminApi,
+    //   method: "POST",
+    //   url: "/login",
+    //   requestConfig: {
+    //     email: email,
+    //     password: password,
+    //   },
+    // });
+    // console.log(response);
+    // if (email !== "" && password !== "") {
+    createData({ email: email, password: password });
 
+    // createData({ email: email, password: password });
+    // if (data[0]?.token !== undefined) {
+    //   navigate("/membership");
+    //   // navigate("/membership");
+    //   // console.log(response.token);
+    // }
+    // setUserSession(data[0]?.token,)
+    // postData("/login", { email: email, password: password });
+    // setBodyApi({
+    //   method: "post",
+    //   url: "/login",
+    //   header: JSON.stringify({
+    //     Accept: "application/json",
+    //   }),
+    //   body: JSON.stringify({
+    //     email: "admin@gofit.com",
+    //     password: "gofitadmin123",
+    //   }),
+    //   //  JSON.stringify(
+    //   // {
+    //   //   email: email,
+    //   //   password: password,
+    //   //   // data: {
+
+    //   //   // },
+    //   // },
+    //   // ),
+    // });
+    console.log("+++++++++++++++++++++++++");
+    // }
     // axiosFetch({
     //   api: membershipApi,
     //   method: "POST",
@@ -75,17 +136,14 @@ const Login = () => {
     //       id: "5",
     //     },
     //   },
-    //   // body: JSON.stringify({
-    //   //   email: email,
-    //   //   password: password,
-    //   // }),
+
     // });
 
-    // console.log(email);
+    console.log(email);
     // console.log("+++++++++++++++++++++++++");
     // console.log(error);
-    // console.log("+++++++++++++++++++++++++");
-    // console.log(password);
+    console.log("+++++++++++++++++++++++++");
+    console.log(password);
     // setAdminSession(response.token, response.role);
 
     // if (email === "") {
@@ -95,11 +153,20 @@ const Login = () => {
     // }
   };
   // console.log(response);
-  // useEffect(() => {
-  //   if (response !== null) {
-  //     console.log(response);
-  //   }
-  // });
+  useEffect(() => {
+    if (data[0]?.token !== undefined) {
+      setUserSession(data[0]?.token, data[0]?.data);
+      navigate("/membership");
+    } else if (error?.response.status === 401) {
+      alert("Invalid  password or email address");
+    } else if (error?.response.status === 400) {
+      alert("not an email");
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, error]);
+  // console.log(error?.response.status);
+
   return (
     <>
       <div className="overflow-hidden overflow-x-hidden">
@@ -113,11 +180,11 @@ const Login = () => {
           </div>
           <div className=" col-md-6 LoginRightSide rounded-5 d-flex justify-content-center align-items-center ">
             <div className=" w-75 ">
-              <p className=" mt-5 fw-bold fs-1 h1-rightside">Welcome!</p>
-              <p className=" mt-3 fw-semibold fs-5 mb-4">Log in you account</p>
+              <p className="fw-bold fs-1 h1-rightside">Welcome!</p>
+              <p className="fw-semibold fs-5 mb-4">Log in you account</p>
               <TextField
                 label={`Your Email`}
-                type={"text"}
+                type={"email"}
                 name={"email"}
                 id={"email"}
                 onChange={(e) => {
@@ -159,9 +226,11 @@ const Login = () => {
                   </div>
                 </div>
                 <div className="col-6 text-end">
-                  {/* <NavLink to={""}> */}
-                  <p className="ForgotPasswordText">Forgot Password?</p>
-                  {/* </NavLink> */}
+                  <NavLink
+                    to={"/forgotpassword"}
+                    style={{ textDecoration: "none" }}>
+                    <p className="ForgotPasswordText">Forgot Password?</p>
+                  </NavLink>
                 </div>
               </div>
 
@@ -171,24 +240,6 @@ const Login = () => {
                 id={"login"}
                 onClick={handleLogin}
                 buttonName={"Log in"}
-              />
-              <div className="LineTextMiddle mt-5 mb-5">
-                <span className="fs-5">or</span>
-              </div>
-
-              <ButtonComponent
-                type={"button"}
-                className={"btnGoogle p-2"}
-                id={"googlelogin"}
-                onClick={() => {
-                  console.log("login with google");
-                }}
-                imgUrlStart={google}
-                buttonName={
-                  <span className="fs-5 ms-3 fw-semibold">
-                    Continue with Google
-                  </span>
-                }
               />
             </div>
           </div>

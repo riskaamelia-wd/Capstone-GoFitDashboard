@@ -42,7 +42,6 @@ const useAxiosFunction = () => {
 
   const axiosFetch = async (configObj) => {
     const { api, method, url, requestConfig = {} } = configObj;
-
     try {
       setLoading(true);
       const ctrl = new AbortController();
@@ -51,7 +50,7 @@ const useAxiosFunction = () => {
         ...requestConfig,
         signal: ctrl.signal,
       });
-      console.log(res);
+      //   console.log(res);
       setResponse(res.data);
     } catch (err) {
       console.log(err.message);
