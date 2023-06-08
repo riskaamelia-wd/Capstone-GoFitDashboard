@@ -10,25 +10,28 @@ import useDebounce from "./useDebounce";
 
 */
 
-const useAxios = ({ api, method, url, data = null, headers, body }) => {
+const useAxios = ({ api, method, url, headers, body }) => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const fetchData = async () => {
-    try {
-      api[method](url, JSON.parse(headers), JSON.parse(body))
-        .then((res) => {
-          setResponse(res.data);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    } catch (err) {
-      setError(err);
-    }
-  };
-  useEffect(() => {}, [api, method, url, data, headers, body]);
 
-  return { response, error, isLoading, fetchData };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        api[method.toLowerCase()](url, JSON.parse(headers), JSON.parse(body))
+          .then((res) => {
+            setResponse(res.data);
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
+      } catch (err) {
+        setError(err);
+      }
+    };
+    fetchData();
+  }, [api, body, headers, method, url]);
+
+  return { response, error, isLoading };
 };
 export default useAxios;

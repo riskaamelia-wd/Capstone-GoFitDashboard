@@ -19,12 +19,16 @@ const ManageMembershipDetail = () => {
   const { response, isLoading } = useAxios({
     api: membershipApi,
     method: "get",
+    headers: JSON.stringify({
+      // accept: "*/*",
+    }),
+    // url: inputSearch === null ? `/membership` : `/membership${inputSearch}`,
     url: `/membership/${id}`,
-    // config: JSON.stringify({ requireAuthentication: true }),
+    // filter: inputSearch,
+    body: JSON.stringify({}),
   });
   useEffect(() => {
     if (response !== null) {
-      console.log(response);
       setDataUser(response);
     }
   }, [response]);
