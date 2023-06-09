@@ -136,18 +136,18 @@ const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnMo
                     weeklyPrice:data.weeklyPrice,
                     monthlyPrice:data.monthlyPrice,
                     imageFile:data.imageFile,
-                    classId:data.id,
+                    // classId:data.id,
                     description:data.description
                 })
                 .then((res) => {
                     navigate('/')
                     alert('edited')
-                    window.location.reload()
+                    // window.location.reload()
                 })
                 .catch((err) => {
                     navigate('/')
                     alert(err.message)
-                    window.location.reload()
+                    // window.location.reload()
                 })
             } else {
                 classApi.post('/class',{
@@ -160,13 +160,15 @@ const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnMo
                     weeklyPrice:data.weeklyPrice,
                     monthlyPrice:data.monthlyPrice,
                     imageFile:data.imageFile,
-                    classId:data.id,
+                    // classId:data.id,
                     description:data.description
                 },
                 )
                 .then((res) => {
                     dispatch(addOnlineClass(data))
-                    alert('Product added')
+                    alert('Class added')
+
+                    //get data
                     // window.location.reload()
                 })
                 .catch((err) => {
