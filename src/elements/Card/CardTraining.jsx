@@ -1,6 +1,5 @@
-import ButtonEditDelete from '../Buttons/ButtonEditDelete'
 import './Card.css'
-import PopUpNewClass from "../../components/PopUp/AddTraining"
+import PopUpNewClass from "../../components/Form/Training"
 import { useState } from 'react'
 
 const CardTraining = ({img, text,className, classNameText, navigate, onDelete}) => {
