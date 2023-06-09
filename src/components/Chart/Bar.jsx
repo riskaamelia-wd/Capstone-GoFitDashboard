@@ -1,11 +1,12 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
 
-const Bar = ({colorBar,colorBackgroundBar}) => {
+const Bar = ({colorBar,colorBackgroundBar, name, data}) => {
   const dataChart = {
-    series: [{
-      name: 'Daily',
-      data: [145],
+    series: [
+      {
+      name: name,
+      data: [data],
     },
     // {
     //     name: 'Target',
@@ -54,7 +55,7 @@ const Bar = ({colorBar,colorBackgroundBar}) => {
         enabled: false,
       },
       xaxis: {
-        categories: ['Monthly'],
+        categories: ['Data'],
         labels:{
             show:false,
         },
