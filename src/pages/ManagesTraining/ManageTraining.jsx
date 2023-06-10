@@ -17,19 +17,19 @@ const ManageTraining = () => {
 
     const barChart = [
         {
-            data:[256],
+            data:[56],
             name:'Home Workout',
             colorBar:'#FFB200',
             colorBackgroundBar:'#FFF5CC',
         },
         {
-            data:[90],
+            data:[40],
             name:'Gym Workout',
             colorBackgroundBar:'#DAD7FE',
             colorBar:'#4339F2'
         },
         {
-            data:[154],
+            data:[74],
             name:'Outside Workout',
             colorBackgroundBar:'#CCF8FE',
             colorBar:'#02A0FC'
@@ -65,29 +65,27 @@ const ManageTraining = () => {
                 list1={'Home'}
                 text={'Training'}
             />
-            <div className="row mt-5 mb-5" style={{margin:'0 auto'}}>
-                {radialBarChart?.map((data,id) =>{
-                    return(
-                    <div 
-                        className="col-sm-6 col-lg-4 d-flex justify-content-center" 
-                        key={id} 
+            <div className="d-flex justify-content-around row mt-5 mb-5" style={{margin:'0 auto'}}>
+            {/* key={id} 
                         onClick={() => navigate(`/levelDetail/${data.level}`
                         ,{state:{level: data.level }}
-                        )}
-                    >
+                        )} */}
+                {radialBarChart?.map((data,id) =>{
+                    return(
                         <RadialBar
+                            key={id}
+                            level={data.level}
                             colorBackground={data.colorBackground}
                             colorText={data.colorText}
                             series={data.series[0]}
                             text={data.level}
                         />
-                    </div>
                     )
                     
                 })}
             </div>
-            <div className="row d-flex justify-content-around ms-5 me-4">
-                <div className="col-6 shadow p-3">
+            <div className="row d-flex justify-content-around ms-md--5 me-md-4">
+                <div className="col-lg-6 shadow mb-4 p-3">
                     <p className="fs-2 fw-bold">Best Training</p>
                     {
                         barChart?.map((data, id) => {
@@ -104,7 +102,7 @@ const ManageTraining = () => {
                         })
                     }                    
                 </div>
-                <div className="col-5">
+                <div className="col-lg-5 mb-4">
                     <Recomended/>
                 </div>
             </div>
