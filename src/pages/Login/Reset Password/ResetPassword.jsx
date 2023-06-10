@@ -8,9 +8,10 @@ import ButtonComponent from "../../../elements/Buttons/ButtonComponent";
 import TextFieldPassword from "../../../elements/TextField/TextFieldPassword";
 import success from "../../../assets/icons/Check.svg";
 import fail from "../../../assets/icons/Fail.svg";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 const ResetPassword = () => {
+  const { id_user } = useParams;
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [responses, setResponses] = useState(404);

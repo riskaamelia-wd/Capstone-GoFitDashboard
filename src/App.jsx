@@ -43,7 +43,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/resetpassword" element={<ResetPassword />} />
+          <Route path="/resetpassword/:id_user" element={<ResetPassword />} />
           <Route path="/" element={<Login />} />
           {/* <Route element={<PrivateRoute />}>
  
