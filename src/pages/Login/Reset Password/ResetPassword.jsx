@@ -11,7 +11,7 @@ import fail from "../../../assets/icons/Fail.svg";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 const ResetPassword = () => {
-  const { id_user } = useParams;
+  const { id_user } = useParams();
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [responses, setResponses] = useState(404);
