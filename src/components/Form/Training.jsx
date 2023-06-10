@@ -1,5 +1,5 @@
 import './Form.css'
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Button from 'react-bootstrap/Button'
 import {Modal} from 'react-bootstrap'
 import TextField from "../../elements/TextField/TextField";
@@ -8,23 +8,46 @@ import Textarea from "../../elements/TextField/Textarea";
 import AddLess from "../AddLess/AddLess";
 import { useDispatch } from "react-redux";
 import { addTraining } from "../../redux/Slice/trainingSlice";
+import { trainingApi } from '../../api/Api';
+import useAxios from '../../api/UseAxios';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Training({title, text, imgBtn, className }) {
     const [show, setShow] = useState(false);
+    const [training, setTraining] = useState([])
+
+    
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const {id, level} = useParams()
     
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const {response, isLoading} = useAxios({
+        api: trainingApi,
+        method: 'get',
+        url:`/training/${id}`
+    })
+    console.log(level, ' level');
+
+    useEffect(() => {
+        if(id !== '' && id !== null && id !== undefined && response !== null){
+            setData(response)
+            setTraining(response)
+        }
+    }, [response])
     
-    //   const [data, setData] = useState([])
     const [data, setData] = useState({
         title : '',
         introduction:'',
         imgFile : null,
         workout:0,
-        duration:0
+        duration:0,
+        category:level
     })
     let countText = data.introduction.length
-    const dispatch = useDispatch()
 
 
     const increment = (e, type) => {
@@ -42,6 +65,17 @@ export default function Training({title, text, imgBtn, className }) {
           setData(updatedData);
         }
       }
+    
+      const reset = () => {
+        setData({
+            title : '',
+            introduction:'',
+            imgFile : null,
+            workout:0,
+            duration:0,
+            category:''
+        })
+      }
       
     const handleInput = (e) => {
         const {name, value} = e.target
@@ -55,11 +89,56 @@ export default function Training({title, text, imgBtn, className }) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        console.log(id, ' id');
+        console.log(training, ' tr');
+        console.log(data, ' data');
         if(window.confirm('Are you sure you want to submit?')){
-            dispatch(addTraining(data))
-            alert('Added')
-            setShow(false)
+            if (id !== undefined && (training?.id === data?.id)){
+                trainingApi.put(`/training/${id}`,{
+                    title : data.title,
+                    introduction:data.introduction,
+                    imgFile : data.imgFile,
+                    workout:data.workout,
+                    duration: data.duration,
+                    category:level
+                })
+                .then( async (res) => {
+                    await axios.get(`https://647612b1e607ba4797dd420e.mockapi.io/training`)
+                    setData(res.data)
+                    console.log(res.data, ' resp');
+                    navigate(`/levelDetail/${level}`)
+                    alert('edited')
+                })
+                .catch((err) => {
+                    alert(err.message)
+                    // window.location.reload()
+                })
+            } else {
+                trainingApi.post('/training',{
+                    title : data.title,
+                    introduction:data.introduction,
+                    imgFile : data.imgFile,
+                    workout:data.workout,
+                    duration: data.duration,
+                    category:level
+                })
+                .then(async (res) => {
+                    await axios.get(`https://647612b1e607ba4797dd420e.mockapi.io/training`)
+                    setData(res.data)
+                    console.log(data, ' resp');
+                    dispatch(addTraining(data))
+                    alert('Added')
+                    setShow(false)
+                    //get data
+                    console.log(data);
+                    // window.location.reload()
+                })
+                .catch((err) => {
+                    alert(err.message)
+                })
+            }
         }
+        reset()
 
     }
 
