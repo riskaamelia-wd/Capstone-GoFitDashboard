@@ -10,14 +10,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import PrivateRoute from "./util/PrivateRoute";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import "react-datepicker/dist/react-datepicker.css";
-import ManageMembership from "./pages/Manages Membership/ManageMembership";
-import ManageMembershipDetail from "./pages/Manages Membership/ManageMembershipDetail";
+
 import Login from "./pages/Login/Login";
-import ForgotPassword from "./pages/Login/ForgotPassword/ForgotPassword";
+import ForgotPassword from "./pages/Login/Forgot Password/ForgotPassword";
+import ResetPassword from "./pages/Login/Reset Password/ResetPassword";
 
 function App() {
   const [count, setCount] = useState(0);
-  const [data, setData] = useState([]);
 
   return (
     <>
@@ -44,11 +43,11 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/resetpassword" element={<ResetPassword />} />
           <Route path="/" element={<Login />} />
-          <Route element={<PrivateRoute />}>
-            <Route path="membership" element={<ManageMembership />} />
-            <Route path="membership/:id" element={<ManageMembershipDetail />} />
-          </Route>
+          {/* <Route element={<PrivateRoute />}>
+ 
+          </Route> */}
         </Routes>
       </BrowserRouter>
     </>
