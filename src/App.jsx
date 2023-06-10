@@ -7,13 +7,10 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import Login from "./pages/Login/Login";
-import PrivateRoute from "./util/PrivateRoute";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import "react-datepicker/dist/react-datepicker.css";
 import ManageMembership from "./pages/Manages Membership/ManageMembership";
 import ManageMembershipDetail from "./pages/Manages Membership/ManageMembershipDetail";
-import Login from "./pages/Login/Login";
-import ForgotPassword from "./pages/Login/ForgotPassword/ForgotPassword";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -43,12 +40,8 @@ function App() {
       </p> */}
       <BrowserRouter>
         <Routes>
-          <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/" element={<Login />} />
-          <Route element={<PrivateRoute />}>
-            <Route path="membership" element={<ManageMembership />} />
-            <Route path="membership/:id" element={<ManageMembershipDetail />} />
-          </Route>
+          <Route path="membership" element={<ManageMembership />} />
+          <Route path="membership/:id" element={<ManageMembershipDetail />} />
         </Routes>
       </BrowserRouter>
     </>
