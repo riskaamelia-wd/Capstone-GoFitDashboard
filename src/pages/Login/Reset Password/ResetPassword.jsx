@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
+import React, { useEffect, useState } from "react";
 import bgimg from "../../../assets/gif/gif-1.gif";
 import forgoticons from "../../../assets/icons/forgot_password.svg";
 import "./ResetPassword.css";
@@ -6,21 +7,47 @@ import TextField from "../../../elements/TextField/TextField";
 import ButtonComponent from "../../../elements/Buttons/ButtonComponent";
 import TextFieldPassword from "../../../elements/TextField/TextFieldPassword";
 import success from "../../../assets/icons/Check.svg";
-import { Link } from "react-router-dom";
+import fail from "../../../assets/icons/Fail.svg";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [responses, setResponses] = useState(200);
-  const [show, setShow] = useState(false);
+  const [responses, setResponses] = useState(404);
+  const [Error, setError] = useState("error blablabla");
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showFail, setShowFail] = useState(false);
+  const navigate = useNavigate();
+
   const handleCloseModal = () => {
-    setShow(!show);
+    setShowSuccess(false);
+    setShowFail(false);
   };
   const onSubmitHandle = (e) => {
     e.preventDefault();
     if (responses === 200) {
-      setShow(true);
+      setShowSuccess(true);
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    } else {
+      setShowFail(true);
     }
+  };
+  const ModalRespons = ({ image, title, subtitle, show }) => {
+    return (
+      <>
+        <Modal show={show} onHide={handleCloseModal} centered>
+          <Modal.Body>
+            <div className="col-12 text-center">
+              <img src={image} alt="" />
+              <p className="fs-4 fw-semibold">{title}</p>
+              <p className="fs-5 fw-normal">{subtitle}</p>
+            </div>
+          </Modal.Body>
+        </Modal>
+      </>
+    );
   };
   const largeView = () => {
     return (
@@ -91,21 +118,27 @@ const ResetPassword = () => {
                 </button>
               )}
             </div>
-            <div>
-              <Modal show={show} onHide={handleCloseModal} centered>
-                <Modal.Body>
-                  <div className="col-12 text-center">
-                    <img src={success} alt="" />
-                    <p className="fs-4 fw-semibold">
-                      Password has been changed!
-                    </p>
-                    <p className="fs-5 fw-normal">Log back in to log in</p>
-                  </div>
-                </Modal.Body>
-              </Modal>
-            </div>
+            <div></div>
           </div>
         </div>
+        {/* Modal Success*/}
+        {
+          <ModalRespons
+            image={success}
+            title={"Password has been changed"}
+            subtitle={"Log back in to log in"}
+            show={showSuccess}
+          />
+        }
+        {/* Modal Fail*/}
+        {
+          <ModalRespons
+            image={fail}
+            title={`Error : ${Error}`}
+            subtitle={"Please try again"}
+            show={showFail}
+          />
+        }
       </>
     );
   };
@@ -179,6 +212,23 @@ const ResetPassword = () => {
             </div>
           </div>
         </div>
+        {/* Modal */}
+        {
+          <ModalRespons
+            image={success}
+            title={"Password has been changed"}
+            subtitle={"Log back in to log in"}
+            show={showSuccess}
+          />
+        }
+        {
+          <ModalRespons
+            image={fail}
+            title={`Error : ${Error}`}
+            subtitle={"Please try again"}
+            show={showFail}
+          />
+        }
       </>
     );
   };

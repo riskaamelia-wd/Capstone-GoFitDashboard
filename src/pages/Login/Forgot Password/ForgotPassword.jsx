@@ -12,9 +12,11 @@ const ForgotPassword = () => {
     if (!emailRegex.test(email)) {
       alert("Please enter the right format for email");
     } else {
+      // create condition if the email doesn't exist??
       alert(`email: ${email}`);
     }
   };
+
   const largeView = () => {
     return (
       <>
