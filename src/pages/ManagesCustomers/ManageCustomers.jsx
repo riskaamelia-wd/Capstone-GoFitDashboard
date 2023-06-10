@@ -2,9 +2,9 @@ import Cover from "../../elements/Card/Cover"
 import imgCover from '../../assets/icons/Appreciation 1.svg'
 import InputSearch from "../../elements/InputSearch/InputSearch"
 import "../ManagesCustomers/ManageCustomers.css"
-import { Col, Row } from "react-bootstrap"
 import { useState } from "react"
 import CardCustomers from "../../elements/CardCustomers/CardCustomers"
+import CardDetailCustomers from "../../elements/CardCustomers/CardDetailCustomer"
 
 //Belum Selesai
 const ManageCustomers = () => {
@@ -33,6 +33,13 @@ const ManageCustomers = () => {
         
     ])
 
+    const [selectedCustomerId, setSelectedCustomerId] = useState(null);
+
+    const getSelectedCustomer = () => {
+        return customers.find(customer => customer.id === selectedCustomerId);
+      };
+      
+
     return (
         <>
             <div className="container manage-customer">
@@ -60,7 +67,7 @@ const ManageCustomers = () => {
                                     customers.map((customer) => {
                                         return (
                                             <CardCustomers
-                                                onClick={(e) => { setIsVisible(true) }}
+                                                onClick={(e) => { setSelectedCustomerId(customer.id); setIsVisible(true); }}
                                                 key={customer.id}
                                                 image={customer.image}
                                                 name={customer.name}
@@ -82,7 +89,9 @@ const ManageCustomers = () => {
                     {isVisible ? <>
                         <div className="col-lg-8">
                             <h2 className='text-customers'>Details</h2>
-                            
+                            <CardDetailCustomers 
+                                customer={getSelectedCustomer()}
+                            />
                         </div>
                     </> : <>  </>
                     }
