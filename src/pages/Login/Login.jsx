@@ -18,40 +18,39 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [bodyApi, setBodyApi] = useState({
-    api: adminApi,
-    method: "post",
-    url: "/login",
-    header: JSON.stringify({}),
-    body: {},
+    method: "",
+    url: "",
+    header: null,
+    body: null,
   });
   const navigate = useNavigate();
+  console.log(
+    `Method ${bodyApi.method}\n url: ${bodyApi.url}\n header:${bodyApi.header}\n body:${bodyApi.body}`
+  );
   // const [response, error, loading, axiosFetch] = useAxiosFunction();
   // const { data, isLoading, error, postData } = useCrudApi(adminApi);
-  const { data, isLoading, error, createData } = useCrudApi(adminApi, "/login");
-  // const { response, isLoading } = useAxios({
-  //   // bodyApi,
-  //   // bodyApi,
+  // const { data, isLoading, error, createData } = useCrudApi(adminApi, "/login");
+  const { response, isLoading } = useAxios({
+    // bodyApi,
+    // bodyApi,
 
-  //   api: adminApi,
-  //   method: "post",
-  //   url: bodyApi.url,
-  //   // `/login`,
-  //   headers: bodyApi.header,
-  //   //  JSON.stringify({
-  //   //   Accept: "application/json",
-  //   // }),
-  //   body: JSON.stringify({
-  //     email: email,
-  //     password: password,
-  //   }),
-  //   // JSON.stringify(
-  //   // bodyApi
-  //   // {
-  //   // email: email,
-  //   // password: password,
-  //   // }
-  //   // ),
-  // });
+    api: adminApi,
+    method: bodyApi.method,
+    url: bodyApi.url,
+    // `/login`,
+    headers: bodyApi.header,
+    //  JSON.stringify({
+    //   Accept: "application/json",
+    // }),
+    body: bodyApi.body,
+    // JSON.stringify(
+    // bodyApi
+    // {
+    // email: email,
+    // password: password,
+    // }
+    // ),
+  });
   // const getData = () => {
   //   axiosFetch({
   //     api: membershipApi,
@@ -78,7 +77,7 @@ const Login = () => {
     // });
     // console.log(response);
     // if (email !== "" && password !== "") {
-    createData({ email: email, password: password });
+    // createData({ email: email, password: password });
 
     // createData({ email: email, password: password });
     // if (data[0]?.token !== undefined) {
@@ -88,26 +87,29 @@ const Login = () => {
     // }
     // setUserSession(data[0]?.token,)
     // postData("/login", { email: email, password: password });
-    // setBodyApi({
-    //   method: "post",
-    //   url: "/login",
-    //   header: JSON.stringify({
-    //     Accept: "application/json",
-    //   }),
-    //   body: JSON.stringify({
-    //     email: "admin@gofit.com",
-    //     password: "gofitadmin123",
-    //   }),
-    //   //  JSON.stringify(
-    //   // {
-    //   //   email: email,
-    //   //   password: password,
-    //   //   // data: {
+    setBodyApi({
+      method: "post",
+      url: "/login",
+      header: JSON.stringify({
+        Accept: "application/json",
+      }),
+      body: JSON.stringify({
+        email: "admin@gofit.com",
+        password: "gofitadmin123",
+        // data: {
 
-    //   //   // },
-    //   // },
-    //   // ),
-    // });
+        // },
+      }),
+      //   //  JSON.stringify(
+      //   // {
+      //   //   email: email,
+      //   //   password: password,
+      //   //   // data: {
+
+      //   //   // },
+      //   // },
+      //   // ),
+    });
     console.log("+++++++++++++++++++++++++");
     // }
     // axiosFetch({
@@ -153,18 +155,22 @@ const Login = () => {
     // }
   };
   // console.log(response);
+  // useEffect(() => {
+  //   if (data[0]?.token !== undefined) {
+  //     setUserSession(data[0]?.token, data[0]?.data);
+  //     navigate("/membership");
+  //   } else if (error?.response.status === 401) {
+  //     alert("Invalid  password or email address");
+  //   } else if (error?.response.status === 400) {
+  //     alert("not an email");
+  //   }
   useEffect(() => {
-    if (data[0]?.token !== undefined) {
-      setUserSession(data[0]?.token, data[0]?.data);
-      navigate("/membership");
-    } else if (error?.response.status === 401) {
-      alert("Invalid  password or email address");
-    } else if (error?.response.status === 400) {
-      alert("not an email");
+    if (response !== null) {
+      console.log(response);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, error]);
+  }, []);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [data, error]);
   // console.log(error?.response.status);
 
   return (
