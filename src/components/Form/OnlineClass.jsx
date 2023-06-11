@@ -1,5 +1,4 @@
 import TextField from "../../elements/TextField/TextField"
-import ButtonComponent from "../../elements/Buttons/ButtonComponent"
 import './Form.css'
 import '@mobiscroll/react/dist/css/mobiscroll.min.css';
 import { Datepicker, Input } from '@mobiscroll/react';
@@ -7,7 +6,6 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import { addOnlineClass, updateOnlineClass } from "../../redux/Slice/OnlineClassSlice";
 import { useLocation, useNavigate } from "react-router-dom";
-import {v4 as uuidv4} from 'uuid'
 import Textarea from '../../elements/TextField/Textarea' 
 import add from '../../assets/icons/add.svg'
 import { Row, Col } from "react-bootstrap";
@@ -21,17 +19,23 @@ import { useParams } from 'react-router-dom';
 
 const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnModalImg}) => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     
     const {id} = useParams()
     
-    const dispatch = useDispatch()
-    // const onlineClass = useSelector((state) => state.onlineClass)
-    // const [lastId, setLastId] = useState(0);
     const [onlineClass, setOnlineClass] = useState([])
     const [modalOpen, setModalOpen] = useState(false);
-    
+    const [error, setError] = useState('')
     const [valueDate, setValueDate] = useState()
     const [time, setTime] = useState(null)
+    
+    const {response, isLoading} = useAxios({
+        api: classApi,
+        method: 'get',
+        url:`/class/${id}`
+    })
+
+   
 
     const [data, setData] = useState({
         id:'',
@@ -46,14 +50,6 @@ const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnMo
         monthlyPrice:'',
         imageFile:'',
         description:''
-    })
-    
-
-    
-    const {response, isLoading} = useAxios({
-        api: classApi,
-        method: 'get',
-        url:`/class/${id}`
     })
 
     useEffect(() => {
@@ -70,6 +66,10 @@ const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnMo
 
     const handleInput = (e) => {
         const { name, value } = e.target;
+        data.timeSession=time;
+        data.classDate=valueDate;
+        const numberRegex = /^[0-9]+$/
+        let testRegex = true
       
         if (name === "imageFile") {
             const file = e.target.files[0];
@@ -78,12 +78,24 @@ const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnMo
             [name]: URL.createObjectURL(file)
           }));
           console.log(data.imageFile);
-        } else {
-          setData((prevData) => ({
-            ...prevData,
-            [name]: value,
-            timeSession:time,
-          }));
+        } 
+        
+        if (name === 'dailyPrice' || name === 'weeklyPrice' ||name === 'monthlyPrice' ){
+            if(!numberRegex.test(value)){
+                setError("numeric character only")
+                testRegex = false
+            } else{
+                setError('')
+            }
+        } 
+
+        if(testRegex){
+            setData({
+                ...data,
+                timeSession: time,
+                classDate: valueDate,
+                [name] : value
+            })
         }
             
       };
@@ -109,7 +121,7 @@ const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnMo
             id:'',
             name:'',
             classDate:'',
-            timeSession:'',
+            time:'',
             referralCode:'',
             location:'',
             classCategory:'',
@@ -129,31 +141,33 @@ const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnMo
                 classApi.put(`/class/${id}`,{
                     name:data.name,
                     classDate:data.classDate,
-                    timeSession:data.timeSession,
+                    timeSession:time,
                     location:data.location,
                     classCategory:data.classCategory,
                     dailyPrice:data.dailyPrice,
                     weeklyPrice:data.weeklyPrice,
                     monthlyPrice:data.monthlyPrice,
                     imageFile:data.imageFile,
-                    // classId:data.id,
                     description:data.description
                 })
                 .then((res) => {
+                    setData(res.data)
+                    // dispatch(updateOnlineClass(data))
+                    console.log(data, ' edit');
                     navigate('/')
                     alert('edited')
-                    // window.location.reload()
+                    
+            resetForm()
+                    window.location.reload()
                 })
                 .catch((err) => {
-                    navigate('/')
                     alert(err.message)
-                    // window.location.reload()
                 })
             } else {
                 classApi.post('/class',{
                     name:data.name,
                     classDate:data.classDate,
-                    timeSession:data.timeSession,
+                    timeSession:time,
                     location:data.location,
                     classCategory:data.classCategory,
                     dailyPrice:data.dailyPrice,
@@ -164,29 +178,23 @@ const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnMo
                     description:data.description
                 },
                 )
-                .then((res) => {
+                .then( (res) => {
                     dispatch(addOnlineClass(data))
                     alert('Class added')
-
-                    //get data
-                    // window.location.reload()
+                    setData(res.data)
+                    console.log(data);
+                    
+            resetForm()
                 })
                 .catch((err) => {
                     alert(err.message)
                 })
-
-                // const editClass = [...onlineClass];
-                // const index = onlineClass.indexOf(dataIndex);
-                // if (index !== -1) {
-                //     editClass.splice(index, 1, data);
-                //     console.log(data);
-                //     dispatch(updateOnlineClass(editClass));
-                // }
             }
+            alert(reset);
             resetForm()
             setModalOpen(false);
-            
         } 
+        
     }
     
     return(
@@ -216,8 +224,13 @@ const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnMo
             <div className="modal-dialog modal-lg">
                 <div className="modal-content">
                 <div className="modal-header mb-0">
-                    <h1 className="modal-title fs-3  label-title" id="exampleModalLabel">Add Class</h1>
-                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h1 className="modal-title fs-3  label-title" id="exampleModalLabel">Online Class</h1>
+                    <button 
+                        type="button" 
+                        className="btn-close" 
+                        onClick={()=> navigate('/')}
+                        data-bs-dismiss="modal" 
+                        aria-label="Close"></button>
                 </div>
                 <div className="modal-body">
                 <form onSubmit={handleSubmit}>
@@ -238,19 +251,19 @@ const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnMo
                     }
                     <Row>
                         <Col mb={6}>       
-                            <TextField
-                                classNameInput={'textfield-bg'}
-                                placeholder={'Mei 6th, 2023'}
-                                label={'Date'}
-                                name={'classDate'}
-                                id={'classDate'}
-                                type={'date'}
-                                onChange={handleInput}
-                                value={data?.classDate}
-                                classNameLabel={'mt-2  label-color  fs-lg-6'}
+                            <label htmlFor="timeSession" className="mt-2   label-color">Date
+                            </label>
+                            <Datepicker
+                                value={valueDate}
+                                onChange={onChangePickedDate}
+                                inputComponent="input"
+                                inputProps={stylePickerDate}
+                                dateFormat="MMMM D'th',YYYY"
+                                controls={['date']}
+                                touchUi={false}
                             />
                             {
-                                !data.classDate && 
+                                !valueDate && 
                                 <small className="text-danger">must be filled in</small>
                             }
                         </Col>
@@ -267,7 +280,7 @@ const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnMo
                                     touchUi={false}
                                 />
                                 {
-                                    !data.timeSession && 
+                                    !time && 
                                     <small className="text-danger">must be filled in</small>
                                 }
                         </Col>
@@ -294,7 +307,8 @@ const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnMo
                             type="radio" 
                             name="classCategory" 
                             id="online" 
-                            value="online"
+                            checked={data.classCategory === "Online"}
+                            value="Online"
                             onChange={handleInput}
                             />
                             <label className="form-check-label" htmlFor="online">Online</label>
@@ -302,6 +316,7 @@ const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnMo
                             <div className="form-check form-check-inline">
                             <input className="form-check-input textfield-bg" 
                             type="radio" 
+                            disabled
                             onChange={handleInput}
                             name="classCategory"
                             id="offline" 
@@ -326,6 +341,7 @@ const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnMo
                                 value={data?.dailyPrice}
                                 classNameLabel={'mt-2   label-color'}
                             />
+                            
                             {
                                 !data.dailyPrice && 
                                 <small className="text-danger">must be filled in</small>
@@ -365,6 +381,8 @@ const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnMo
                                 <small className="text-danger">must be filled in</small>
                             }
                         </Col>
+                        
+                        <small className="text-danger text-center">{error}</small>
                     </Row>
                     <div>
                         <label 
@@ -413,10 +431,10 @@ const OnlineClass = ({onClick,classNameImg,style, className, btnModalText, btnMo
                             className={" btn btn-modal-save w-100 mt-4"}
                             disabled={
                                 !data.name ||
-                                !data.classDate ||
-                                !data.timeSession ||
-                                !data.location ||
+                                !valueDate ||
+                                !time ||
                                 !data.classCategory ||
+                                !data.location ||
                                 !data.dailyPrice ||
                                 !data.weeklyPrice ||
                                 !data.monthlyPrice ||
