@@ -1,6 +1,6 @@
 import './TextField.css'
 
-const TextField = ({label, type, name, id, onChange, value, placeholder,classNameInput, classNameLabel}) => {
+const TextField = ({label, type, name, id, onChange, value, placeholder,classNameInput, classNameLabel, defaultValue}) => {
     return(
         <>
             <label htmlFor={name} className={classNameLabel}>
@@ -15,6 +15,7 @@ const TextField = ({label, type, name, id, onChange, value, placeholder,classNam
                 }
                 onChange={onChange}
                 value={value}  
+                defaultValue={defaultValue}
             />
         </>
     )
