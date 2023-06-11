@@ -8,8 +8,10 @@ import "react-multi-carousel/lib/styles.css";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import add from "../../assets/icons/add.svg";
 import { Modal } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextField from "../../elements/TextField/TextField";
+import { adminApi, membershipApi } from "../../api/Api";
+import useAxios from "../../customhooks/useAxios";
 const ManageMembership = () => {
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -18,6 +20,8 @@ const ManageMembership = () => {
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
   const [id, setId] = useState();
+  const [data, setData] = useState([]);
+
   const [membership, setMembership] = useState({
     title: "",
     duration: "",
@@ -32,16 +36,43 @@ const ManageMembership = () => {
         `Description: ${membership.description}\n`
     );
   };
-  const handleEdit = ({ title, duration, price, description }) => {
-    setShowEdit(true);
-    setMembership({
-      title: title,
-      duration: duration,
-      price: price,
-      description: description,
-    });
-    // setId(items.id);
+  const onSubmitEditHandle = async ({ id }) => {
+    // const { response, isLoading } = useAxios({
+    //   api: membershipApi,
+    //   method: "post",
+    //   headers: JSON.stringify({
+    //     accept: "*/*",
+    //   }),
+    //   // url: inputSearch === null ? `/membership` : `/membership${inputSearch}`,
+    //   url: `/newmembership/${id}`,
+    //   // filter: inputSearch,
+    //   body: JSON.stringify({
+    //     membership,
+    //   }),
+    // });
   };
+  const { response, isLoading } = useAxios({
+    api: membershipApi,
+    method: "get",
+    headers: JSON.stringify({
+      accept: "*/*",
+    }),
+    // url: inputSearch === null ? `/membership` : `/membership${inputSearch}`,
+    url: `/newmembership/`,
+    // filter: inputSearch,
+    body: JSON.stringify({}),
+  });
+  useEffect(() => {
+    if (response !== null) {
+      setData(response);
+      // console.log(response);
+    }
+  }, [response]);
+  // useEffect(() => {
+  //   if (response !== null) {
+  //     setData(response);
+  //   }
+  // }, [response]);
   const handleClose = () => {
     setShow(false);
     setShowEdit(false);
@@ -324,7 +355,7 @@ const ManageMembership = () => {
                   type={"submit"}
                   className={"btn-forgot-password fs-5"}
                   id={"submitEmail"}
-                  onClick={onSubmitHandle}
+                  onClick={onSubmitEditHandle(id)}
                   buttonName={"Submit"}
                 />
               ) : (
@@ -368,7 +399,7 @@ const ManageMembership = () => {
           partialVisbile={true}
           removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
           itemClass="carousel-item-padding">
-          {item.map((items) => {
+          {data.map((items) => {
             return (
               <>
                 <div key={items.id}>
@@ -380,6 +411,7 @@ const ManageMembership = () => {
                     desc={items.desc}
                     onClickEdit={() => {
                       setShowEdit(true);
+                      setId(items.id);
                       setMembership({
                         title: items.title,
                         duration: items.duration,
@@ -416,7 +448,7 @@ const ManageMembership = () => {
       </>
     );
   };
-
+  console.log(data);
   return (
     <>
       {/* {console.log(filteredDate)} */}
@@ -430,6 +462,7 @@ const ManageMembership = () => {
             img={member1}
           />
           <div className="mt-5">{generalView()}</div>
+          {}
         </div>
       </div>
     </>
