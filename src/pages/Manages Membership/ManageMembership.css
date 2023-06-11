@@ -1,4 +1,4 @@
-.membership-card {
+/* .membership-card {
   box-shadow: -12px 15px 20px 7px rgba(0, 0, 0, 0.05),
     12px 15px 20px 0px rgba(0, 0, 0, 0.05);
   padding: 2vw;
@@ -163,4 +163,20 @@
   .react-datepicker__triangle::before {
   bottom: -1px;
   border-top-color: transparent;
+} */
+.carousel-item-padding {
+  padding-right: 1vw;
+}
+.button-add {
+  background-color: var(--primary-500);
+}
+.modal-membership {
+  background-color: var(--Neutral-White-100);
+}
+.modal-membership .modal-title {
+  border-bottom: 1px solid var(--Neutral-White-900);
+  color: var(--Warning-600);
+}
+.modal-input {
+  color: #92530e;
 }

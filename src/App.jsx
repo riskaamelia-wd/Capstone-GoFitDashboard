@@ -15,7 +15,7 @@ import ManageMembershipDetail from "./pages/Manages Membership/ManageMembershipD
 function App() {
   const [count, setCount] = useState(0);
   const [data, setData] = useState([]);
-
+  const [style, setStyle] = useState({ display: "none" });
   return (
     <>
       {/* <div>
@@ -40,7 +40,7 @@ function App() {
       </p> */}
       <BrowserRouter>
         <Routes>
-          <Route path="membership" element={<ManageMembership />} />
+          <Route path="/" element={<ManageMembership />} />
           <Route path="membership/:id" element={<ManageMembershipDetail />} />
         </Routes>
       </BrowserRouter>
