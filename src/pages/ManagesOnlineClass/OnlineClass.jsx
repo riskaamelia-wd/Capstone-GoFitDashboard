@@ -26,14 +26,14 @@ const OnlineClass = () => {
 
     const [data, setData]= useState([])
     const onlineClasses = useSelector((state) => state.onlineClass)
+    console.log(onlineClasses, ' onli');
     const [isLoad, setIsLoad] = useState(false);
     
     useEffect(() => {
         if(response !== null){
             setData(response)
         }
-        // console.log(onlineClasses, 'online class');
-    }, [response])
+    }, [response, onlineClasses])
     
     // useEffect(() => {
     //     fetchData();
@@ -62,16 +62,34 @@ const OnlineClass = () => {
     // }
 
     const handleDelete = async (id) => {
-        try {
-          if (window.confirm('Are you sure you want to delete?')) {
-            await axios.delete(`https://647612b1e607ba4797dd420e.mockapi.io/class/${id}`);
-            setData((prevClasses) =>
-              prevClasses.filter((onlineClass) => onlineClass.id !== id)
-            );
-            console.log('Data deleted successfully');
-          }
-        } catch (error) {
-          console.log(error);
+        //  classApi.get('/class')
+         console.log(id);
+        // try {
+        //   if (window.confirm('Are you sure you want to delete?')) {
+        //     dispatch(deleteOnlineClass(id))
+        //     await axios.delete(`https://642feb34c26d69edc886a350.mockapi.io/class/${id}`);
+            
+        //     setData((prevClasses) =>
+        //       prevClasses.filter((onlineClass) => onlineClass.id !== id)
+        //     );
+        //     console.log('Data deleted successfully');
+        //   }
+        // } catch (error) {
+        //   console.log(error);
+        // }
+
+        if (window.confirm('Are you sure you want to delete?')) {
+            classApi.delete(`/class/${id}`)
+            .then((res) => {
+                dispatch(deleteOnlineClass(id))
+                setData((prevClasses) =>
+                    prevClasses.filter((onlineClass) => onlineClass.id !== id)
+                );
+                console.log('Data deleted successfully');
+            })
+            .catch((err) => {
+                alert(err.message)
+            })
         }
       };
 
