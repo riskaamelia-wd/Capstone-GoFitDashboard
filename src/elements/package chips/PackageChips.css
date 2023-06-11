@@ -1,0 +1,17 @@
+.Chip {
+  border: 1.5px solid black;
+  width: fit-content;
+}
+.Chip:hover {
+  background-color: var(--Neutral-Black-500);
+  color: var(--Neutral-White-0);
+}
+.ChipActive {
+  border: 1.5px solid black;
+  width: fit-content;
+  background-color: var(--Neutral-Black-500);
+  color: var(--Neutral-White-0);
+}
+.ChipActive:hover {
+  border: 1.5px solid black;
+}

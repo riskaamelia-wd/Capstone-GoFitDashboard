@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
+
+.search-container {
+    position: relative;
+}
+
+.search{
+    background-color: var(--Neutral-White-200);
+    border-radius: 8px;
+    border: none;
+    padding-left: 50px;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.search:hover {
+  background-color: var(--Neutral-White-600);
+}
+
+.icon-search {
+  width: 20px;
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+}
