@@ -17,6 +17,7 @@ const ManageMembership = () => {
   const [duration, setDuration] = useState("");
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
+  const [id, setId] = useState();
   const [membership, setMembership] = useState({
     title: "",
     duration: "",
@@ -31,8 +32,19 @@ const ManageMembership = () => {
         `Description: ${membership.description}\n`
     );
   };
+  const handleEdit = ({ title, duration, price, description }) => {
+    setShowEdit(true);
+    setMembership({
+      title: title,
+      duration: duration,
+      price: price,
+      description: description,
+    });
+    // setId(items.id);
+  };
   const handleClose = () => {
     setShow(false);
+    setShowEdit(false);
     setMembership({
       title: "",
       duration: "",
@@ -64,7 +76,7 @@ const ManageMembership = () => {
       id: 1,
       title: "Basic Montly",
       duration: "MONTH",
-      price: "49,999",
+      price: "49.999",
       desc: "Unlimited Health Tips Content Unlimited Video Content Library Cancel Anytime",
     },
     {
@@ -78,21 +90,21 @@ const ManageMembership = () => {
       id: 3,
       title: "Advance Monthly",
       duration: "6 MONTH",
-      price: "289,990",
+      price: "289.990",
       desc: "Unlimited Health Tips Content Unlimited Video Content Library Cancel Anytime",
     },
     {
       id: 4,
       title: "Student",
       duration: "MONTH",
-      price: "29,990",
+      price: "29.990",
       desc: "Unlimited Health Tips Content Unlimited Video Content Library",
     },
     {
       id: 5,
       title: "Special",
       duration: "1 Year",
-      price: "400,000",
+      price: "400.000",
       desc: "Unlimited Health Tips Content Unlimited Video Content Library Cancel Anytime",
     },
   ];
@@ -212,10 +224,10 @@ const ManageMembership = () => {
   const ModalEditMembership = () => {
     return (
       <>
-        <Modal show={show} onHide={handleClose} centered>
+        <Modal show={showEdit} onHide={handleClose} centered>
           <Modal.Body className="modal-membership rounded-5">
             <div className="col-4">
-              <p className="fs-4 modal-title fw-semibold">Add New Plan</p>
+              <p className="fs-4 modal-title fw-semibold">Edit Plan</p>
             </div>
             <div className="col-12">
               <TextField
@@ -232,6 +244,7 @@ const ManageMembership = () => {
                 value={membership.title}
                 placeholder={"Give the plan a name"}
                 classNameLabel={" modal-input fs-4 mb-2 mt-2"}
+                // defaultValue={title}
               />
             </div>
 
@@ -248,13 +261,20 @@ const ManageMembership = () => {
                   }));
                 }}
                 value={membership.duration}
+                // defaultValue={duration}
                 placeholder={"How many month?"}
                 classNameLabel={" modal-input fs-4 mb-2 mt-2"}
               />
             </div>
             <div className="col-12 ">
               <TextField
-                label={"Price"}
+                label={
+                  <>
+                    <div>
+                      Price <span className="text-danger">* </span>
+                    </div>
+                  </>
+                }
                 type={"number"}
                 name={"pricemembership"}
                 id={"pricemembership"}
@@ -269,7 +289,12 @@ const ManageMembership = () => {
                 value={membership.price}
                 placeholder={"Input the price!"}
                 classNameLabel={" modal-input fs-4 mb-2 mt-2"}
+                // defaultValue={price}
               />
+              <small>
+                <span className="text-danger">*</span>please use dots(.) instead
+                of comma (,)
+              </small>
             </div>
             <div className="col-12 ">
               <TextField
@@ -286,8 +311,10 @@ const ManageMembership = () => {
                 value={membership.description}
                 placeholder={"What's the benefits?"}
                 classNameLabel={" modal-input fs-4 mb-2 mt-2"}
+                // defaultValue={description}
               />
             </div>
+
             <div className="col-12 mt-4">
               {membership.title !== "" &&
               membership.price !== 0 &&
@@ -336,7 +363,7 @@ const ManageMembership = () => {
           // autoPlay={this.props.deviceType !== "mobile" ? true : false}
           // autoPlaySpeed={1000}
           keyBoardControl={true}
-          customTransition="all .5"
+          // customTransition="all .5"
           transitionDuration={500}
           partialVisbile={true}
           removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
@@ -344,13 +371,22 @@ const ManageMembership = () => {
           {item.map((items) => {
             return (
               <>
-                <div>
+                <div key={items.id}>
                   <CardMembership
-                    id={items.id}
+                    // id={items.id}
                     title={items.title}
                     duration={items.duration}
-                    price={items.price}
+                    price={items.price.toString().replace(/\./g, ",")}
                     desc={items.desc}
+                    onClickEdit={() => {
+                      setShowEdit(true);
+                      setMembership({
+                        title: items.title,
+                        duration: items.duration,
+                        price: parseFloat(items.price),
+                        description: items.desc,
+                      });
+                    }}
                   />
                 </div>
               </>
@@ -371,6 +407,12 @@ const ManageMembership = () => {
           />
         </div>
         {ModalAddMembership()}
+        {ModalEditMembership({
+          title: membership.title,
+          duration: membership.duration,
+          price: membership.price,
+          description: membership.description,
+        })}
       </>
     );
   };

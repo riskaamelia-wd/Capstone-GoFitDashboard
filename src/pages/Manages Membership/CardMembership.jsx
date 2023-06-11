@@ -2,7 +2,15 @@ import React, { useState } from "react";
 import delete_membership from "../../assets/icons/delete_membership.svg";
 import edit_membership from "../../assets/icons/edit_membership.svg";
 // import delete from "../../assets/icons/delete_membership.svg"
-const CardMembership = ({ title, duration, price, desc, id }) => {
+const CardMembership = ({
+  title,
+  duration,
+  price,
+  desc,
+  // id,
+  onClickDelete,
+  onClickEdit,
+}) => {
   // style A for hover
   const [isVisible, setIsVisible] = useState(false);
   {
@@ -52,16 +60,14 @@ const CardMembership = ({ title, duration, price, desc, id }) => {
     <>
       <div
         className="card rounded-4"
-        onMouseEnter={(e) => {
-          //   setStyle({ display: "block" });
+        onMouseEnter={() => {
           setIsVisible(true);
         }}
-        onMouseLeave={(e) => {
-          //   setStyle({ display: "none" });
+        onMouseLeave={() => {
           setIsVisible(false);
         }}
         style={{
-          height: "40vh",
+          height: "50vh",
           //   background:
           //     "linear-gradient(50deg, #fa7c30 40%, rgba(0, 0, 0, 0.1)30%)",
         }}>
@@ -78,18 +84,14 @@ const CardMembership = ({ title, duration, price, desc, id }) => {
           </div>
           <div
             className="p-5 d-flex justify-content-center align-item-center text-center card-text fs-4"
-            style={{ height: "22vh" }}>
+            style={{ height: "30vh" }}>
             <div
               className={
                 isVisible ? "d-block z-3 position-absolute col-5" : "d-none"
               }>
               <div className="row">
                 <div className="col-6 text-start">
-                  <button
-                    className=" rounded-3"
-                    onClick={() => {
-                      alert(`Edit ${id}`);
-                    }}>
+                  <button className=" rounded-3" onClick={onClickEdit}>
                     <img
                       src={edit_membership}
                       alt=""
@@ -98,11 +100,7 @@ const CardMembership = ({ title, duration, price, desc, id }) => {
                   </button>
                 </div>
                 <div className="col-6 text-end">
-                  <button
-                    className=" rounded-3"
-                    onClick={() => {
-                      alert(`Delete ${id}`);
-                    }}>
+                  <button className=" rounded-3" onClick={onClickDelete}>
                     <img
                       src={delete_membership}
                       alt=""
