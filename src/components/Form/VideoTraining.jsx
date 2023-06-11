@@ -1,131 +1,137 @@
-import './Form.css'
-import React, {useState} from "react";
-import Button from 'react-bootstrap/Button'
-import {Modal} from 'react-bootstrap'
-import TextField from "../../elements/TextField/TextField";
+import React, {useEffect, useState} from "react";
+import Form from "../Modal/Form";
+import useAxios from "../../api/UseAxios";
+import { trainingApi } from "../../api/Api";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import video from '../../assets/icons/videocam_gray.svg'
-import Textarea from "../../elements/TextField/Textarea";
+import add from '../../assets/icons/add.svg'
 
-export default function VideoTraining({name, text, id, onChangeInput, valueInput, imgBtn, onClick,className}) {
-  const [show, setShow] = useState(false);
+export default function VideoTraining({className, imgBtn, text}) {
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+    const location = useLocation()
+    const state = location.state
+    const param = useParams()
+    const navigate = useNavigate()
 
-  const [image, setImage] = useState()
-  const [imageFile, setImageFile] = useState()
+    const [show, setShow] = useState(false);
 
-  const handleImg = (event) => {
-    // setImage({[e.target.name] : e.target.files[0]})
-    // console.log(image);
-    // if (event.target.files && event.target.files[0]) {
-    //     setImage({image: URL.createObjectURL(event.target.files[0])});
-    //   }
-    if (event.target.files && event.target.files[0]) {
-        let reader = new FileReader();
-        reader.onload = (e) => {
-          setImageFile(e.target.result);
-        };
-        reader.readAsDataURL(event.target.files[0]);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const [workout, setWorkout] = useState([])
+    const [data, setData] = useState({
+        video:null,
+        title:'',
+        description:''
+    })
+
+    const {response, isLoading} = useAxios({
+        api: trainingApi,
+        method: 'get',
+        url:`/training/${param.id}/videoTraining/${param.idWorkout}`
+    })
+
+    useEffect(() => {
+        if(param.idWorkout !== '' && param.idWorkout !== null && param.idWorkout !== undefined && response !== null){
+            setData(response)
+            setWorkout(response)
+        }
+    }, [response])
+
+    const reset = () => {
+        setData({
+            video:null,
+            title:'',
+            description:''
+        })
     }
-    if (event.target.name === "image"){
-          setImage({[event.target.name] : URL.createObjectURL(event.target.files[0]).image})
-      }
-      console.log(image);
-  }
+
+    const handleChange = (e) => {
+        e.preventDefault()
+        const {name, value} = e.target
+        if(name === "video"){
+            const file = e.target.files[0];
+            setData((data) => ({
+                ...data,
+                video: URL.createObjectURL(file)
+            }));
+        } else{
+            setData({
+                ...data, [name] : value
+            })
+        }
+        console.log(data, ' data video training');
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log(workout, ' wo');
+        console.log(data, ' da');
+        console.log(param.idWorkout, ' pa');
+        if(window.confirm('Are you sure you want to submit?')){
+            if (param.idWorkout !== undefined &&  (workout?.id === data?.id)){
+                trainingApi.put(`/training/${param.id}/videoTraining/${param.idWorkout}`,{
+                    title : data.title,
+                    introduction:data.introduction,
+                    imgFile : data.imgFile,
+                    workout:data.workout,
+                    duration: data.duration
+                })
+                .then((res) => {
+                    navigate(`/levelDetail/${param.level}/${param.id}/workoutDetail`)
+                    alert('edited')
+                    window.location.reload()
+                })
+                .catch((err) => {
+                    alert(err.message)
+                    // window.location.reload()
+                })
+            } else {
+                trainingApi.post(`/training/${param.id}/videoTraining`,{
+                    video:data.video,
+                    title:data.title,
+                    description:data.description
+                })
+                .then((res) => {
+                    // dispatch(addTraining(data))
+                    alert('Added')
+                    // setShow(false)
+                    //get data
+                    console.log(data);
+                    window.location.reload()
+                })
+                .catch((err) => {
+                    alert(err.message)
+                })
+            }
+            reset()
+        }
+    }
+
     return(
         <>
-            <style type="text/css">
-                {
-                    `
-                    .btn-closebtn{
-                        color: var(--primary-500);
-                        border: 1px solid var(--primary-500);
-                        border-radius:8px;
-                        padding-right:34px;
-                        padding-left:34px
-                      }
-                      
-                      .btn-createbtn{
-                        background-color: var(--primary-500);
-                        color: var(--primary-100);
-                        border-radius:8px;
-                        padding-right:34px;
-                        padding-left:34px
-                      }
-                      `
-                }
-            </style>
-            <Button 
-
-                variant={className}
-                onClick={handleShow}>
-                <img src={imgBtn} alt="" />
-                {text}
-            </Button>
-            <Modal
-                show={show}
-                onHide={handleClose}
-                backdrop="static"
-                keyboard={false}
-                centered
-            >
-                <Modal.Header closeButton>
-                <Modal.Title>New parts</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                {/* {body} */}
-                <div className=" mb-4 box">
-                    <label  
-                        style={{
-                            cursor:'pointer',
-                        }}>
-                            <div style={{marginBottom:'-230px'}}>
-
-                            <img src={video} alt="" />
-                            <p className="mt-3" style={{color:'var(--Neutral-White-800)'}}>Input Video</p>
-                            </div>
-                        <input 
-                            type="file" 
-                            onChange={handleImg} 
-                            style={{
-                                width:'100%', 
-                                display:'none'
-                            }} 
-                            // value={image}
-                            
-                            name="image"
-                        />
-                        <img 
-                            // width={'100%'} 
-                            src={imageFile} 
-                            height={'200px'}
-                            style={{width:'fit-content'}} 
-                            
-                        alt="" />
-                    </label>
-                </div>
-                    <TextField
-                        placeholder={'Input title'}
-                        type={'text'}
-                        name={name}
-                        id={id}
-                        onChange={onChangeInput}
-                        value={valueInput}
-                    />
-                    <div className="styleTextarea">
-                        <Textarea
-                        
-                        classNameTextarea={'form-control rounded-3 borderInput'}/>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                <Button variant='closebtn' onClick={handleClose}>
-                    Close
-                </Button>
-                <Button variant='createbtn' onClick={onClick}>Create</Button>
-                </Modal.Footer>
-            </Modal>
+            <Form 
+                className={className} 
+                imgBtn={imgBtn}
+                text={text}
+                idImg={'video'}
+                nameImg={'video'}
+                textImg={'Input Video'}
+                inputImg={video}
+                nameInput={'title'}
+                idInput={'title'}
+                placeholderInput={'Arm Cirles'}
+                idTextarea={'description'}
+                nameTextarea={'description'}
+                placeholderTextarea={'Detail Workout'}
+                maxLength={200}
+                // count={`${textareaCount} / 200 word`}
+                valueInput={data.title}
+                valueImg={data.video}
+                valueTextarea={data.description}
+                onChange={handleChange}
+                onSubmit={handleSubmit}
+            />
         </>
     )
 }

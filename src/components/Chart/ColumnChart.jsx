@@ -4,7 +4,7 @@ import './Chart.css'
 
 const ColumnChart = ({series}) => {
   const dataChart = {
-        series: [series],
+        series: series,
         options: {
           chart: {
             type: 'bar',
