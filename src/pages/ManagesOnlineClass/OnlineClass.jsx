@@ -6,7 +6,6 @@ import InputSearch from "../../elements/InputSearch/InputSearch"
 import DetailProduct from "../../components/DetailProduct.jsx/DetailProduct"
 import { Col,  Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
-import { addOnlineClass, deleteOnlineClass } from "../../redux/Slice/OnlineClassSlice"
 import AddOnlineClass from "../../components/Form/OnlineClass"
 import { classApi } from "../../api/Api"
 import { useEffect, useState } from "react"
@@ -16,92 +15,60 @@ import addSmall from '../../assets/icons/add_small.svg'
 
 const OnlineClass = () => {
     const navigate = useNavigate()
-    const dispatch = useDispatch()
 
+    const [data, setData]= useState([])
+    const [inputSearch, setInputSearch] = useState("");
+    const onlineClasses = useSelector((state) => state.onlineClass)
+    const [isSubmitted, setIsSubmitted] = useState(false)
+    const [isDivHidden, setIsDivHidden] = useState(false);
+
+    
     const {response, isLoading} = useAxios({
         api: classApi,
         method: 'get',
-        url:`/class`
+        url:`/class?name=${inputSearch}`
     })
-
-    const [data, setData]= useState([])
-    const onlineClasses = useSelector((state) => state.onlineClass)
-    console.log(onlineClasses, ' onli');
-    const [isLoad, setIsLoad] = useState(false);
     
     useEffect(() => {
         if(response !== null){
             setData(response)
         }
-    }, [response, onlineClasses])
-    
-    // useEffect(() => {
-    //     fetchData();
-    //     console.log(data);
-    //   }, []);
+        if (onlineClasses.length > 0 && onlineClasses !== null){
+            setIsSubmitted(true)
+            fetchData()
+            setIsDivHidden(true)
+            console.log(data, ' submit');
+        }
 
-    //   const fetchData = async () => {
-    //     try {
-    //       setIsLoad(true);
-    //       const response = await axios.get('https://647612b1e607ba4797dd420e.mockapi.io/class');
-    //       setData(response.data);
-    //       setIsLoad(false);
-    //       console.log(data, '1 ');
-    //     } catch (error) {
-    //       console.log(error);
-    //       setIsLoad(false);
-    //     }
-    //   };
+    }, [response, onlineClasses, isSubmitted])
 
-
-    // const handleDelete =(id) => {
-    //     if(window.confirm('Are you sure you want to delete?'))
-    //     console.log(id);
-    //     // dispatch(deleteOnlineClass(id))
-    //     deleteOnlineClass(id)
-    // }
+    const fetchData = () => {
+        axios.get('https://642feb34c26d69edc886a350.mockapi.io/class')
+          .then((res) => {
+            setData(res.data)
+            console.log(res.data);
+          })
+          .catch((err) => {
+            alert(err.message);
+          });
+      };
+  
 
     const handleDelete = async (id) => {
-        //  classApi.get('/class')
-         console.log(id);
-        // try {
-        //   if (window.confirm('Are you sure you want to delete?')) {
-        //     dispatch(deleteOnlineClass(id))
-        //     await axios.delete(`https://642feb34c26d69edc886a350.mockapi.io/class/${id}`);
-            
-        //     setData((prevClasses) =>
-        //       prevClasses.filter((onlineClass) => onlineClass.id !== id)
-        //     );
-        //     console.log('Data deleted successfully');
-        //   }
-        // } catch (error) {
-        //   console.log(error);
-        // }
-
-        if (window.confirm('Are you sure you want to delete?')) {
-            classApi.delete(`/class/${id}`)
-            .then((res) => {
-                dispatch(deleteOnlineClass(id))
-                setData((prevClasses) =>
-                    prevClasses.filter((onlineClass) => onlineClass.id !== id)
-                );
-                console.log('Data deleted successfully');
-            })
-            .catch((err) => {
-                alert(err.message)
-            })
+        try {
+          if (window.confirm('Are you sure you want to delete?')) {
+            await axios.delete(`https://642feb34c26d69edc886a350.mockapi.io/class/${id}`);
+            setData((prevClasses) =>
+              prevClasses.filter((onlineClass) => onlineClass.id !== id)
+            );
+            console.log('Data deleted successfully');
+          }
+        } catch (error) {
+          console.log(error);
         }
-      };
 
-    // async function deleteOnlineClass(id){
-    //     try{
-    //         const deleteOnlineClass = await axios.delete(`https://647612b1e607ba4797dd420e.mockapi.io/class/${id}`)
-    //         setData(response)
-    //         alert('Product deleted successfully')
-    //     }catch (error){
-    //         alert(error.message)
-    //     }
-    // }
+   
+      };
 
     const handleEdit= (id) => {
         console.log(id,' id');
@@ -124,10 +91,21 @@ const OnlineClass = () => {
                 <Col md={12} className=" d-flex flex-row justify-content-between">
                     <p style={{color:'var(--Neutral-Black-100)', fontSize:'28px', fontWeight:'700'}} className="p-0 m-0">Class Data</p>
                     <div className="d-flex flex-row mb-3">
-                        <div>
+                        <div style={{ 
+                            // pointerEvents: isDivDisabled ? 'none' : 'auto'
+                            display: isDivHidden ? 'none' : 'block' 
+                            }}>
                             <InputSearch
                                 placeholder={'Search Class'}
+                                type={'text'}
+                                name={'searchClass'}
+                                id={'searchClass'}
+                                onChange={(e) =>{
+                                    setInputSearch(e.target.value.trim())
+                                }}
+                                value={inputSearch.replace('?name=', '')}
                                 height={45}
+                                disabled
                             />
                         </div>
                         <AddOnlineClass
@@ -140,8 +118,8 @@ const OnlineClass = () => {
                 <Row>
                 <Col>
                     {
-                        combinedArray.length > 0 ? (
-                            combinedArray?.map((onlineClass, id) =>{
+                        data.length > 0 ? (
+                            data?.map((onlineClass, id) =>{
                                 return(
                                     <div 
                                     key={id}
@@ -161,7 +139,7 @@ const OnlineClass = () => {
                             }))
                             :
                             (
-                                <p className="text-center mt-5">Belum ada kelas online yang tersedia</p>
+                                <p className="text-center mt-5">No data available</p>
                             )
                     }
                     </Col>
