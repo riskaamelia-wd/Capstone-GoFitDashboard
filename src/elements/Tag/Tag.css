@@ -4,7 +4,7 @@
     padding: 2px 12px;
     border-radius: 20px;
     font-size: 14px;
-    cursor: pointer;
+    cursor:default;
 }
 
 .icon {
@@ -25,6 +25,11 @@
     color: var(--Neutral-Black-500);
 }
 
+.tag-active {
+    background-color: var(--success-100);
+    color: var(--Neutral-Black-500);
+}
+
 .tag-pending {
     background-color: var(--primary-100);
     color: var(--Neutral-Black-500);
@@ -33,6 +38,10 @@
 .tag-cancel {
     background-color: var(--Danger-100);
     color: var(--Neutral-Black-500);
+}
+
+.tag-expired {
+    background-color: var(--Danger-100);
 }
 
 .tag-year {

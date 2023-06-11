@@ -67,3 +67,8 @@
     border: 0;
     box-shadow: var(--Neutral-White-0);
 }
+
+.boxTextarea{
+    height:'16vh';
+    width:'50vw' !important; 
+}
