@@ -67,7 +67,7 @@ const CardMembership = ({
           setIsVisible(false);
         }}
         style={{
-          height: "50vh",
+          height: "",
           //   background:
           //     "linear-gradient(50deg, #fa7c30 40%, rgba(0, 0, 0, 0.1)30%)",
         }}>
@@ -83,8 +83,8 @@ const CardMembership = ({
             </div>
           </div>
           <div
-            className="p-5 d-flex justify-content-center align-item-center text-center card-text fs-4"
-            style={{ height: "30vh" }}>
+            className="p-3 d-flex justify-content-center align-item-center text-center card-text fs-4"
+            style={{ height: "35vh" }}>
             <div
               className={
                 isVisible ? "d-block z-3 position-absolute col-5" : "d-none"
