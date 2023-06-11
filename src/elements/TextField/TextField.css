@@ -42,7 +42,7 @@
 }
 
 .textarea{
-    width: fit-content;
+    /* width: fit-content; */
     border:1px solid var(--Neutral-Black-100) !important;
     color: var(--Neutral-Black-100);
     cursor: pointer;
@@ -66,4 +66,9 @@
 .textarea textarea:focus{
     border: 0;
     box-shadow: var(--Neutral-White-0);
+}
+
+.boxTextarea{
+    height:'16vh';
+    width:'50vw' !important; 
 }
