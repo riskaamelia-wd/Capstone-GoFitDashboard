@@ -1,9 +1,6 @@
-.container {
-    padding: 68px 27px 49px 34px
-}
-
 .manage-newsletter {
-    font-family: 'Josefin Sans', sans-serif
+    font-family: 'Josefin Sans', sans-serif;
+    padding: 68px 27px 49px 34px;
 }
 
 .newsletter-articles{
