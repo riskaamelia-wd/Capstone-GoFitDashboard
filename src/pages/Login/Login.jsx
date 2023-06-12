@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import { adminApi, membershipApi } from "../../api/Api";
 // import useAxios from "../../customhooks/useAxios";
-import { setUserSession } from "../../util/common";
+import { getUser, setUserSession } from "../../util/common";
 import useAxiosFunction from "../../customhooks/useAxiosFunction";
 import useAxios from "../../customhooks/useAxios";
 import useCrudApi from "../../customhooks/useCrudApi";
@@ -20,17 +20,13 @@ const Login = () => {
   const [bodyApi, setBodyApi] = useState({
     method: "",
     url: "",
-    header: null,
     body: null,
   });
   const navigate = useNavigate();
-  console.log(
-    `Method ${bodyApi.method}\n url: ${bodyApi.url}\n header:${bodyApi.header}\n body:${bodyApi.body}`
-  );
   // const [response, error, loading, axiosFetch] = useAxiosFunction();
   // const { data, isLoading, error, postData } = useCrudApi(adminApi);
   // const { data, isLoading, error, createData } = useCrudApi(adminApi, "/login");
-  const { response, isLoading } = useAxios({
+  const { response, isLoading, error } = useAxios({
     // bodyApi,
     // bodyApi,
 
@@ -38,7 +34,6 @@ const Login = () => {
     method: bodyApi.method,
     url: bodyApi.url,
     // `/login`,
-    headers: bodyApi.header,
     //  JSON.stringify({
     //   Accept: "application/json",
     // }),
@@ -66,52 +61,16 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // axiosFetch({
-    //   api: adminApi,
-    //   method: "POST",
-    //   url: "/login",
-    //   requestConfig: {
-    //     email: email,
-    //     password: password,
-    //   },
-    // });
-    // console.log(response);
-    // if (email !== "" && password !== "") {
-    // createData({ email: email, password: password });
-
-    // createData({ email: email, password: password });
-    // if (data[0]?.token !== undefined) {
-    //   navigate("/membership");
-    //   // navigate("/membership");
-    //   // console.log(response.token);
-    // }
-    // setUserSession(data[0]?.token,)
-    // postData("/login", { email: email, password: password });
     setBodyApi({
       method: "post",
       url: "/login",
-      header: JSON.stringify({
-        Accept: "application/json",
-      }),
+
       body: JSON.stringify({
-        email: "admin@gofit.com",
-        password: "gofitadmin123",
-        // data: {
-
-        // },
+        email: email,
+        password: password,
       }),
-      //   //  JSON.stringify(
-      //   // {
-      //   //   email: email,
-      //   //   password: password,
-      //   //   // data: {
-
-      //   //   // },
-      //   // },
-      //   // ),
     });
-    console.log("+++++++++++++++++++++++++");
-    // }
+
     // axiosFetch({
     //   api: membershipApi,
     //   method: "POST",
@@ -140,35 +99,27 @@ const Login = () => {
     //   },
 
     // });
-
-    console.log(email);
-    // console.log("+++++++++++++++++++++++++");
-    // console.log(error);
-    console.log("+++++++++++++++++++++++++");
-    console.log(password);
-    // setAdminSession(response.token, response.role);
-
-    // if (email === "") {
-    //   alert("Please enter email");
-    // } else if (password === "") {
-    //   alert("Please enter password");
-    // }
   };
   // console.log(response);
   // useEffect(() => {
-  //   if (data[0]?.token !== undefined) {
-  //     setUserSession(data[0]?.token, data[0]?.data);
-  //     navigate("/membership");
-  //   } else if (error?.response.status === 401) {
-  //     alert("Invalid  password or email address");
-  //   } else if (error?.response.status === 400) {
-  //     alert("not an email");
-  //   }
+
   useEffect(() => {
     if (response !== null) {
-      console.log(response);
+      setUserSession(response.token, response.data);
+
+      // navigate("/membership");
     }
-  }, []);
+    //  if (
+    //   error?.response?.status === 400 ||
+    //   error?.response?.status === 401
+    // )
+    else {
+      // alert(error.response.data.metadata.message);
+      console.log("====================================");
+      console.log(error);
+      console.log("====================================");
+    }
+  }, [error, navigate, response]);
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [data, error]);
   // console.log(error?.response.status);
