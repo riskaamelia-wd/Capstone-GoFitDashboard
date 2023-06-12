@@ -3,6 +3,7 @@ import LoginImg from "../../assets/gif/Login.gif";
 import google from "../../assets/icons/google.svg";
 
 import TextField from "../../elements/TextField/TextField";
+
 import { NavLink, useNavigate } from "react-router-dom";
 import TextFieldPassword from "../../elements/TextField/TextFieldPassword";
 import { useEffect, useState } from "react";
@@ -137,6 +138,7 @@ const Login = () => {
           </div>
           <div className=" col-md-6 LoginRightSide rounded-5 d-flex justify-content-center align-items-center ">
             <div className=" w-75 ">
+
               <p className="fw-bold fs-1 h1-rightside">Welcome!</p>
               <p className="fw-semibold fs-5 mb-4">Log in you account</p>
               <TextField
@@ -148,6 +150,7 @@ const Login = () => {
                   setEmail(e.target.value);
                 }}
                 value={email}
+
                 placeholder={"userName@gmail.com"}
                 classNameLabel={"mb-2 text-secondary"}
               />
@@ -158,10 +161,12 @@ const Login = () => {
                   label="Password"
                   id={"password"}
                   name={"password"}
+
                   value={password}
                   onChange={(e) => {
                     setPassword(e.target.value);
                   }}
+
                   classNameLabel={"mb-2 text-secondary"}
                 />
               </div>
@@ -183,11 +188,13 @@ const Login = () => {
                   </div>
                 </div>
                 <div className="col-6 text-end">
+
                   <NavLink
                     to={"/forgotpassword"}
                     style={{ textDecoration: "none" }}>
                     <p className="ForgotPasswordText">Forgot Password?</p>
                   </NavLink>
+
                 </div>
               </div>
 
@@ -195,9 +202,11 @@ const Login = () => {
                 type={"submit"}
                 className={"btn-login fs-5"}
                 id={"login"}
+
                 onClick={handleLogin}
                 buttonName={"Log in"}
               />
+
             </div>
           </div>
         </div>
