@@ -1,11 +1,11 @@
-import React from "react";
-import "./CardNewsletter.css";
-import Circlebutton from "../Buttons/Circlebutton";
+import React from 'react'
+import "./CardArticles.css"
+import Circlebutton from '../Buttons/Circlebutton'
 import addicon1 from "../../assets/icons/add.svg"
 
-const CardNewsletter = ({img, className, date, title}) => {
+const CardArticles = ({img, className, date, title}) => {
   return (
-      <div className="card card-container-newsletter">
+    <div className="card card-container-articles">
         <img src={img} alt="" className={className} />
         <div className="card-title">
             <h3>{date}</h3>
@@ -13,7 +13,7 @@ const CardNewsletter = ({img, className, date, title}) => {
         </div>
         <Circlebutton type={"button"} className={"btn-circle"} id={"btn-circle"} imgUrl={addicon1} imgClassName={"btn-circle-icon"}/>
       </div>
-  );
-};
+  )
+}
 
-export default CardNewsletter;
+export default CardArticles
