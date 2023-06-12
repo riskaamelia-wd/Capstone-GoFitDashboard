@@ -136,10 +136,37 @@
 
 /*  */
 
+.feedback-history-body-1 {
+    padding: 0px;
+    flex: 1;
+}
+
+.feedback-history-body-card {
+    display: flex;
+    width: 1092px;
+    /* width: fit-content; */
+    /* background-color: aqua; */
+    /* gap: 550px; */
+    /* gap: 30px; */
+    margin-bottom: 20px;
+}
+
+.feedback-history-body-card:hover {
+    background-color: var(--primary-100);
+}
+
+.feedback-history-body-card:active {
+    background-color: var(--primary-400);
+}
+
+/*  */
+
 .listMenuFeedback {
     display: flex;
     padding: 0.5rem;
-    width: fit-content;
+    /* width: fit-content; */
+    width: 1000px;
+    /* background-color:aquamarine; */
     flex-direction: row;
 }
 
@@ -148,14 +175,6 @@
     width: 30px;
     height: 30px;
 }
-
-/* .listMenuFeedback:hover {
-    background-color: var(--primary-100);
-}
-
-.listMenuFeedback:active {
-    background-color: var(--primary-400);
-} */
 
 .feedback-card-top {
     display: flex;
@@ -198,26 +217,7 @@
     color: #919191;
 }
 
-.feedback-history-body {
-    padding: 0px;
-}
 
-.feedback-history-body-card{
-    display: flex;
-    /* width: 1116px; */
-    width: fit-content;
-    /* background-color: aqua; */
-    gap: 550px;
-    margin-bottom: 20px;
-}
-
-.feedback-history-body-card:hover{
-    background-color: var(--primary-100);
-}
-
-.feedback-history-body-card:active{
-    background-color: var(--primary-400);
-}
 
 .btn-feedback-body-card-delete {
     display: flex;
@@ -240,7 +240,7 @@
     /* background-color: #FFDB99; */
 }
 
-.img-body-card-delete{
+.img-body-card-delete {
     margin: 0px;
     margin-right: 12.3px;
 }
@@ -261,29 +261,46 @@
     color: #000000;
 }
 
-.feedback-history-body-card-NX{
+.feedback-history-body-1-NX {
+    width: 460px;
+}
+
+.feedback-history-body-card-NX {
     display: flex;
+    flex: 1;
     /* background-color: aqua; */
     /* width: 480px; */
-    width: fit-content;
+    width: 450px;
     height: 55px;
-    gap: 65px;
+    /* gap: 65px; */
     margin-bottom: 20px;
 }
 
-.feedback-history-body-card-NX:hover{
+.feedback-history-body-card-NX:hover {
     background-color: var(--primary-100);
     height: 55px;
 }
 
-.feedback-history-body-card-NX:active{
+.feedback-history-body-card-NX:active {
     background-color: var(--primary-400);
     height: 55px;
 }
 
-.middle-line{
-  display: flex;
-  width: 100%;
-  border: none;
-  border-top: 2px solid black; 
+/* detail */
+
+.middle-line {
+    border: none;
+    border-left: 2px solid black;
+    margin: 0px 10px;
+}
+
+.feedback-history-split {
+    display: flex;
+}
+
+.feedback-history-body-2 {
+    background-color: brown;
+    flex: 1;
+    /* margin: 0px; */
+    /* padding: 0px; */
 }

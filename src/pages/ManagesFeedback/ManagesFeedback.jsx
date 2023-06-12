@@ -31,31 +31,31 @@ const ManagesFeedback = () => {
       title: "Emmer",
       date: "2046-02-13T11:31:15.868Z",
       subtitle: "Grass-roots background synergy",
-      id: "1",
+      id: 1,
     },
     {
       title: "Hilhj",
       date: "2040-09-13T18:03:10.016Z",
       subtitle: "Devolved eco-centric hardware",
-      id: "2",
+      id: 2,
     },
     {
       title: "Renner",
       date: "2053-11-02T07:53:18.582Z",
       subtitle: "Organic secondary moderator",
-      id: "3",
+      id: 3,
     },
     {
       title: "Ziemann ",
       date: "2094-06-04T06:44:55.216Z",
       subtitle: "Customer-focused modular archive",
-      id: "4",
+      id: 4,
     },
     {
       title: "Feeney, ",
       date: "2032-11-24T01:13:37.538Z",
       subtitle: "Adaptive demand-driven attitude",
-      id: "5",
+      id: 5,
     },
   ]);
 
@@ -71,81 +71,89 @@ const ManagesFeedback = () => {
       : "feedback-history-body-card"
   }`;
 
+  const historybody1classname = `${
+    openfeedback
+      ? "feedback-history-body-1-NX"
+      : "feedback-history-body-1"
+  }`;
+
   return (
     <>
       <div className="container manage-feedback">
         <Cover text={"Feedback"} list1={"Home"} img={imgCover} />
-          <div className="container feedback-history">
-            <div className="feedback-history-top">
-              <h1
-                className={`${
-                  openfeedback
-                    ? "feedback-history-top-review-NX"
-                    : "feedback-history-top-review"
+        <div className="container feedback-history">
+          <div className="feedback-history-top">
+            <h1
+              className={`${
+                openfeedback
+                  ? "feedback-history-top-review-NX"
+                  : "feedback-history-top-review"
+              }`}
+            >
+              Review
+            </h1>
+            <div className="dropdown">
+              <ButtonComponent
+                type={"button"}
+                className={`btn-feedback-sort ${
+                  openbuttonweek ? "active" : ""
                 }`}
-              >
-                Review
-              </h1>
-              <div className="dropdown">
-                <ButtonComponent
-                  type={"button"}
-                  className={`btn-feedback-sort ${
-                    openbuttonweek ? "active" : ""
-                  }`}
-                  buttonName={selectedOption}
-                  imgUrlEnd={openbuttonweek ? Icon2Expandless : Icon1Expandmore}
-                  imgClassName={"btn-feedback-sort-img"}
-                  onClick={handleOpenbtn}
-                />
-                {openbuttonweek ? (
-                  <ul className="feedback-sort-menu">
-                    <li className="menu-item feedback-sort-menu-option">
-                      <ButtonComponent
-                        type={"button"}
-                        className={"btn-feedback-sort-menu"}
-                        buttonName={"Today"}
-                        onClick={() => handleMenuSelection("Today")}
-                      />
-                      <ButtonComponent
-                        type={"button"}
-                        className={"btn-feedback-sort-menu"}
-                        buttonName={"Yesterday"}
-                        onClick={() => handleMenuSelection("Yesterday")}
-                      />
-                      <ButtonComponent
-                        type={"button"}
-                        className={"btn-feedback-sort-menu"}
-                        buttonName={"This Week"}
-                        onClick={() => handleMenuSelection("This Week")}
-                      />
-                      <ButtonComponent
-                        type={"button"}
-                        className={"btn-feedback-sort-menu"}
-                        buttonName={"This Month"}
-                        onClick={() => handleMenuSelection("This Month")}
-                      />
-                      <ButtonComponent
-                        type={"button"}
-                        className={"btn-feedback-sort-menu"}
-                        buttonName={"This Year"}
-                        onClick={() => handleMenuSelection("This Year")}
-                      />
-                    </li>
-                  </ul>
-                ) : null}
-              </div>
-              {/* <hr className="middle-line"/> */}
+                buttonName={selectedOption}
+                imgUrlEnd={openbuttonweek ? Icon2Expandless : Icon1Expandmore}
+                imgClassName={"btn-feedback-sort-img"}
+                onClick={handleOpenbtn}
+              />
+              {openbuttonweek ? (
+                <ul className="feedback-sort-menu">
+                  <li className="menu-item feedback-sort-menu-option">
+                    <ButtonComponent
+                      type={"button"}
+                      className={"btn-feedback-sort-menu"}
+                      buttonName={"Today"}
+                      onClick={() => handleMenuSelection("Today")}
+                    />
+                    <ButtonComponent
+                      type={"button"}
+                      className={"btn-feedback-sort-menu"}
+                      buttonName={"Yesterday"}
+                      onClick={() => handleMenuSelection("Yesterday")}
+                    />
+                    <ButtonComponent
+                      type={"button"}
+                      className={"btn-feedback-sort-menu"}
+                      buttonName={"This Week"}
+                      onClick={() => handleMenuSelection("This Week")}
+                    />
+                    <ButtonComponent
+                      type={"button"}
+                      className={"btn-feedback-sort-menu"}
+                      buttonName={"This Month"}
+                      onClick={() => handleMenuSelection("This Month")}
+                    />
+                    <ButtonComponent
+                      type={"button"}
+                      className={"btn-feedback-sort-menu"}
+                      buttonName={"This Year"}
+                      onClick={() => handleMenuSelection("This Year")}
+                    />
+                  </li>
+                </ul>
+              ) : null}
             </div>
+          </div>
 
-            <div className="feedback-history-body">
+          <div className="feedback-history-split">
+            <div className={historybody1classname}>
               {feedbacks.length > 0 ? (
                 feedbacks.map((feedback) => {
                   return (
-                    <div className={buttonfeedbackstateclassname}>
+                    <div
+                      key={feedback.id}
+                      className={buttonfeedbackstateclassname}
+                    >
                       <ListMenuFeedbackCard
                         img={Icon3Anonymous}
-                        key={feedback.id}
-                        judul={"annonymous"}
+                        judul={feedback.title}
                         date={feedback.date}
                         subJudul={feedback.subtitle}
                         className1={"listMenuFeedback p-2 d-flex flex-row"}
@@ -170,7 +178,7 @@ const ManagesFeedback = () => {
                 <div>data kosong</div>
               )}
 
-              <div className={buttonfeedbackstateclassname}>
+              {/* <div className={buttonfeedbackstateclassname}>
                 <ListMenuFeedbackCard
                   img={Icon3Anonymous}
                   judul={"Anonymous"}
@@ -193,11 +201,22 @@ const ManagesFeedback = () => {
                   imgClassName={"img-body-card-delete"}
                   onClick={handleOpenbtn}
                 />
-              </div>
+              </div> */}
             </div>
+            {openfeedback ? (
+                <>
+                <hr className="middle-line" />
+                <div className="feedback-history-body-2">
+                    <h1>makanan</h1>
+                    <p>aku</p>
+                </div>
+              </>
+            ) : (
+              <>kosong</>
+            )}
           </div>
-          {/* <Tabsfeedbackcomp /> */}
         </div>
+      </div>
     </>
   );
 };
