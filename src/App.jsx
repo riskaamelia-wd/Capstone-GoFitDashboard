@@ -10,7 +10,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import "react-datepicker/dist/react-datepicker.css";
 import ManageMembership from "./pages/Manages Membership/ManageMembership";
-import ManageMembershipDetail from "./pages/Manages Membership/ManageMembershipDetail";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -41,7 +40,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<ManageMembership />} />
-          <Route path="membership/:id" element={<ManageMembershipDetail />} />
         </Routes>
       </BrowserRouter>
     </>

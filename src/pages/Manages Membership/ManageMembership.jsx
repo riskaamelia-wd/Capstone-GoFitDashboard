@@ -54,9 +54,7 @@ const ManageMembership = () => {
   const { response, isLoading } = useAxios({
     api: membershipApi,
     method: "get",
-    headers: JSON.stringify({
-      accept: "*/*",
-    }),
+
     // url: inputSearch === null ? `/membership` : `/membership${inputSearch}`,
     url: `/newmembership/`,
     // filter: inputSearch,

@@ -10,7 +10,7 @@ import useDebounce from "./useDebounce";
 
 */
 
-const useAxios = ({ api, method, url, headers, body }) => {
+const useAxios = ({ api, method, url, body }) => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -18,7 +18,7 @@ const useAxios = ({ api, method, url, headers, body }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        api[method.toLowerCase()](url, JSON.parse(headers), JSON.parse(body))
+        api[method.toLowerCase()](url, JSON.parse(body))
           .then((res) => {
             setResponse(res.data);
           })
@@ -30,7 +30,7 @@ const useAxios = ({ api, method, url, headers, body }) => {
       }
     };
     fetchData();
-  }, [api, body, headers, method, url]);
+  }, [api, body, method, url]);
 
   return { response, error, isLoading };
 };
