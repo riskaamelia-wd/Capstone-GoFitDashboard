@@ -223,7 +223,7 @@ const ManageMembership = () => {
               membership.description !== "" ? (
                 <ButtonComponent
                   type={"submit"}
-                  className={"btn-forgot-password fs-5"}
+                  className={"btn-add fs-5"}
                   id={"submitEmail"}
                   onClick={onSubmitHandle}
                   buttonName={"Submit"}
@@ -351,7 +351,7 @@ const ManageMembership = () => {
               membership.description !== "" ? (
                 <ButtonComponent
                   type={"submit"}
-                  className={"btn-forgot-password fs-5"}
+                  className={"btn-add fs-5"}
                   id={"submitEmail"}
                   onClick={onSubmitEditHandle(id)}
                   buttonName={"Submit"}
@@ -437,12 +437,7 @@ const ManageMembership = () => {
           />
         </div>
         {ModalAddMembership()}
-        {ModalEditMembership({
-          title: membership.title,
-          duration: membership.duration,
-          price: membership.price,
-          description: membership.description,
-        })}
+        {ModalEditMembership()}
       </>
     );
   };
