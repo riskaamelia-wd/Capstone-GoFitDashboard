@@ -8,7 +8,7 @@ import Icon1Expandmore from "../../assets/icons/expand_more.svg";
 import Icon2Expandless from "../../assets/icons/expand_less.svg";
 import Icon3Anonymous from "../../assets/icons/feedback_anonymous_img.svg";
 import Icon4Deletecard from "../../assets/icons/delete_feedback_gray.svg";
-import Icon5back from "../../assets/icons/close-cancel.svg"
+import Icon5back from "../../assets/icons/close-cancel.svg";
 import ListMenuFeedbackCard from "../../elements/Card/ListMenuFeedbackCard";
 import CardFeedbackDetails from "../../elements/Card/CardFeedbackDetails";
 // import Tabsfeedbackcomp from "../../components/Tabsfeedback/Tabsfeedbackcomp";
@@ -26,7 +26,11 @@ const ManagesFeedback = () => {
     setopenbuttonweek(false);
   };
   const handleclosefeedback = () => {
-    setopenfeedback(false)
+    setopenfeedback(false);
+  };
+
+  const handleDeleteFeedback = (id) => {
+    setfeedback((prevFeedbacks) => prevFeedbacks.filter((feedback) => feedback.id !== id))
   }
   //   const handleOpenfeedback = () => {
   //     setopenfeedback(!openfeedback);
@@ -64,11 +68,11 @@ const ManagesFeedback = () => {
       id: 5,
     },
     {
-        title: "norway, ",
-        date: "12:31 Pm, 06 June, 2023",
-        subtitle: "Adaptive demand-driven attitude",
-        id: 6,
-      },
+      title: "norway, ",
+      date: "12:31 Pm, 06 June, 2023",
+      subtitle: "Adaptive demand-driven attitude",
+      id: 6,
+    },
   ]);
 
   const [selectedfeedback, setselectedfeedback] = useState(null);
@@ -87,10 +91,6 @@ const ManagesFeedback = () => {
     openfeedback ? "feedback-history-body-1-NX" : "feedback-history-body-1"
   }`;
 
-//   const filterFeedbacksByWeek = () => {
-//     const currentDate = new Date();
-//     const oneWeekAgo = new Date(currentDate.getFullYear(), currentDate)
-//   }
 
   return (
     <>
@@ -189,7 +189,7 @@ const ManagesFeedback = () => {
                         buttonName={"Delete"}
                         imgUrlStart={Icon4Deletecard}
                         imgClassName={"img-body-card-delete"}
-                        onClick={handleOpenbtn}
+                        onClick={() => handleDeleteFeedback(feedback.id)}
                       />
                     </div>
                   );
@@ -256,7 +256,7 @@ const ManagesFeedback = () => {
                       buttonName={"Delete"}
                       imgUrlStart={Icon4Deletecard}
                       imgClassName={"img-body-card-delete"}
-                      onClick={handleOpenbtn}
+                      onClick={handleclosefeedback}
                     />
                   </div>
                 </div>
