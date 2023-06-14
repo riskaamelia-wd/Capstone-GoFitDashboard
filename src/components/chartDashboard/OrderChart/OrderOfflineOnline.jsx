@@ -1,14 +1,43 @@
-import React, { useState } from "react";
+import axios from "axios";
+import { on } from "events";
+import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
 const OrderChart = () => {
+
+    const [order, setOrder] = useState([]);
+    const [onlineClass, setOnlineClass] = useState(0);
+    const [offlineClass, setOfflineClass] = useState(0);
+
+    useEffect(() => {
+        axios.get('https://642feb34c26d69edc886a350.mockapi.io/class')
+            .then((response) => {
+                setOrder(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
+    useEffect(() => {
+        calculatedPercentage();
+    }, [order]);
+
+    const calculatedPercentage = () => {
+        const onlineClasses = order.filter((item) => item.classCategory === 'Online');
+        const offlineClasses = order.filter((item) => item.classCategory === 'Offline');
+
+        setOnlineClass(onlineClasses.length);
+        setOfflineClass(offlineClasses.length);
+    };
+
     const [selectedOption, setSelectedOption] = useState('');
 
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
     };
 
-    const series = [65, 35];
+    const series = [offlineClass, onlineClass];
 
     const options = {
         chart: {
