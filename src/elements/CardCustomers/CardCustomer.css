@@ -1,0 +1,104 @@
+.card-customers {
+    /* width: 85vw; */
+    /* height: 78px; */
+    border-radius: 10px;
+    border-color: white;
+    padding: 1vw;
+}
+
+.rounded-circle {
+    width: 50px;
+    height: 50px;
+    margin: 5px 5px 5px 2px;
+}
+
+.card-customers:hover {
+    border-color: var(--Neutral-White-700);
+}
+
+.card-customers.active {
+    background-color: aqua;
+}
+
+.name-customers {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 20px;
+    color: black;
+}
+
+.text-customer {
+    color: var(--Neutral-White-700);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 70%;
+}
+
+.tight-col {
+    margin-right: -20px;
+}
+
+.block-edit {
+    display: flex;
+    align-items: center;
+}
+
+.blockCustomer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 78px;
+    height: 78px;
+    background: #FFDB99;
+}
+
+.editCustomer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 78px;
+    height: 78px;
+    background: var(--success-100);
+}
+
+.form-edit-customer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 639px;
+    height: 940px;
+    background: #FFFFFF;
+    box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.12), 0px 10px 32px -4px rgba(24, 39, 75, 0.1);
+    border-radius: 10px;
+}
+
+.form-edit-customer .modal-content {
+    margin-top: 3vh;
+    width: 450px;
+    height: 850px;
+    background: #FFFFFF;
+    box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.12), 0px 10px 32px -4px rgba(24, 39, 75, 0.1);
+    border-radius: 10px;
+}
+
+.textChangeProfile {
+    text-align: left;
+    margin-top: 5vh;
+    margin-right: 200px;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 36px;
+    color: #030303;
+}
+
+.TextFieldInput {
+    background-color: #FF7F00;
+}
+
+.label-customer {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 14px;
+    color: #606060;
+}

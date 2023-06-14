@@ -1,0 +1,15 @@
+.popUp{
+    background-color: var(--Neutral-White-500);
+}
+
+.popUp:hover{
+    background-color: var(--primary-500);
+}
+
+.labelTextField{
+    color: #7A2400;
+}
+
+.btn-edit{
+    background-color: var(--primary-300);
+}

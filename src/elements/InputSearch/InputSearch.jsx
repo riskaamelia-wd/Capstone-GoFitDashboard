@@ -1,8 +1,7 @@
 import '../InputSearch/InputSearch.css';
 import search from "../../assets/icons/search.svg";
 
-// eslint-disable-next-line react/prop-types
-const InputSearch = ({type, name, id, onChange, value, placeholder}) => {
+const InputSearch = ({type, name, id, onChange, value, placeholder, width, height}) => {
     return(
         <>
             <div className="search-container">
@@ -12,7 +11,8 @@ const InputSearch = ({type, name, id, onChange, value, placeholder}) => {
                     name={name}
                     id={id}
                     placeholder={placeholder}                
-                    className = "search"
+                    className = "search w-100"
+                    // style={{ width: `${width}vw`, height: `${height}vw` }}
                     onChange={onChange}
                     value={value}  
                 />
@@ -22,3 +22,12 @@ const InputSearch = ({type, name, id, onChange, value, placeholder}) => {
 }
 
 export default InputSearch
+
+/* 
+Cara Penggunaan
+    <InputSearch
+        placeholder="Search..."
+        width={500}
+        height={30}
+    />
+*/
