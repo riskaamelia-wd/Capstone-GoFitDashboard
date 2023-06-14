@@ -54,6 +54,8 @@ const ManageBookingDetail = () => {
         descClass: 'Private zoom with mentor', 
         status: 'booked'
     })
+
+    
     return (
         <>
             <CardHeaderBooking
