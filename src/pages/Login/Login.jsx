@@ -26,50 +26,33 @@ const Login = () => {
   // const [response, error, loading, axiosFetch] = useAxiosFunction();
   // const { data, isLoading, error, postData } = useCrudApi(adminApi);
   // const { data, isLoading, error, createData } = useCrudApi(adminApi, "/login");
-  const { response, isLoading, error } = useAxios({
-    // bodyApi,
-    // bodyApi,
-
+  const { response, isLoading, error, fetchData } = useAxios({
     api: adminApi,
     method: bodyApi.method,
     url: bodyApi.url,
-    // `/login`,
-    //  JSON.stringify({
-    //   Accept: "application/json",
-    // }),
     body: bodyApi.body,
-    // JSON.stringify(
-    // bodyApi
-    // {
-    // email: email,
-    // password: password,
-    // }
-    // ),
   });
-  // const getData = () => {
-  //   axiosFetch({
-  //     api: membershipApi,
-  //     method: "get",
-  //     url: "/membership",
-  //   });
-  // };
-  // useEffect(() => {
-  //   getData();
-  //   // eslint-disable--line react-hooks/exhaustive-deps
-  // }, []);
 
   const handleLogin = (e) => {
     e.preventDefault();
-
-    setBodyApi({
-      method: "post",
-      url: "/login",
-
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    });
+    try {
+      setBodyApi({
+        method: "post",
+        url: "/login",
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+      fetchData();
+      console.log("====================================");
+      console.log("test successful");
+      console.log("====================================");
+    } catch (error) {
+      console.log("====================================");
+      console.log(error);
+      console.log("====================================");
+    }
 
     // axiosFetch({
     //   api: membershipApi,
