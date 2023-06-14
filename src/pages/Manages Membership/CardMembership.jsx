@@ -10,66 +10,23 @@ const CardMembership = ({
   // id,
   onClickDelete,
   onClickEdit,
+  bgcard,
 }) => {
-  // style A for hover
   const [isVisible, setIsVisible] = useState(false);
-  {
-    /* <div
-        style={{
-          border: "1px solid gray",
-          width: 300,
-          height: 300,
-          padding: 10,
-          margin: 100,
-        }}
-        onMouseEnter={(e) => {
-          //   setStyle({ display: "block" });
-          setIsVisible(true);
-        }}
-        onMouseLeave={(e) => {
-          //   setStyle({ display: "none" });
-          setIsVisible(false);
-        }}>
-        <button style={isVisible ? { display: "block" } : { display: "none" }}>
-          Click
-        </button>
-      </div> */
-  }
 
-  // styla B for hove
-  // const [style, setStyle] = useState({display: 'none'});
-  {
-    /* <div
-        style={{
-          border: "1px solid gray",
-          width: 300,
-          height: 300,
-          padding: 10,
-          margin: 100,
-        }}
-        onMouseEnter={(e) => {
-          setStyle({ display: "block" });
-        }}
-        onMouseLeave={(e) => {
-          setStyle({ display: "none" });
-        }}>
-        <button style={isVisible? {displ}}>Click</button>
-      </div> */
-  }
   return (
     <>
       <div
+        id="card-membership"
         className="card rounded-4"
+        style={{
+          background: bgcard,
+        }}
         onMouseEnter={() => {
           setIsVisible(true);
         }}
         onMouseLeave={() => {
           setIsVisible(false);
-        }}
-        style={{
-          height: "",
-          //   background:
-          //     "linear-gradient(50deg, #fa7c30 40%, rgba(0, 0, 0, 0.1)30%)",
         }}>
         <div className="card-body ">
           <div className="row card-title z-2">
