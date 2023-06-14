@@ -47,6 +47,7 @@
 
 .cardTraining img{
     /* width:  28vw; */
+    /* height: 19em; */
     transition: 0.5s all ease-in-out;
     background-color: #151515;
 }

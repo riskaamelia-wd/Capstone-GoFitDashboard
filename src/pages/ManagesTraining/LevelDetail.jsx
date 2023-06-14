@@ -14,6 +14,10 @@ import axios from "axios";
 const LevelDetail = () => {
     const navigate = useNavigate()
     const state = useParams()
+    
+    const training = useSelector((state) =>state.training)
+    const [isSubmitted, setIsSubmitted] = useState(false)
+    const [data, setData] = useState([])
 
     const { response, isLoading } = useAxios({
         api: trainingApi,
@@ -21,17 +25,28 @@ const LevelDetail = () => {
         url: `/training?category=${state.level}`,
     });
 
-    console.log(response);
+    const fetchData = () => {
+        axios.get(`https://647612b1e607ba4797dd420e.mockapi.io/training?category=${state.level}`)
+          .then((res) => {
+            setData(res.data)
+            console.log(res.data);
+          })
+          .catch((err) => {
+            alert(err.message);
+          });
+      };
 
-    const training = useSelector((state) =>state.training)
-    const [data, setData] = useState([])
 
 
     useEffect(() => {
         if(response !== null){
             setData(response)
         }
-    },[response])
+        if (training.length > 0 && training !== null){
+            setIsSubmitted(true)
+            fetchData()
+        }
+    },[response, training])
 
     
     const handleDelete = async (id) => {
@@ -70,8 +85,8 @@ const LevelDetail = () => {
             />
             <div className="row mt-5 mb-5">
                 {
-                    combinedArray?.length > 0 ? (
-                        combinedArray?.map((data, id) =>{
+                    data?.length > 0 ? (
+                        data?.map((data, id) =>{
                             return(
                                 <div 
                                     key={id}
