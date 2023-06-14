@@ -3,12 +3,128 @@ import LoginImg from "../../assets/gif/Login.gif";
 import google from "../../assets/icons/google.svg";
 
 import TextField from "../../elements/TextField/TextField";
-import { NavLink } from "react-router-dom";
+
+import { NavLink, useNavigate } from "react-router-dom";
 import TextFieldPassword from "../../elements/TextField/TextFieldPassword";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
+import { adminApi, membershipApi } from "../../api/Api";
+// import useAxios from "../../customhooks/useAxios";
+import { getUser, setUserSession } from "../../util/common";
+import useAxiosFunction from "../../customhooks/useAxiosFunction";
+import useAxios from "../../customhooks/useAxios";
+import useCrudApi from "../../customhooks/useCrudApi";
 const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [bodyApi, setBodyApi] = useState({
+    method: "",
+    url: "",
+    body: null,
+  });
+  const navigate = useNavigate();
+  // const [response, error, loading, axiosFetch] = useAxiosFunction();
+  // const { data, isLoading, error, postData } = useCrudApi(adminApi);
+  // const { data, isLoading, error, createData } = useCrudApi(adminApi, "/login");
+  const { response, isLoading, error } = useAxios({
+    // bodyApi,
+    // bodyApi,
+
+    api: adminApi,
+    method: bodyApi.method,
+    url: bodyApi.url,
+    // `/login`,
+    //  JSON.stringify({
+    //   Accept: "application/json",
+    // }),
+    body: bodyApi.body,
+    // JSON.stringify(
+    // bodyApi
+    // {
+    // email: email,
+    // password: password,
+    // }
+    // ),
+  });
+  // const getData = () => {
+  //   axiosFetch({
+  //     api: membershipApi,
+  //     method: "get",
+  //     url: "/membership",
+  //   });
+  // };
+  // useEffect(() => {
+  //   getData();
+  //   // eslint-disable--line react-hooks/exhaustive-deps
+  // }, []);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    setBodyApi({
+      method: "post",
+      url: "/login",
+
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    });
+
+    // axiosFetch({
+    //   api: membershipApi,
+    //   method: "POST",
+    //   url: "/membership",
+    //   requestConfig: {
+    //     // headers: {
+    //     //   Accept: "application/json",
+    //     // },
+    //     data: {
+    //       // email: email,
+    //       // password: password,
+    //       receiver: "test1",
+    //       type: "test1",
+    //       status: "active",
+    //       date: "2023-06-02T01:27:40.923Z",
+    //       amount: "387.00",
+    //       img: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/826.jpg",
+    //       gender: "cwk",
+    //       email: "Westley_VonRueden81@gmail.com",
+    //       weight: 16,
+    //       height: 8,
+    //       goal_weight: 3,
+    //       payment: "payment 1",
+    //       id: "5",
+    //     },
+    //   },
+
+    // });
+  };
+  // console.log(response);
+  // useEffect(() => {
+
+  useEffect(() => {
+    if (response !== null) {
+      setUserSession(response.token, response.data);
+
+      // navigate("/membership");
+    }
+    //  if (
+    //   error?.response?.status === 400 ||
+    //   error?.response?.status === 401
+    // )
+    else {
+      // alert(error.response.data.metadata.message);
+      console.log("====================================");
+      console.log(error);
+      console.log("====================================");
+    }
+  }, [error, navigate, response]);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [data, error]);
+  // console.log(error?.response.status);
+
   return (
     <>
       <div className="overflow-hidden overflow-x-hidden">
@@ -22,15 +138,19 @@ const Login = () => {
           </div>
           <div className=" col-md-6 LoginRightSide rounded-5 d-flex justify-content-center align-items-center ">
             <div className=" w-75 ">
-              <p className=" mt-5 fw-bold fs-1 h1-rightside">Welcome!</p>
-              <p className=" mt-3 fw-semibold fs-5 mb-4">Log in you account</p>
+
+              <p className="fw-bold fs-1 h1-rightside">Welcome!</p>
+              <p className="fw-semibold fs-5 mb-4">Log in you account</p>
               <TextField
                 label={`Your Email`}
-                type={"text"}
+                type={"email"}
                 name={"email"}
                 id={"email"}
-                onChange={() => {}}
-                // value={}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                value={email}
+
                 placeholder={"userName@gmail.com"}
                 classNameLabel={"mb-2 text-secondary"}
               />
@@ -41,8 +161,12 @@ const Login = () => {
                   label="Password"
                   id={"password"}
                   name={"password"}
-                  // value={}
-                  onChange={() => {}}
+
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+
                   classNameLabel={"mb-2 text-secondary"}
                 />
               </div>
@@ -64,9 +188,13 @@ const Login = () => {
                   </div>
                 </div>
                 <div className="col-6 text-end">
-                  {/* <NavLink to={""}> */}
-                  <p className="ForgotPasswordText">Forgot Password?</p>
-                  {/* </NavLink> */}
+
+                  <NavLink
+                    to={"/forgotpassword"}
+                    style={{ textDecoration: "none" }}>
+                    <p className="ForgotPasswordText">Forgot Password?</p>
+                  </NavLink>
+
                 </div>
               </div>
 
@@ -74,29 +202,11 @@ const Login = () => {
                 type={"submit"}
                 className={"btn-login fs-5"}
                 id={"login"}
-                onClick={() => {
-                  console.log("logging in");
-                }}
+
+                onClick={handleLogin}
                 buttonName={"Log in"}
               />
-              <div className="LineTextMiddle mt-5 mb-5">
-                <span className="fs-5">or</span>
-              </div>
 
-              <ButtonComponent
-                type={"button"}
-                className={"btnGoogle p-2"}
-                id={"googlelogin"}
-                onClick={() => {
-                  console.log("login with google");
-                }}
-                imgUrlStart={google}
-                buttonName={
-                  <span className="fs-5 ms-3 fw-semibold">
-                    Continue with Google
-                  </span>
-                }
-              />
             </div>
           </div>
         </div>
