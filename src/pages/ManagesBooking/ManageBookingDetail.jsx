@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 // import React from 'react'
-import CardHeaderBooking from '../../components/CardHeader/CardHeader'
 import { Col, Row } from 'react-bootstrap'
 import DetailBooking from '../../components/DetailBooking/DetailBooking'
 import CardCustomerBooking from '../../components/CardCustomerBooking/CardCustomerBooking'
 import { useState } from 'react'
+import Cover from '../../elements/Card/Cover'
+import IconHeader from '../../assets/icons/Appreciation 1.svg'
 
 const ManageBookingDetail = () => {
     const [customers, setCustomers] = useState([
@@ -58,8 +59,11 @@ const ManageBookingDetail = () => {
     
     return (
         <>
-            <CardHeaderBooking
-                detailPage={'Detail Customer'}
+            <Cover
+                text={'Booking Class'}
+                list1={'Home'}
+                list2={'Detail Customer'}
+                img={IconHeader}
             />
             <div className="" style={{ padding: "42px" }}>
                 <div className="title mb-4">

@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import CardHeaderBooking from "../../components/CardHeader/CardHeader";
+import IconMember from '../../assets/icons/membership.svg'
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import axios from "axios";
+import Cover from "../../elements/Card/Cover";
 
 const ManageBooking = () => {
     const [customers, setCustomers] = useState([]);
@@ -32,11 +33,15 @@ const ManageBooking = () => {
 
     return (
         <>
-        <CardHeaderBooking />
+        <Cover
+            text={'Booking Class'}
+            list1={'Home'}
+            img={IconMember}
+        />
         <div className="" style={{ padding: "42px" }}>
             <div className="title mb-4">
-            <h3 style={{ color: "var(--primary-900)" }}>General Customer</h3>
-            <h5>Here General Customer List Data</h5>
+                <h3 style={{ color: "var(--primary-900)" }}>General Customer</h3>
+                <h5>Here General Customer List Data</h5>
             </div>
             <table className="table table-borderless">
                 <thead
