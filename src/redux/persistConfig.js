@@ -7,6 +7,7 @@ import classesSlice from "./Slice/classesSlice";
 import trainingSlice from "./Slice/trainingSlice";
 import onlineClassSlice from "./Slice/OnlineClassSlice";
 import recomendedSlice from "./Slice/recomendedSlice";
+import tokenSlice from "./Slice/tokenSlice";
 
 const persistConfig = {
   key: "root",
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   training: trainingSlice,
   onlineClass: onlineClassSlice,
   recomended: recomendedSlice,
+  tokenAuth : tokenSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
