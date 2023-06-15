@@ -1,14 +1,30 @@
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, { useEffect } from 'react'
 import IconBack from '../../assets/icons/arrow_back.svg'
 import IconDownload from '../../assets/icons/download.svg'
 import { Table } from 'react-bootstrap'
+import { useNavigate, useParams } from 'react-router'
 
 const DetailTransaction = () => {
+
+    const navigate = useNavigate()
+    const { id } = useParams();
+
+    useEffect(() => {
+        if (id === 'undefined') {
+            alert('Invalid ID');
+            navigate('/');
+        }
+    }, [id, navigate]);
+
+    const handleBack = () => {
+        navigate('/')
+    }
+
     return (
         <div className='p-3' style={{backgroundColor: 'var(--Neutral-White-100)'}}>
             <div className='bg-white d-flex justify-content-start align-items-center gap-5 px-5 py-3 rounded-3 my-2'>
-                <img src={IconBack} alt="back" />
+                <img src={IconBack} alt="back" onClick={handleBack} className='cursor-pointer' style={{ cursor: 'pointer' }} />
                 <div>
                     <h4>Transaction detail</h4>
                     <p style={{color: 'var(--info-800)'}}>/ Personal transactions details</p>
@@ -18,7 +34,7 @@ const DetailTransaction = () => {
                 <div className='d-flex justify-content-between align-items-center'>
                     <div>
                         <span style={{color: 'var(--Neutral-White-700)', fontSize: '13px'}}>ID payment</span>
-                        <h4 style={{fontSize: '28px'}}>#12345</h4>
+                        <h4 style={{fontSize: '28px'}}>{id}</h4>
                     </div>
                     <button className='px-3 py-2 rounded-3 text-white border-light' style={{backgroundColor: 'var(--primary-500)'}}>
                         <span><img src={IconDownload} alt="" className='me-2'/></span>

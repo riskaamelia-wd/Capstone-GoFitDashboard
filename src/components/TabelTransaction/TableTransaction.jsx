@@ -4,9 +4,14 @@ import { Table, Pagination } from 'react-bootstrap';
 import TagStatus from '../../elements/Tag/TagStatus';
 import Income from '../../assets/icons/income.svg'
 import Outcome from '../../assets/icons/outcome.svg'
+import Status from '../../pages/Invoices/Status';
+import { useNavigate } from 'react-router';
 
 // eslint-disable-next-line react/prop-types
 const TableTransaction = ({ invoices }) => {
+
+    const navigate = useNavigate()
+
     const [sortConfig, setSortConfig] = useState({
         key: null,
         direction: 'ascending'
@@ -65,6 +70,10 @@ const TableTransaction = ({ invoices }) => {
         pageNumbers.push(i);
     }
 
+    const handleClick = (id) => {
+        navigate(`/detail-transaction/${id}`)
+    }
+
     return (
         <>
         <Table hover className="rounded-3 bg-white">
@@ -81,7 +90,7 @@ const TableTransaction = ({ invoices }) => {
             </thead>
             <tbody>
                 {currentInvoices.map((invoice) => (
-                    <tr key={invoice.id}>
+                    <tr key={invoice.id} onClick={() => handleClick(invoice.id)}>
                         <td>{invoice.id}</td>
                         <td>{invoice.date}</td>
                         <td>{invoice.recipient}</td>
@@ -99,7 +108,8 @@ const TableTransaction = ({ invoices }) => {
                         }
                         <td>{invoice.location}</td>
                         <td>
-                            <TagStatus status={invoice.status}/>
+                            {/* <TagStatus status={invoice.status}/> */}
+                            <Status status={invoice.status} /> 
                         </td>
                     </tr>
                 ))}

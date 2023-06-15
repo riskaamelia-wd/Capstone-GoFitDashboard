@@ -12,12 +12,14 @@ import ManageBookingDetail from "./pages/ManagesBooking/ManageBookingDetail";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import Login from "./pages/Login/Login";
 import PrivateRoute from "./util/PrivateRoute";
-import "@mobiscroll/react/dist/css/mobiscroll.min.css";
-import "react-datepicker/dist/react-datepicker.css";
+// import "@mobiscroll/react/dist/css/mobiscroll.min.css";
+// import "react-datepicker/dist/react-datepicker.css";
 
 import Login from "./pages/Login/Login";
 import ForgotPassword from "./pages/Login/Forgot Password/ForgotPassword";
 import ResetPassword from "./pages/Login/Reset Password/ResetPassword";
+import ManageTransaction from "./pages/ManageTransaction/ManageTransaction";
+import DetailTransaction from "./pages/ManageTransaction/DetailTransaction";
 
 
 function App() {
@@ -50,7 +52,8 @@ function App() {
         <Routes>
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/resetpassword/:id_user" element={<ResetPassword />} />
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<ManageTransaction />} />
+          <Route path="/detail-transaction/:id" element={<DetailTransaction />} />
           {/* <Route element={<PrivateRoute />}>
  
           </Route> */}

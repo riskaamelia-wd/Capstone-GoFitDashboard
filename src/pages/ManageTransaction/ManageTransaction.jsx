@@ -13,7 +13,7 @@ const ManageTransaction = () => {
             amount: 1000,
             type: 'Income',
             location: 'New York',
-            status: 'completed'
+            status: 'Completed'
         },
         {
             id: 2,
@@ -22,7 +22,7 @@ const ManageTransaction = () => {
             amount: 1500,
             type: 'Income',
             location: 'London',
-            status: 'pending'
+            status: 'Pending'
         },
         {
             id: 3,
@@ -31,7 +31,7 @@ const ManageTransaction = () => {
             amount: 800,
             type: 'Outcome',
             location: 'San Francisco',
-            status: 'canceled'
+            status: 'Canceled'
         },
         {
             id: 4,
@@ -40,7 +40,7 @@ const ManageTransaction = () => {
             amount: 1000,
             type: 'Outcome',
             location: 'New York',
-            status: 'completed'
+            status: 'Completed'
         },
         {
             id: 5,
@@ -49,7 +49,7 @@ const ManageTransaction = () => {
             amount: 1500,
             type: 'Income',
             location: 'London',
-            status: 'pending'
+            status: 'Pending'
         },
         {
             id: 6,
@@ -58,7 +58,7 @@ const ManageTransaction = () => {
             amount: 800,
             type: 'Income',
             location: 'San Francisco',
-            status: 'canceled'
+            status: 'Canceled'
         },
         {
             id: 7,
@@ -67,7 +67,7 @@ const ManageTransaction = () => {
             amount: 1000,
             type: 'Outcome',
             location: 'New York',
-            status: 'completed'
+            status: 'Completed'
         },
         {
             id: 8,
@@ -76,7 +76,7 @@ const ManageTransaction = () => {
             amount: 1500,
             type: 'Outcome',
             location: 'London',
-            status: 'pending'
+            status: 'Pending'
         },
         {
             id: 9,
@@ -85,7 +85,7 @@ const ManageTransaction = () => {
             amount: 800,
             type: 'Income',
             location: 'San Francisco',
-            status: 'canceled'
+            status: 'Canceled'
         },
         {
             id: 10,
@@ -94,7 +94,7 @@ const ManageTransaction = () => {
             amount: 1000,
             type: 'Income',
             location: 'New York',
-            status: 'completed'
+            status: 'Completed'
         },
         {
             id: 11,
@@ -103,7 +103,7 @@ const ManageTransaction = () => {
             amount: 1500,
             type: 'Outcome',
             location: 'London',
-            status: 'pending'
+            status: 'Pending'
         },
         {
             id: 12,
@@ -112,7 +112,7 @@ const ManageTransaction = () => {
             amount: 800,
             type: 'Outcome',
             location: 'San Francisco',
-            status: 'canceled'
+            status: 'Canceled'
         },
         {
             id: 13,
@@ -121,7 +121,7 @@ const ManageTransaction = () => {
             amount: 1000,
             type: 'Income',
             location: 'New York',
-            status: 'completed'
+            status: 'Completed'
         },
         {
             id: 14,
@@ -130,7 +130,7 @@ const ManageTransaction = () => {
             amount: 1500,
             type: 'Income',
             location: 'London',
-            status: 'pending'
+            status: 'Pending'
         },
         {
             id: 15,
@@ -139,7 +139,7 @@ const ManageTransaction = () => {
             amount: 800,
             type: 'Outcome',
             location: 'San Francisco',
-            status: 'canceled'
+            status: 'Canceled'
         },
     ]);
 
