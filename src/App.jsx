@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
@@ -5,6 +6,8 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
+import ManageBookingDetail from "./pages/ManagesBooking/ManageBookingDetail";
+// import ManageBooking from "./pages/ManagesBooking/ManageBooking";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import Login from "./pages/Login/Login";
