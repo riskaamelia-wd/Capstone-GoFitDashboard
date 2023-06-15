@@ -1,12 +1,7 @@
-<<<<<<< HEAD:src/App.jsx
-// import { useState } from "react";
-// import reactLogo from "./assets/react.svg";
-// import viteLogo from "/vite.svg";
-=======
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
->>>>>>> ab64f7d6045252752b1f8167f1e2d34fcd03a74c:src/app.jsx
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/css/bootstrap.css";
@@ -26,12 +21,8 @@ import ResetPassword from "./pages/Login/Reset Password/ResetPassword";
 
 
 function App() {
-<<<<<<< HEAD:src/App.jsx
-  // const [count, setCount] = useState(0);
-=======
   const [count, setCount] = useState(0);
 
->>>>>>> ab64f7d6045252752b1f8167f1e2d34fcd03a74c:src/app.jsx
   return (
     <>
       {/* <div>
@@ -54,10 +45,6 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p> */}
-<<<<<<< HEAD:src/App.jsx
-      {/* <ManageBooking /> */}
-      <ManageBookingDetail />
-=======
 
       <BrowserRouter>
         <Routes>
@@ -70,7 +57,6 @@ function App() {
         </Routes>
       </BrowserRouter>
 
->>>>>>> ab64f7d6045252752b1f8167f1e2d34fcd03a74c:src/app.jsx
     </>
   );
 }
