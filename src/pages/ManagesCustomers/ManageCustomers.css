@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter&family=Josefin+Sans&family=Poppins&family=Roboto&family=Work+Sans&display=swap");
+
+.manage-customer {
+    font-family: 'Josefin Sans', sans-serif
+}
+
+.all-customers {
+    margin-top: 3%;
+    /* border-right: 1px solid #6D6D6D; */
+    box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.12), 0px 10px 32px -4px rgba(24, 39, 75, 0.1);
+    border-radius: 10px;
+    /* width: 420px; */
+
+}
+
+.text-customers {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 36px;
+    color: var(--Neutral-Black-900);
+}

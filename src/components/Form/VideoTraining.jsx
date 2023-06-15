@@ -1,38 +1,147 @@
-import './Form.css'
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import Form from "../Modal/Form";
+import useAxios from "../../api/UseAxios";
+import { trainingApi } from "../../api/Api";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import video from '../../assets/icons/videocam_gray.svg'
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { storage } from '../../Config/FirebaseConfig';
 import Button from 'react-bootstrap/Button'
 import {Modal} from 'react-bootstrap'
 import TextField from "../../elements/TextField/TextField";
-import video from '../../assets/icons/videocam_gray.svg'
 import Textarea from "../../elements/TextField/Textarea";
 
-export default function VideoTraining({name, text, id, onChangeInput, valueInput, imgBtn, onClick,className}) {
-  const [show, setShow] = useState(false);
+export default function VideoTraining({className, imgBtn, text}) {
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+    const location = useLocation()
+    const state = location.state
+    const param = useParams()
+    const navigate = useNavigate()
 
-  const [image, setImage] = useState()
-  const [imageFile, setImageFile] = useState()
+    const [show, setShow] = useState(false);
+    const [uploadingVideo, setUploadingVideo] = useState(0)
+    const handleShow = () => setShow(true);
+    const handleClose = () => {
+        navigate(`/levelDetail/${param.level}/${param.id}/workoutDetail`)
+        setShow(false)
+    };
 
-  const handleImg = (event) => {
-    // setImage({[e.target.name] : e.target.files[0]})
-    // console.log(image);
-    // if (event.target.files && event.target.files[0]) {
-    //     setImage({image: URL.createObjectURL(event.target.files[0])});
-    //   }
-    if (event.target.files && event.target.files[0]) {
-        let reader = new FileReader();
-        reader.onload = (e) => {
-          setImageFile(e.target.result);
-        };
-        reader.readAsDataURL(event.target.files[0]);
+    const [workout, setWorkout] = useState([])
+    const [data, setData] = useState({
+        video:null,
+        title:'',
+        description:''
+    })
+
+    const {response, isLoading} = useAxios({
+        api: trainingApi,
+        method: 'get',
+        url:`/training/${param.id}/videoTraining/${param.idWorkout}`
+    })
+
+    useEffect(() => {
+        if(param.idWorkout !== '' && param.idWorkout !== null && param.idWorkout !== undefined && response !== null){
+            setData(response)
+            setWorkout(response)
+            console.log(data);
+            console.log(data.video);
+        }
+    }, [response])
+
+    const reset = () => {
+        setData({
+            video:null,
+            title:'',
+            description:''
+        })
     }
-    if (event.target.name === "image"){
-          setImage({[event.target.name] : URL.createObjectURL(event.target.files[0]).image})
-      }
-      console.log(image);
-  }
+
+
+    const handleChange = (e) => {
+        e.preventDefault()
+        const {name, value} = e.target
+        if(name === "video"){
+            const value = e.target.files[0];
+            if(value && value.type.match('video/*')){
+                const storageRef = ref(storage, `/files/${value.name}`)
+                const uploadImg = uploadBytesResumable(storageRef, value)
+                uploadImg.on(
+                    'state_Changed',
+                    (snapshot) => {
+                        const percent = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+                        setUploadingVideo(percent)
+                    },
+                    (err) => {
+                        console.log(err.message);
+                    },
+                    () => {
+                        getDownloadURL(uploadImg.snapshot.ref)
+                        .then(url =>{
+                            setData({...data, video:url})
+                            setUploadingVideo(0)
+                        }) 
+                        .catch(err => {
+                            console.log(err.message);
+                        })
+                    }
+                )
+            } else {
+                alert('please select an image file ( mp4, webm, m4v )')
+                e.target.value = null
+                value = e.target.value
+            }
+        } else{
+            setData({
+                ...data, [name] : value
+            })
+        }
+        console.log(data, ' data video training');
+        console.log(data?.video)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log(workout, ' wo');
+        console.log(data, ' da');
+        console.log(param.idWorkout, ' pa');
+        if(window.confirm('Are you sure you want to submit?')){
+            if (param.idWorkout !== undefined &&  (workout?.id === data?.id)){
+                trainingApi.put(`/training/${param.id}/videoTraining/${param.idWorkout}`,{
+                    video:data.video,
+                    title:data.title,
+                    description:data.description
+                })
+                .then((res) => {
+                    navigate(`/levelDetail/${param.level}/${param.id}/workoutDetail`)
+                    alert('edited')
+                    window.location.reload()
+                })
+                .catch((err) => {
+                    alert(err.message)
+                    // window.location.reload()
+                })
+            } else {
+                trainingApi.post(`/training/${param.id}/videoTraining`,{
+                    video:data.video,
+                    title:data.title,
+                    description:data.description
+                })
+                .then((res) => {
+                    // dispatch(addTraining(data))
+                    alert('Added')
+                    // setShow(false)
+                    //get data
+                    console.log(data);
+                    window.location.reload()
+                })
+                .catch((err) => {
+                    alert(err.message)
+                })
+            }
+            reset()
+        }
+    }
+
     return(
         <>
             <style type="text/css">
@@ -64,66 +173,105 @@ export default function VideoTraining({name, text, id, onChangeInput, valueInput
                 {text}
             </Button>
             <Modal
+            onClick={()=> navigate(`/levelDetail/${param.level}/${param.id}/workoutDetail`)}
                 show={show}
                 onHide={handleClose}
                 backdrop="static"
                 keyboard={false}
                 centered
             >
-                <Modal.Header closeButton>
-                <Modal.Title>New parts</Modal.Title>
-                </Modal.Header>
                 <Modal.Body>
-                {/* {body} */}
-                <div className=" mb-4 box">
-                    <label  
-                        style={{
-                            cursor:'pointer',
-                        }}>
-                            <div style={{marginBottom:'-230px'}}>
-
-                            <img src={video} alt="" />
-                            <p className="mt-3" style={{color:'var(--Neutral-White-800)'}}>Input Video</p>
-                            </div>
-                        <input 
-                            type="file" 
-                            onChange={handleImg} 
+                <form action="" onSubmit={handleSubmit}>    
+                    <div className="mt-2 con mb-4 box">
+                        <label  
                             style={{
-                                width:'100%', 
-                                display:'none'
-                            }} 
-                            // value={image}
-                            
-                            name="image"
-                        />
-                        <img 
-                            // width={'100%'} 
-                            src={imageFile} 
-                            height={'200px'}
-                            style={{width:'fit-content'}} 
-                            
-                        alt="" />
-                    </label>
-                </div>
-                    <TextField
-                        placeholder={'Input title'}
-                        type={'text'}
-                        name={name}
-                        id={id}
-                        onChange={onChangeInput}
-                        value={valueInput}
-                    />
-                    <div className="styleTextarea">
-                        <Textarea
-                        
-                        classNameTextarea={'form-control rounded-3 borderInput'}/>
+                                cursor:'pointer',
+                            }}>
+                                <div 
+                                    style={{marginBottom:'-10px'}}
+                                >
+                                    <img 
+                                        src={video} 
+                                        alt="" 
+                                    />
+                                    <p 
+                                        className="mt-3" 
+                                        style={{
+                                            color:'var(--Neutral-White-800)'
+                                        }}
+                                    >
+                                        {'Input Video'}
+                                    </p>
+                                </div>
+                            <input 
+                                type="file" 
+                                accept="video/*"
+                                onChange={handleChange} 
+                                style={{
+                                    width:'100%', 
+                                    display:'none'
+                                }} 
+                                name={'video'}
+                                id={'video'}
+                            />
+                            {
+                                data?.video?.length > 0 && 
+                            <video 
+                                className='bg-black bg'
+                                src={data.video}  
+                                height={'190px'} 
+                                controls
+                                style={{width:'fit-content'}}
+                            >
+                            </video>
+                            }
+                            {/* <img 
+                                // width={'100%'} 
+                                className='bg-black bg'
+                                src={data.video} 
+                                height={'190px'}
+                                style={{width:'fit-content'}} 
+                                
+                            alt="" /> */}
+                        </label>
                     </div>
+                    {
+                        uploadingVideo > 0 &&
+                        <span>Uploading Video : {uploadingVideo}%</span> 
+                    }
+                        <TextField
+                            placeholder={'Arm Circles'}
+                            type={'text'}
+                            name={'title'}
+                            id={'title'}
+                            onChange={handleChange}
+                            value={data.title}
+                        />
+                        <div className="styleTextarea">
+                            <Textarea
+                            name={'description'}
+                            placeholder={'Detail Workout'}
+                            id={'description'}
+                            maxLength={200}
+                            value={data.description}
+                            onChange={handleChange}
+                            classNameTextarea={'form-control rounded-3 borderInput'}/>
+                        </div>
+                </form>
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant='closebtn' onClick={handleClose}>
-                    Close
-                </Button>
-                <Button variant='createbtn' onClick={onClick}>Create</Button>
+                    <Button 
+                        variant='closebtn' 
+                        onClick={handleClose}
+                    >
+                        Close
+                    </Button>
+                    <Button 
+                        variant='createbtn' 
+                        onClick={handleSubmit}
+                    >
+                        Create
+                    </Button>
                 </Modal.Footer>
             </Modal>
         </>

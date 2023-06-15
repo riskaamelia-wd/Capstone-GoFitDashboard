@@ -168,3 +168,18 @@ input[type=file]{
   font-size: 24px;
   font-weight: 700;
 }
+
+.con {
+  position: relative;
+}
+
+.bg {
+  position: absolute;
+  transform: translate(-50%, -69%);
+  /* top: 0;
+  left: 50%;
+  bottom: 0;
+  right: 0; */
+  z-index: 1;
+  /* overflow: hidden; */
+}
