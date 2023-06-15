@@ -15,21 +15,21 @@ const useAxios = ({ api, method, url, body }) => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
-    // try {
-    api[method.toLowerCase()](url, JSON.parse(body))
-      .then((res) => {
-        setResponse(res.data);
-      })
-      .catch((err) => {
-        setError(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-    // } catch (err) {
-    //   // setError(err);
-    //   console.log(err);
-    // }
+    try {
+      api[method](url, JSON.parse(body))
+        .then((res) => {
+          setResponse(res.data);
+        })
+        // .catch((err) => {
+        //   setError(err);
+        // })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } catch (err) {
+      setError(err);
+      // console.log(err);
+    }
   };
   useEffect(() => {
     fetchData();

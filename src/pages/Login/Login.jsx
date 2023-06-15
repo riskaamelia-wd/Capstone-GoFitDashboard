@@ -45,9 +45,6 @@ const Login = () => {
         }),
       });
       fetchData();
-      console.log("====================================");
-      console.log("test successful");
-      console.log("====================================");
     } catch (error) {
       console.log("====================================");
       console.log(error);
@@ -89,7 +86,9 @@ const Login = () => {
   useEffect(() => {
     if (response !== null) {
       setUserSession(response.token, response.data);
-
+      console.log("====================================");
+      console.log(response.token);
+      console.log("====================================");
       // navigate("/membership");
     }
     //  if (
