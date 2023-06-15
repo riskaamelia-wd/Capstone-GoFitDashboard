@@ -10,4 +10,12 @@ const adminApi = axios.create({
   headers: { Accept: "application/json" },
 });
 
-export { adminApi, membershipApi };
+const trainingApi = axios.create({
+  baseURL : 'https://647612b1e607ba4797dd420e.mockapi.io'
+})
+
+const classApi = axios.create({
+  baseURL : 'https://642feb34c26d69edc886a350.mockapi.io'
+})
+
+export { adminApi, membershipApi, classApi, trainingApi };
