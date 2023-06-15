@@ -10,7 +10,6 @@ const CardMembership = ({
   // id,
   onClickDelete,
   onClickEdit,
-  bgcard,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -19,9 +18,9 @@ const CardMembership = ({
       <div
         id="card-membership"
         className="card rounded-4"
-        style={{
-          background: bgcard,
-        }}
+        // style={{
+        //   background:
+        // }}
         onMouseEnter={() => {
           setIsVisible(true);
         }}

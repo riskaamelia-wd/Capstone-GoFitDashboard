@@ -26,13 +26,6 @@ const ManageMembership = () => {
   const [id, setId] = useState(null);
   const [data, setData] = useState([]);
 
-  const [color, setColor] = useState(
-    "linear-gradient(90deg, rgba(96,93,93,1) 0%, rgba(255,255,255,1) 100%)"
-  );
-
-  const { getGradientObject, previousColors } = useColorPicker(color, setColor);
-  const gradientObject = getGradientObject();
-
   const [membership, setMembership] = useState({
     title: "",
     duration: "",
@@ -80,9 +73,6 @@ const ManageMembership = () => {
       description: "",
     });
     setId(null);
-    setColor(
-      "linear-gradient(90deg, rgba(80,65,93,1) 0%, rgba(255,255,255,1) 100%)"
-    );
   };
   const responsive = {
     superLargeDesktop: {
@@ -103,247 +93,6 @@ const ManageMembership = () => {
       items: 1,
     },
   };
-  // const ModalAddMembership = () => {
-  //   return (
-  //     <>
-  //       <Modal show={show} onHide={handleClose} centered>
-  //         <Modal.Body className="modal-membership rounded-5">
-  //           <div className="col-4">
-  //             <p className="fs-4 modal-title fw-semibold">Add New Plan</p>
-  //           </div>
-  //           <div className="col-12">
-  //             <TextField
-  //               label={"Title"}
-  //               type={"text"}
-  //               name={"titlemembership"}
-  //               id={"titlemembership"}
-  //               onChange={(e) => {
-  //                 setMembership((filledState) => ({
-  //                   ...filledState,
-  //                   title: e.target.value,
-  //                 }));
-  //               }}
-  //               value={membership.title}
-  //               placeholder={"Give the plan a name"}
-  //               classNameLabel={" modal-input fs-4 mb-2 mt-2"}
-  //             />
-  //           </div>
-
-  //           <div className="col-12 ">
-  //             <TextField
-  //               label={"Duration"}
-  //               type={"text"}
-  //               name={"durationmembership"}
-  //               id={"durationmembership"}
-  //               onChange={(e) => {
-  //                 setMembership((filledState) => ({
-  //                   ...filledState,
-  //                   duration: e.target.value,
-  //                 }));
-  //               }}
-  //               value={membership.duration}
-  //               placeholder={"How many month?"}
-  //               classNameLabel={" modal-input fs-4 mb-2 mt-2"}
-  //             />
-  //           </div>
-  //           <div className="col-12 ">
-  //             <TextField
-  //               label={"Price"}
-  //               type={"number"}
-  //               name={"pricemembership"}
-  //               id={"pricemembership"}
-  //               onChange={(e) => {
-  //                 e.target.value < 0
-  //                   ? alert("The price cannot be minus")
-  //                   : setMembership((filledState) => ({
-  //                       ...filledState,
-  //                       price: e.target.value,
-  //                     }));
-  //               }}
-  //               value={membership.price}
-  //               placeholder={"Input the price!"}
-  //               classNameLabel={" modal-input fs-4 mb-2 mt-2"}
-  //             />
-  //           </div>
-  //           <div className="col-12 ">
-  //             <TextField
-  //               label={"Description"}
-  //               type={"text"}
-  //               name={"descriptionmembership"}
-  //               id={"descriptionmembership"}
-  //               onChange={(e) => {
-  //                 setMembership((filledState) => ({
-  //                   ...filledState,
-  //                   description: e.target.value,
-  //                 }));
-  //               }}
-  //               value={membership.description}
-  //               placeholder={"What's the benefits?"}
-  //               classNameLabel={" modal-input fs-4 mb-2 mt-2"}
-  //             />
-  //           </div>
-  //           <div className="col-12 mt-4">
-  //             {membership.title !== "" &&
-  //             membership.price !== 0 &&
-  //             membership.duration !== "" &&
-  //             membership.description !== "" ? (
-  //               <ButtonComponent
-  //                 type={"submit"}
-  //                 className={"btn-add fs-5"}
-  //                 id={"submitEmail"}
-  //                 onClick={onSubmitAddHandle}
-  //                 buttonName={"Submit"}
-  //               />
-  //             ) : (
-  //               //   <ButtonComponent
-  //               //     // type={"submit"}
-  //               //     className={"btn-disabled fs-5 w-100"}
-  //               //     id={"login"}
-  //               //     onClick={() => {}}
-  //               //     buttonName={"Submit"}
-  //               //   />
-  //               <button
-  //                 id="disabledbutton"
-  //                 className="btn w-100 fw-semibold fs-5"
-  //                 style={{ backgroundColor: "#DFDFDF" }}
-  //                 disabled>
-  //                 Submit
-  //               </button>
-  //             )}
-  //           </div>
-  //         </Modal.Body>
-  //       </Modal>
-  //     </>
-  //   );
-  // };
-  // const ModalEditMembership = () => {
-  //   return (
-  //     <>
-  //       <Modal show={showEdit} onHide={handleClose} centered>
-  //         <Modal.Body className="modal-membership rounded-5">
-  //           <div className="col-4">
-  //             <p className="fs-4 modal-title fw-semibold">Edit Plan</p>
-  //           </div>
-  //           <div className="col-12">
-  //             <TextField
-  //               label={"Title"}
-  //               type={"text"}
-  //               name={"titlemembership"}
-  //               id={"titlemembership"}
-  //               onChange={(e) => {
-  //                 setMembership((filledState) => ({
-  //                   ...filledState,
-  //                   title: e.target.value,
-  //                 }));
-  //               }}
-  //               value={membership.title}
-  //               placeholder={"Give the plan a name"}
-  //               classNameLabel={" modal-input fs-4 mb-2 mt-2"}
-  //               // defaultValue={title}
-  //             />
-  //           </div>
-
-  //           <div className="col-12 ">
-  //             <TextField
-  //               label={"Duration"}
-  //               type={"text"}
-  //               name={"durationmembership"}
-  //               id={"durationmembership"}
-  //               onChange={(e) => {
-  //                 setMembership((filledState) => ({
-  //                   ...filledState,
-  //                   duration: e.target.value,
-  //                 }));
-  //               }}
-  //               value={membership.duration}
-  //               // defaultValue={duration}
-  //               placeholder={"How many month?"}
-  //               classNameLabel={" modal-input fs-4 mb-2 mt-2"}
-  //             />
-  //           </div>
-  //           <div className="col-12 ">
-  //             <TextField
-  //               label={
-  //                 <>
-  //                   <div>
-  //                     Price <span className="text-danger">* </span>
-  //                   </div>
-  //                 </>
-  //               }
-  //               type={"number"}
-  //               name={"pricemembership"}
-  //               id={"pricemembership"}
-  //               onChange={(e) => {
-  //                 e.target.value < 0
-  //                   ? alert("The price cannot be minus")
-  //                   : setMembership((filledState) => ({
-  //                       ...filledState,
-  //                       price: e.target.value,
-  //                     }));
-  //               }}
-  //               value={membership.price}
-  //               placeholder={"Input the price!"}
-  //               classNameLabel={" modal-input fs-4 mb-2 mt-2"}
-  //               // defaultValue={price}
-  //             />
-  //             <small>
-  //               <span className="text-danger">*</span>please use dots(.) instead
-  //               of comma (,)
-  //             </small>
-  //           </div>
-  //           <div className="col-12 ">
-  //             <TextField
-  //               label={"Description"}
-  //               type={"text"}
-  //               name={"descriptionmembership"}
-  //               id={"descriptionmembership"}
-  //               onChange={(e) => {
-  //                 setMembership((filledState) => ({
-  //                   ...filledState,
-  //                   description: e.target.value,
-  //                 }));
-  //               }}
-  //               value={membership.description}
-  //               placeholder={"What's the benefits?"}
-  //               classNameLabel={" modal-input fs-4 mb-2 mt-2"}
-  //               // defaultValue={description}
-  //             />
-  //           </div>
-
-  //           <div className="col-12 mt-4">
-  //             {membership.title !== "" &&
-  //             membership.price !== 0 &&
-  //             membership.duration !== "" &&
-  //             membership.description !== "" ? (
-  //               <ButtonComponent
-  //                 type={"submit"}
-  //                 className={"btn-add fs-5"}
-  //                 id={"submitEmail"}
-  //                 onClick={onSubmitEditHandle(id)}
-  //                 buttonName={"Submit"}
-  //               />
-  //             ) : (
-  //               //   <ButtonComponent
-  //               //     // type={"submit"}
-  //               //     className={"btn-disabled fs-5 w-100"}
-  //               //     id={"login"}
-  //               //     onClick={() => {}}
-  //               //     buttonName={"Submit"}
-  //               //   />
-  //               <button
-  //                 id="disabledbutton"
-  //                 className="btn w-100 fw-semibold fs-5"
-  //                 style={{ backgroundColor: "#DFDFDF" }}
-  //                 disabled>
-  //                 Submit
-  //               </button>
-  //             )}
-  //           </div>
-  //         </Modal.Body>
-  //       </Modal>
-  //     </>
-  //   );
-  // };
   const generalView = () => {
     return (
       <>
@@ -392,9 +141,7 @@ const ManageMembership = () => {
             );
           })}
         </Carousel>
-        {/* {ModalAddMembership()}
-        {ModalEditMembership()} */}
-        {/* add membership */}
+
         <ModalMembership
           modaltitle={"Edit Plan"}
           show={show}
@@ -429,9 +176,6 @@ const ManageMembership = () => {
             }));
           }}
           descriptionValue={membership.description}
-          colorValue={color}
-          color={setColor}
-          preset={previousColors}
           onSubmitHandle={onSubmitHandle}
         />
         {/* edit membership */}
@@ -469,9 +213,6 @@ const ManageMembership = () => {
             }));
           }}
           descriptionValue={membership.description}
-          colorValue={color}
-          color={setColor}
-          preset={previousColors}
           onSubmitHandle={onSubmitHandle}
         />
       </>

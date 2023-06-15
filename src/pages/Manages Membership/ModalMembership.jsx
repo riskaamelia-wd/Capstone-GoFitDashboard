@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import ColorPicker, { useColorPicker } from "react-best-gradient-color-picker";
 import { Modal } from "react-bootstrap";
 import TextField from "../../elements/TextField/TextField";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
@@ -14,9 +13,7 @@ const ModalMembership = ({
   priceValue,
   description,
   descriptionValue,
-  colorValue,
-  color,
-  preset,
+
   onSubmitHandle,
   modaltitle,
 }) => {
@@ -90,21 +87,7 @@ const ModalMembership = ({
               // defaultValue={description}
             />
           </div>
-          <div className="col-12 mt-4" id="colorpicker">
-            <div className="row">
-              <div className="col-12">
-                <label className="modal-input fs-4">Pick Color</label>
-              </div>
-              <div className="col-12  d-flex align-items-center justify-content-center">
-                <ColorPicker
-                  value={colorValue}
-                  onChange={color}
-                  presets={preset}
-                  hideColorTypeBtns={true}
-                />
-              </div>
-            </div>
-          </div>
+
           <div className="col-12 mt-4">
             {titleValue !== "" &&
             priceValue !== 0 &&
