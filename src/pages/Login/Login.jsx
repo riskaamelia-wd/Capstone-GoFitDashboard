@@ -11,9 +11,9 @@ import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import { adminApi, membershipApi } from "../../api/Api";
 // import useAxios from "../../customhooks/useAxios";
 import { getUser, setUserSession } from "../../util/common";
-import useAxiosFunction from "../../customhooks/useAxiosFunction";
 import useAxios from "../../customhooks/useAxios";
-import useCrudApi from "../../customhooks/useCrudApi";
+import jwtDecode from "jwt-decode";
+import { useDispatch } from "react-redux";
 const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
@@ -24,6 +24,7 @@ const Login = () => {
     body: null,
   });
   const navigate = useNavigate();
+  // const dispatch = useDispatch();
   // const [response, error, loading, axiosFetch] = useAxiosFunction();
   // const { data, isLoading, error, postData } = useCrudApi(adminApi);
   // const { data, isLoading, error, createData } = useCrudApi(adminApi, "/login");
@@ -86,11 +87,20 @@ const Login = () => {
 
   useEffect(() => {
     if (response !== null) {
-      setUserSession(response.token, response.data);
+      // setUserSession(response.token, response.data);
+      console.log("====================================");
+      console.log(response.data);
+      console.log("====================================");
       console.log("====================================");
       console.log(response.token);
+      // dispatch(add);
       console.log("====================================");
-      // navigate("/membership");
+      // let adminAuth = jwtDecode(response.token);
+
+      // ;
+      // adminAuth.isAdmin
+      //   ? navigate("/membership")
+      //   : alert("You are not admin, please login using admin authentication");
     }
     //  if (
     //   error?.response?.status === 400 ||
@@ -120,7 +130,6 @@ const Login = () => {
           </div>
           <div className=" col-md-6 LoginRightSide rounded-5 d-flex justify-content-center align-items-center ">
             <div className=" w-75 ">
-
               <p className="fw-bold fs-1 h1-rightside">Welcome!</p>
               <p className="fw-semibold fs-5 mb-4">Log in you account</p>
               <TextField
@@ -132,7 +141,6 @@ const Login = () => {
                   setEmail(e.target.value);
                 }}
                 value={email}
-
                 placeholder={"userName@gmail.com"}
                 classNameLabel={"mb-2 text-secondary"}
               />
@@ -143,12 +151,10 @@ const Login = () => {
                   label="Password"
                   id={"password"}
                   name={"password"}
-
                   value={password}
                   onChange={(e) => {
                     setPassword(e.target.value);
                   }}
-
                   classNameLabel={"mb-2 text-secondary"}
                 />
               </div>
@@ -170,13 +176,11 @@ const Login = () => {
                   </div>
                 </div>
                 <div className="col-6 text-end">
-
                   <NavLink
                     to={"/forgotpassword"}
                     style={{ textDecoration: "none" }}>
                     <p className="ForgotPasswordText">Forgot Password?</p>
                   </NavLink>
-
                 </div>
               </div>
 
@@ -184,11 +188,9 @@ const Login = () => {
                 type={"submit"}
                 className={"btn-login fs-5"}
                 id={"login"}
-
                 onClick={handleLogin}
                 buttonName={"Log in"}
               />
-
             </div>
           </div>
         </div>
