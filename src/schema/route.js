@@ -10,6 +10,7 @@ import Login from "../pages/Login/Login";
 import Dashboard from "../pages/Dashboard/DashboardPages";
 
 export const routes = [
+
     {path : '/dashboard', element : Dashboard},
     {path : '/feedback', element : ManagesFeedback},
     {path : '/onlineClass', element : OnlineClass},
@@ -24,3 +25,4 @@ export const routes = [
     {path : '/resetPassword', element : ResetPassword},
     {path : '/', element : Login},
 ]
+

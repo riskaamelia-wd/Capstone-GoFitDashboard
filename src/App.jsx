@@ -18,7 +18,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Login from "./pages/Login/Login";
 import ForgotPassword from "./pages/Login/Forgot Password/ForgotPassword";
 import ResetPassword from "./pages/Login/Reset Password/ResetPassword";
-
+import ManageMembership from "./pages/Manages Membership/ManageMembership";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -48,15 +48,14 @@ function App() {
 
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Login />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/resetpassword/:id_user" element={<ResetPassword />} />
-          <Route path="/" element={<Login />} />
-          {/* <Route element={<PrivateRoute />}>
- 
-          </Route> */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/membership" element={<ManageMembership />} />
+          </Route>
         </Routes>
       </BrowserRouter>
-
     </>
   );
 }
