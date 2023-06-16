@@ -28,7 +28,7 @@ const NavbarComp = ({
 }) => {
   // const [isVisible, setIsVisible] = useState(false);
   const handleAppsClick = () => {
-    setExpandApps(!isApps);
+    // setExpandApps(!isApps);
   };
 
   return (

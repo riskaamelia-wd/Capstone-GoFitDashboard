@@ -1,10 +1,13 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
+import './Chart.css'
 
-const Bar = ({colorBar,colorBackgroundBar, className, text,series}) => {
+const Bar = ({colorBar,colorBackgroundBar, name, data}) => {
   const dataChart = {
-    series: [{
-      data: series,
+    series: [
+      {
+      name: name,
+      data: [data],
     },
     // {
     //     name: 'Target',
@@ -17,7 +20,11 @@ const Bar = ({colorBar,colorBackgroundBar, className, text,series}) => {
         height: 350,
         type: 'bar',
         stacked: true,
-        stackType:'100'
+        stackType:'100',
+        offsetX:-70,
+        toolbar: {
+          show: false
+        },
       },
       grid: {
         xaxis: {
@@ -33,9 +40,6 @@ const Bar = ({colorBar,colorBackgroundBar, className, text,series}) => {
       },
       plotOptions: {
         bar: {
-          dataLabels: {
-            position: 'top'
-          },
           horizontal: true,
           distributed:true,
           borderRadius:5,
@@ -50,27 +54,25 @@ const Bar = ({colorBar,colorBackgroundBar, className, text,series}) => {
       yaxis:{
         labels:{
             show:true,
-            align:'right',
-            offsetX:110,
+            offsetX:125,
             offsetY:-20,
-            style:{
-              fontFamily: 'Josefin Sans,sans-serif',
-              fontSize:'14px',
-              fontWeight:400,
-            }
+            style : {
+              fontFamily: 'Josefin Sans, sans-serif',
+              fontWeight:600,
+              fontSize:14
+            },
+          },
         },
-        floating:true,
-      },
-      dataLabels: {
-        enabled: true,
-        offsetX: 50,
-        offsetY:-20,
-        style:{
-          colors: [colorBar],
-        }
+        dataLabels: {
+          enabled: true,
+          offsetX: 300,
+          offsetY: -20,
+          style:{
+            colors: [colorBar]
+          },
       },
       xaxis: {
-        categories: [text],
+        categories: [name],
         labels:{
             show:false,
         },
@@ -93,8 +95,10 @@ const Bar = ({colorBar,colorBackgroundBar, className, text,series}) => {
   };
 
   return (
-    <div className={'p-0 m-0'}>
+    <div className="">
       <ReactApexChart
+        className=' barChart m-0'
+        style={{width:''}}
         options={dataChart.options}
         series={dataChart.series}
         type="bar"

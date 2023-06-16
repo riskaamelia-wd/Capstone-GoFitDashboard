@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
+
+*{
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.btn-add{
+    border: 0;
+    height: 44px;
+}
+
+.popUp{
+    background-color: var(--Neutral-White-500);
+}
+
+.popUp:hover{
+    background-color: var(--primary-500);
+}
+
+.labelTextField{
+    color: #7A2400;
+}
+
+.btn-edit{
+    background-color: var(--primary-300);
+}
