@@ -23,9 +23,12 @@ const NavbarComp = ({
   setExpandApps,
   onChange,
   value,
+  isVisible,
+  setIsVisible
 }) => {
+  // const [isVisible, setIsVisible] = useState(false);
   const handleAppsClick = () => {
-    setExpandApps(!isApps);
+    // setExpandApps(!isApps);
   };
 
   return (
@@ -50,12 +53,12 @@ const NavbarComp = ({
           placeholder={"search"}
           onChange={onChange}
           value={value}
-          // isVisible={isVisible}
-          // setIsVisible={setIsVisible}
+          isVisible={isVisible}
+          setIsVisible={setIsVisible}
         ></SearchTopBar>
       </div>
       <div
-        className={`${isExpanded ? "top-nav-mid-NX" : "top-nav-mid"} btn-group`}
+        className={`${isVisible ? "top-nav-mid-NX" : "top-nav-mid"} btn-group`}
       >
         {/* <ButtonComponent
             type={"button"}

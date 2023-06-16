@@ -21,3 +21,29 @@
 .add button.btn.btn-add img{
     width: 14px;
 }
+
+table thead tr th{
+    color: var(--Neutral-White-900) !important;
+    font-weight: 600;
+}
+
+table tbody tr td{
+    border-bottom: none;
+}
+
+.notFillBox{
+    background-color: var(--primary-100) !important;
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 0;
+}
+
+
+.fillBox{
+    background-color: var(--primary-400) !important;
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 0;
+}

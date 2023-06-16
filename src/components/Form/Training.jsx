@@ -12,10 +12,13 @@ import { trainingApi } from '../../api/Api';
 import useAxios from '../../api/UseAxios';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { storage } from '../../Config/FirebaseConfig';
 
 export default function Training({title, text, imgBtn, className }) {
     const [show, setShow] = useState(false);
     const [training, setTraining] = useState([])
+    const [uploadingImg, setUploadingImg] = useState(0)
 
     
     const dispatch = useDispatch()
@@ -102,16 +105,15 @@ export default function Training({title, text, imgBtn, className }) {
                     duration: data.duration,
                     category:level
                 })
-                .then( async (res) => {
-                    await axios.get(`https://647612b1e607ba4797dd420e.mockapi.io/training`)
+                .then( (res) => {
                     setData(res.data)
-                    console.log(res.data, ' resp');
                     navigate(`/levelDetail/${level}`)
                     alert('edited')
+                    window.location.reload()
+                    
                 })
                 .catch((err) => {
                     alert(err.message)
-                    // window.location.reload()
                 })
             } else {
                 trainingApi.post('/training',{
@@ -144,11 +146,40 @@ export default function Training({title, text, imgBtn, className }) {
 
     const handleImg = (e) => {
         e.preventDefault()
-        const file = e.target.files[0];
-        setData((prevState) => ({
-            ...prevState,
-            imgFile: URL.createObjectURL(file)
-        }));
+        const value = e.target.files[0];
+        if(value && value.type.match('image.*')){
+            const storageRef = ref(storage, `/files/${value.name}`)
+            const uploadImg = uploadBytesResumable(storageRef, value)
+            uploadImg.on(
+                'state_Changed',
+                (snapshot) => {
+                    const percent = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+                    setUploadingImg(percent)
+                },
+                (err) => {
+                    console.log(err.message);
+                },
+                () => {
+                    getDownloadURL(uploadImg.snapshot.ref)
+                    .then(url =>{
+                        setData({...data, imgFile:url})
+                        setUploadingImg(0)
+                    }) 
+                    .catch(err => {
+                        console.log(err.message);
+                    })
+                }
+            )
+        } else {
+            alert('please select an image file ( jpg, png, gif )')
+            e.target.value = null
+            value = e.target.value
+        }
+        
+        // setData((prevState) => ({
+        //     ...prevState,
+        //     imgFile: URL.createObjectURL(value)
+        // }));
         console.log(data.imgFile);
     }
     
@@ -185,6 +216,7 @@ export default function Training({title, text, imgBtn, className }) {
                                 backgroundPosition:'center'
                             }}>
                             <input 
+                                accept='image/*'
                                 type="file" 
                                 onChange={handleImg}         
                                 name="image"
@@ -198,6 +230,10 @@ export default function Training({title, text, imgBtn, className }) {
                             alt="" />
                         </label>
                     </div>
+                    {
+                        uploadingImg > 0 &&
+                        <span>Uploading Image : {uploadingImg}%</span> 
+                    }
                        
 
                         <TextField
@@ -219,6 +255,7 @@ export default function Training({title, text, imgBtn, className }) {
                                 id={'introduction'}
                                 classNameTextarea={'form-control rounded-3 borderInput'}
                                 maxLength={200}
+                                value={data.introduction}
                                 onChange={handleInput}
                                 count={`${countText} / 200 word`}
                                 // count={`${count} / 200 word`}
@@ -231,9 +268,9 @@ export default function Training({title, text, imgBtn, className }) {
                                 <p>How long will it take?</p>
                                 <div className="d-flex flex-row">
                                     <AddLess
-                                        decrement={(e) => decrement(e, 'workout')}
-                                        increment={(e) => increment(e, 'workout')}
-                                        qty={data.workout}
+                                        decrement={(e) => decrement(e, 'duration')}
+                                        increment={(e) => increment(e, 'duration')}
+                                        qty={data.duration}
                                     />
                                     <select className="form-select selectTextarea" aria-label="Default select example">
                                     <option selected value={'Minutes'}>Minutes</option>
@@ -244,9 +281,9 @@ export default function Training({title, text, imgBtn, className }) {
                             <div className="col-5">
                                 <p>How much workouts?</p>
                                 <AddLess
-                                    decrement={(e) => decrement(e, 'duration')}
-                                    increment={(e) => increment(e, 'duration')}
-                                    qty={data.duration}   
+                                    decrement={(e) => decrement(e, 'workout')}
+                                    increment={(e) => increment(e, 'workout')}
+                                    qty={data.workout}   
                                 />
                             </div>
                         </div>

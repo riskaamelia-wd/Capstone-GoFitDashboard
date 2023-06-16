@@ -3,10 +3,12 @@ import img from '../../assets/img/close-up-treadmill-console-with-settings 1.svg
 import add from '../../assets/icons/add.svg'
 import './Recomended.css'
 import CardAdd from "./CardAdd"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { addRecomended, deleteRecomended } from "../../redux/Slice/recomendedSlice"
 import { v4 as uuidv4 } from 'uuid';
+import useAxios from "../../api/UseAxios"
+import { trainingApi } from "../../api/Api"
 
 const Recomended = ({}) => {
 
@@ -24,6 +26,26 @@ const Recomended = ({}) => {
         workout:''
     })
 
+    const [workout, setWorkout] = useState({
+        workout:[]
+    })
+
+
+    const {response, isLoading} = useAxios({
+        api: trainingApi,
+        method: 'get',
+        url:`/training`
+    })
+    
+
+    useEffect(() => {
+        if(response!==null){
+            const titles = response.map((item) => item.title);
+            const uniqueTitles = titles.filter((value, index, self) => self.indexOf(value) === index);
+            setWorkout(uniqueTitles)
+        }
+    }, [response])
+
     const levelList = [
         {value:'----', text:'Choose Level'},
         {value:"Beginner", text: "Beginner"},
@@ -33,14 +55,16 @@ const Recomended = ({}) => {
 
     const workoutList = [
         {value:'----', text:'Choose Work Out'},
-        {value:"Abs", text: "Abs"},
-        {value:"Arm", text: "Arm"},
-        {value:"Leg", text: "Leg"},   
+        ...Object.keys(workout)?.map((key) => ({
+            value: workout[key],
+            text: workout[key],
+          })) 
     ];
+
 
     const reset = () => {
         setData({
-            id:uuidv4(),
+            recomended:uuidv4(),
             level:'',
             workout:''
         })
@@ -67,10 +91,10 @@ const Recomended = ({}) => {
 
     }
 
-    const handleDelete= (id) => {
+    const handleDelete= (recomended) => {
         if(window.confirm('Are you sure you want to delete?'))
-        console.log(id);
-        dispatch(deleteRecomended(id))
+        console.log(recomended);
+        dispatch(deleteRecomended(recomended))
         console.log('Data deleted successfully');
     }
 
@@ -109,7 +133,7 @@ const Recomended = ({}) => {
                         return(
                             <ListRecomended
                                 key={id}
-                                onDelete={() => handleDelete(data.id)}
+                                onDelete={() => handleDelete(data.recomended)}
                                 textTag={data.level}
                                 img={img}
                                 text={data.workout}
