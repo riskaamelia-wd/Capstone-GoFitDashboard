@@ -5,6 +5,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
+
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import Login from "./pages/Login/Login";
 import PrivateRoute from "./util/PrivateRoute";
@@ -14,6 +15,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Login from "./pages/Login/Login";
 import ForgotPassword from "./pages/Login/Forgot Password/ForgotPassword";
 import ResetPassword from "./pages/Login/Reset Password/ResetPassword";
+
 
 function App() {
   const [count, setCount] = useState(0);
@@ -40,6 +42,7 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p> */}
+
       <BrowserRouter>
         <Routes>
           <Route path="/forgotpassword" element={<ForgotPassword />} />
@@ -50,6 +53,7 @@ function App() {
           </Route> */}
         </Routes>
       </BrowserRouter>
+
     </>
   );
 }
