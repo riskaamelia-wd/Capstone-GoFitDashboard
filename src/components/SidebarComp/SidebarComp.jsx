@@ -237,7 +237,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
             {isExpanded && isItemDropdown ? (
               <div className="dropdown-sidebar-menu-two">
                 <li className="menu-item sidebar-drop-menu-option">
-                  <NavLink to={"/dashboard"}>
+                  <NavLink to={"/article"}>
                     <ButtonComponent
                       type={"button"}
                       className={"btn-sidebar-drop-menu"}
@@ -269,7 +269,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                       : "sidebar-drop-menu-option-NX"
                   }
                 >
-                  <NavLink to={"/dashboard"}>
+                  <NavLink to={"/article"}>
                     <ButtonComponent
                       type={"button"}
                       className={

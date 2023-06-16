@@ -33,7 +33,7 @@ const NavbarComp = ({
 
   return (
     <div className="top-nav-container">
-      <div className="top-nav-heading">
+      <div className="top-nav-heading col-3">
         <button
           className={
             isExpanded ? "hamburger hamburger-in" : "hamburger-NX hamburger-out"
@@ -45,7 +45,7 @@ const NavbarComp = ({
           <span></span>
         </button>
       </div>
-      <div className="top-nav-search">
+      <div className="top-nav-search col-3">
         <SearchTopBar
           type={"search"}
           name={"searchtop"}
@@ -58,7 +58,7 @@ const NavbarComp = ({
         ></SearchTopBar>
       </div>
       <div
-        className={`${isVisible ? "top-nav-mid-NX" : "top-nav-mid"} btn-group`}
+        className={`${isVisible ? "top-nav-mid-NX" : "top-nav-mid"} btn-group col-3`}
       >
         {/* <ButtonComponent
             type={"button"}
@@ -263,7 +263,7 @@ const NavbarComp = ({
           </li>
         </ul>
       </div>
-      <div className="nav-end">
+      <div className="nav-end col-3">
         <ButtonComponent
           type={"button"}
           className={"btn-navbar-flag"}

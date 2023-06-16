@@ -15,9 +15,6 @@ const ManagesArticles = () => {
           <div className="title mb-4 newsletter-articles-title">
             <h1>Articles & News</h1>
           </div>
-          {/* <div>
-            <CardTraining img={cardgirl1} />
-          </div> */}
           <div className="newsletter-articles-card">
             <CardArticles
               img={cardgirl1}
