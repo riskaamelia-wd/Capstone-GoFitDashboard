@@ -11,9 +11,10 @@ import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import { adminApi, membershipApi } from "../../api/Api";
 // import useAxios from "../../customhooks/useAxios";
 import { getUser, setUserSession } from "../../util/common";
-import useAxios from "../../customhooks/useAxios";
+import useAxios from "../../api/useAxios";
 import jwtDecode from "jwt-decode";
 import { useDispatch } from "react-redux";
+import { addToken } from "../../redux/Slice/tokenSlice";
 const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
@@ -24,15 +25,19 @@ const Login = () => {
     body: null,
   });
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   // const [response, error, loading, axiosFetch] = useAxiosFunction();
   // const { data, isLoading, error, postData } = useCrudApi(adminApi);
   // const { data, isLoading, error, createData } = useCrudApi(adminApi, "/login");
   const { response, isLoading, error, fetchData } = useAxios({
     api: adminApi,
+
     method: bodyApi.method,
     url: bodyApi.url,
     body: bodyApi.body,
+    header: JSON.stringify({
+      accept: "application/json",
+    }),
   });
 
   const handleLogin = (e) => {
@@ -88,19 +93,12 @@ const Login = () => {
   useEffect(() => {
     if (response !== null) {
       // setUserSession(response.token, response.data);
-      console.log("====================================");
-      console.log(response.data);
-      console.log("====================================");
-      console.log("====================================");
-      console.log(response.token);
-      // dispatch(add);
-      console.log("====================================");
-      // let adminAuth = jwtDecode(response.token);
-
+      dispatch(addToken(response.token));
+      let adminAuth = jwtDecode(response.token);
       // ;
-      // adminAuth.isAdmin
-      //   ? navigate("/membership")
-      //   : alert("You are not admin, please login using admin authentication");
+      adminAuth.isAdmin
+        ? navigate("/dashboard")
+        : alert("You are not admin, please login using admin authentication");
     }
     //  if (
     //   error?.response?.status === 400 ||
@@ -112,7 +110,7 @@ const Login = () => {
       console.log(error);
       console.log("====================================");
     }
-  }, [error, navigate, response]);
+  }, [dispatch, error, navigate, response]);
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [data, error]);
   // console.log(error?.response.status);

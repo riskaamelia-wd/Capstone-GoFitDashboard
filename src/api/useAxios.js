@@ -9,13 +9,13 @@ import { useState, useEffect } from "react";
 
 */
 
-const useAxios = ({ api, method, url, body }) => {
+const useAxios = ({ api, method, url, body, header }) => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
     try {
-      api[method](url, JSON.parse(body))
+      api[method](url, JSON.parse(header), JSON.parse(body))
         .then((res) => {
           setResponse(res.data);
         })
