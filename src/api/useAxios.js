@@ -15,7 +15,8 @@ const useAxios = ({ api, method, url, body, header }) => {
   const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
     try {
-      api[method](url, JSON.parse(header), JSON.parse(body))
+      // JSON.parse(header),
+      api[method](url, JSON.parse(body))
         .then((res) => {
           setResponse(res.data);
         })
