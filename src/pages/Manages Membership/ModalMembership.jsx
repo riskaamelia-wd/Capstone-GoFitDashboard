@@ -34,32 +34,34 @@ const ModalMembership = ({
               value={titleValue}
               placeholder={"Give the plan a name"}
               classNameLabel={" modal-input fs-4 mb-2 mt-2"}
-              // defaultValue={title}
             />
           </div>
 
           <div className="col-12 ">
             <TextField
-              label={"Duration"}
-              type={"text"}
+              label={
+                <>
+                  <div>
+                    Duration <span className="text-danger">* </span>
+                  </div>
+                </>
+              }
+              type={"number"}
               name={"durationmembership"}
               id={"durationmembership"}
               onChange={duration}
               value={durationValue}
-              // defaultValue={duration}
               placeholder={"How many month?"}
               classNameLabel={" modal-input fs-4 mb-2 mt-2"}
             />
+            <small>
+              <span className="text-danger">*</span>please convert to days
+              example 30 for 1 month
+            </small>
           </div>
           <div className="col-12 ">
             <TextField
-              label={
-                <>
-                  <div>
-                    Price <span className="text-danger">* </span>
-                  </div>
-                </>
-              }
+              label={"Price"}
               type={"number"}
               name={"pricemembership"}
               id={"pricemembership"}
@@ -67,12 +69,7 @@ const ModalMembership = ({
               value={priceValue}
               placeholder={"Input the price!"}
               classNameLabel={" modal-input fs-4 mb-2 mt-2"}
-              // defaultValue={price}
             />
-            <small>
-              <span className="text-danger">*</span>please use dots(.) instead
-              of comma (,)
-            </small>
           </div>
           <div className="col-12 ">
             <TextField
@@ -84,7 +81,6 @@ const ModalMembership = ({
               value={descriptionValue}
               placeholder={"What's the benefits?"}
               classNameLabel={" modal-input fs-4 mb-2 mt-2"}
-              // defaultValue={description}
             />
           </div>
 
@@ -101,13 +97,6 @@ const ModalMembership = ({
                 buttonName={"Submit"}
               />
             ) : (
-              //   <ButtonComponent
-              //     // type={"submit"}
-              //     className={"btn-disabled fs-5 w-100"}
-              //     id={"login"}
-              //     onClick={() => {}}
-              //     buttonName={"Submit"}
-              //   />
               <button
                 id="disabledbutton"
                 className="btn w-100 fw-semibold fs-5"

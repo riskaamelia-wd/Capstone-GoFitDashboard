@@ -19,10 +19,6 @@ import ModalMembership from "./ModalMembership";
 const ManageMembership = () => {
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const [title, setTitle] = useState("");
-  const [duration, setDuration] = useState("");
-  const [price, setPrice] = useState(0);
-  const [description, setDescription] = useState("");
   const [id, setId] = useState(null);
   const [data, setData] = useState([]);
 
@@ -40,29 +36,20 @@ const ManageMembership = () => {
         `Price: ${membership.price} \n` +
         `Description: ${membership.description}\n`
     );
-    // add gradient for color
   };
 
   const { response, isLoading } = useAxios({
     api: membershipApi,
     method: "get",
-
-    // url: inputSearch === null ? `/membership` : `/membership${inputSearch}`,
     url: `/newmembership/`,
-    // filter: inputSearch,
     body: JSON.stringify({}),
   });
   useEffect(() => {
     if (response !== null) {
       setData(response);
-      // console.log(response);
     }
   }, [response]);
-  // useEffect(() => {
-  //   if (response !== null) {
-  //     setData(response);
-  //   }
-  // }, [response]);
+
   const handleClose = () => {
     setShow(false);
     setShowEdit(false);
@@ -99,18 +86,14 @@ const ManageMembership = () => {
         <Carousel
           swipeable={true}
           draggable={true}
-          // showDots={true}
           responsive={responsive}
-          ssr={true} // means to render carousel on server-side.
-          // infinite={true}
-          // autoPlay={this.props.deviceType !== "mobile" ? true : false}
-          // autoPlaySpeed={1000}
+          ssr={true}
           keyBoardControl={true}
-          // customTransition="all .5"
-          transitionDuration={500}
           partialVisbile={true}
+          // sliderClass={"p-3"}
+          // containerClass={"p-3 shadow"}
           removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
-          itemClass="carousel-item-padding">
+          itemClass="carousel-item-padding ">
           {data.map((items) => {
             return (
               <>
@@ -119,10 +102,11 @@ const ManageMembership = () => {
                     // id={items.id}
                     title={items.title}
                     duration={items.duration}
-                    price={items.price.toString().replace(/\./g, ",")}
+                    price={items.price.toLocaleString("ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    })}
                     desc={items.desc}
-                    bgcard={`${items.bgcolor.gradientType}(${items.bgcolor.degree},${items.bgcolor.colors[0].value} 
-                      ${items.bgcolor.colors[0].left}%,${items.bgcolor.colors[0].value} ${items.bgcolor.colors[0].left}%)`}
                     onClickEdit={() => {
                       setShowEdit(true);
                       setId(items.id);
@@ -132,8 +116,6 @@ const ManageMembership = () => {
                         price: parseFloat(items.price),
                         description: items.desc,
                       });
-                      setColor(`${items.bgcolor.gradientType}(${items.bgcolor.degree},${items.bgcolor.colors[0].value} 
-                        ${items.bgcolor.colors[0].left}%,${items.bgcolor.colors[0].value} ${items.bgcolor.colors[0].left}%)`);
                     }}
                   />
                 </div>

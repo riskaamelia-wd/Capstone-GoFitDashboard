@@ -12,8 +12,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import ManageMembership from "./pages/Manages Membership/ManageMembership";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <BrowserRouter>
