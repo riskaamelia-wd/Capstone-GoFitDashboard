@@ -6,20 +6,24 @@ import { routes } from "../schema/route";
 
 
 function Layout() {
-    const [isExpanded, setIsExpanded] = useState(true)
+    const [isExpanded, setExpandState] = useState(false);
+    // const [isApps, setExpandApps] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
     // const handleMouse = (e) => {
     //   setIsExpanded(true)
     // }
   
       return(
-          <div className="d-flex row m-0 row">
-            <div className="col-2"
+          <div className="d-flex row sidebar-main-pages">
+            <div 
               >
-              <SidebarComp isExpanded={'true'}/>
+              <SidebarComp isExpanded={isExpanded} setExpandState={setExpandState}/>
             </div>
             {isExpanded ? (
-                <div className="col-10">
-                    <NavbarComp/>
+                <div className="main-sidebar-margin" 
+                // style={{marginLeft: "220px"}}
+                >
+                    <NavbarComp isExpanded={isExpanded} setExpandState={setExpandState} isVisible={isVisible} setIsVisible={setIsVisible}/>
                     <Routes>
                         {
                             routes.map((route) => (
@@ -34,8 +38,10 @@ function Layout() {
                 </div>
             )
              : (
-              <div className="col-11">
-                <NavbarComp/>
+              <div className="main-sidebar-margin-NX" 
+            //   style={{marginLeft: "80px"}}
+              >
+                <NavbarComp isExpanded={isExpanded} setExpandState={setExpandState} isVisible={isVisible} setIsVisible={setIsVisible}/>
                 <Routes>
                     {
                         routes.map((route) => (
