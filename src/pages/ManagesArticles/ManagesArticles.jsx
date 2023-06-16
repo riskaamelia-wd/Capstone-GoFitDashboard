@@ -15,29 +15,35 @@ const ManagesArticles = () => {
           <div className="title mb-4 newsletter-articles-title">
             <h1>Articles & News</h1>
           </div>
-          <div className="newsletter-articles-card">
-            <CardArticles
-              img={cardgirl1}
-              date={"march 22, 2023"}
-              title={"The 3 best exercises to doin your park"}
-            />
-            <CardArticles
-              img={cardboy1}
-              date={"march 22, 2023"}
-              title={"How to Choose The Right Equipment For You"}
-            />
-          </div>
-          <div className="newsletter-articles-card">
-            <CardArticles
-              img={cardgirl1}
-              date={"march 22, 2023"}
-              title={"How to Maximum Time Spent at the Gym."}
-            />
-            <CardArticles
-              img={cardboy1}
-              date={"march 22, 2023"}
-              title={"The best day ever"}
-            />
+          <div className="newsletter-articles-card row">
+            <div className="col-4">
+              <CardArticles
+                img={cardgirl1}
+                date={"march 22, 2023"}
+                title={"The 3 best exercises to doin your park"}
+              />
+            </div>
+            <div className="col-4">
+              <CardArticles
+                img={cardboy1}
+                date={"march 22, 2023"}
+                title={"How to Choose The Right Equipment For You"}
+              />
+            </div>
+            <div className="col-4">
+              <CardArticles
+                img={cardgirl1}
+                date={"march 22, 2023"}
+                title={"The 3 best exercises to doin your park"}
+              />
+            </div>
+            <div className="col-4">
+              <CardArticles
+                img={cardboy1}
+                date={"march 22, 2023"}
+                title={"How to Choose The Right Equipment For You"}
+              />
+            </div>
           </div>
         </div>
       </div>
