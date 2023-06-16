@@ -5,9 +5,11 @@ import usersSlice from "./Slice/usersSlice";
 import paymentMethodsSlice from "./Slice/paymentMethodsSlice";
 import classesSlice from "./Slice/classesSlice";
 import trainingSlice from "./Slice/trainingSlice";
-import onlineClassSlice from "./Slice/OnlineClassSlice";
 import recomendedSlice from "./Slice/recomendedSlice";
 import tokenSlice from "./Slice/tokenSlice";
+import adminSlice from "./Slice/adminSlice";
+import offlineClassSlice from "./Slice/offlineClassSlice";
+import classOnlineSlice from "./Slice/classOnlineSlice";
 
 const persistConfig = {
   key: "root",
@@ -19,9 +21,11 @@ const rootReducer = combineReducers({
   paymentMethod: paymentMethodsSlice,
   classes: classesSlice,
   training: trainingSlice,
-  onlineClass: onlineClassSlice,
+  onlineClass : classOnlineSlice,
+  offlineClass : offlineClassSlice,
   recomended: recomendedSlice,
   tokenAuth : tokenSlice,
+  admin : adminSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
