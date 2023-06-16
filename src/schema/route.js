@@ -10,7 +10,7 @@ import Login from "../pages/Login/Login";
 import Dashboard from "../pages/Dashboard/DashboardPages";
 
 export const routes = [
-    {path : '/', element : Dashboard},
+    {path : '/dashboard', element : Dashboard},
     {path : '/feedback', element : ManagesFeedback},
     {path : '/onlineClass', element : OnlineClass},
     {path : '/training', element : ManageTraining},
@@ -22,5 +22,5 @@ export const routes = [
     {path : '/managesFeedback', element : ManagesFeedback},
     {path : '/forgotPassword', element : ForgotPassword},
     {path : '/resetPassword', element : ResetPassword},
-    {path : '/login', element : Login},
+    {path : '/', element : Login},
 ]

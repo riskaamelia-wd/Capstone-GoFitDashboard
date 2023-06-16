@@ -13,7 +13,7 @@ export const recomendedSlice = createSlice({
             return  state = action.payload
         },
         deleteRecomended: (state, action) => {
-            return state.filter((data) => data.recomended !== action.payload)
+            return state.filter((data) => data.recomendedId !== action.payload)
         }
     }
 })

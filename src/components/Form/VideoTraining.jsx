@@ -61,10 +61,10 @@ export default function VideoTraining({className, imgBtn, text}) {
         e.preventDefault()
         const {name, value} = e.target
         if(name === "video"){
-            const value = e.target.files[0];
-            if(value && value.type.match('video/*')){
-                const storageRef = ref(storage, `/files/${value.name}`)
-                const uploadImg = uploadBytesResumable(storageRef, value)
+            let videoFile = e.target.files[0];
+            if(videoFile && videoFile.type.match('video/*')){
+                const storageRef = ref(storage, `/files/${videoFile.name}`)
+                const uploadImg = uploadBytesResumable(storageRef, videoFile)
                 uploadImg.on(
                     'state_Changed',
                     (snapshot) => {
@@ -88,7 +88,7 @@ export default function VideoTraining({className, imgBtn, text}) {
             } else {
                 alert('please select an image file ( mp4, webm, m4v )')
                 e.target.value = null
-                value = e.target.value
+                videoFile = e.target.value
             }
         } else{
             setData({
@@ -101,9 +101,6 @@ export default function VideoTraining({className, imgBtn, text}) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(workout, ' wo');
-        console.log(data, ' da');
-        console.log(param.idWorkout, ' pa');
         if(window.confirm('Are you sure you want to submit?')){
             if (param.idWorkout !== undefined &&  (workout?.id === data?.id)){
                 trainingApi.put(`/training/${param.id}/videoTraining/${param.idWorkout}`,{
