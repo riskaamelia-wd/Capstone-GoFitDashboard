@@ -1,5 +1,5 @@
 import DetailSpending from "../SpendingCost/DetailSpending"
-import RadialBarChart from "../SpendingCost/RadialSpendingCost"
+import RadialBarChart from "./RadialSpendingCost"
 import img1 from "../../../assets/img/cost1.svg"
 import img2 from "../../../assets/img/cost2.svg"
 import img3 from "../../../assets/img/cost3.svg"

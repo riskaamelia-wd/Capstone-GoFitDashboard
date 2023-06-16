@@ -146,10 +146,10 @@ export default function Training({title, text, imgBtn, className }) {
 
     const handleImg = (e) => {
         e.preventDefault()
-        const value = e.target.files[0];
-        if(value && value.type.match('image.*')){
-            const storageRef = ref(storage, `/files/${value.name}`)
-            const uploadImg = uploadBytesResumable(storageRef, value)
+        let image = e.target.files[0];
+        if(image && image.type.match('image.*')){
+            const storageRef = ref(storage, `/files/${image.name}`)
+            const uploadImg = uploadBytesResumable(storageRef, image)
             uploadImg.on(
                 'state_Changed',
                 (snapshot) => {
@@ -173,7 +173,7 @@ export default function Training({title, text, imgBtn, className }) {
         } else {
             alert('please select an image file ( jpg, png, gif )')
             e.target.value = null
-            value = e.target.value
+            image = e.target.value
         }
         
         // setData((prevState) => ({
