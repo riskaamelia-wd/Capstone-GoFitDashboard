@@ -41,7 +41,7 @@
 }
 
 .btn-sidebar-drop-menu {
-    background-color: var(--Neutral-white-200);
+    background-color: var(--Neutral-white-100);
     width: 250px;
     height: 44px;
     padding: 10px 22px;
@@ -68,18 +68,19 @@
 }
 
 .btn-sidebar-drop-menu:hover {
-    background-color: var(--primary-100);
+    background-color: var(--Neutral-white-300);
     transition: 0.4s;
     transform: scale(1.02);
 }
 
 .btn-sidebar-drop-menu:active {
-    background: #FFDB99;
+    background-color: var(--Neutral-white-300);
+    /* background: #FFDB99; */
 }
 
 .dropdown-sidebar-menu-one {
     /* background-color:aquamarine; */
-    background-color: var(--Neutral-white-200);
+    background-color: var(--Neutral-white-100);
     width: 250px;
     height: 88px;
     padding: 00px 0px;
@@ -92,6 +93,7 @@
 
 .dropdown-sidebar-menu-two {
     /* background-color:aquamarine; */
+    background-color: var(--Neutral-white-100);
     width: 250px;
     height: 88px;
     padding: 00px 0px;
@@ -146,7 +148,7 @@
 }
 
 .btn-sidebar-drop-menu-NX:hover {
-    background-color: var(--primary-100);
+    background-color: var(--Neutral-white-300);
     color: var(--Neutral-Black-900);
     width: 88px;
     height: 44px;
@@ -158,7 +160,7 @@
 }
 
 .btn-sidebar-drop-menu-NX:active {
-    background-color: var(--primary-300);
+    background-color: var(--Neutral-white-500);
     color: var(--primary-900);
     width: 88px;
     height: 44px;
@@ -192,7 +194,7 @@
     }
 
     .btn-sidebar-drop-menu {
-        background-color: var(--Neutral-white-200);
+        background-color: var(--Neutral-white-100);
         width: 210px;
         height: 44px;
         padding: 10px 22px;
@@ -203,18 +205,18 @@
     }
 
     .btn-sidebar-drop-menu:hover {
-        background-color: var(--primary-100);
+        background-color: var(--Neutral-white-300);
         transition: 0.4s;
         transform: scale(1.02);
     }
 
     .btn-sidebar-drop-menu:active {
-        background: #FFDB99;
+        background-color: var(--Neutral-white-500);
     }
 
     .dropdown-sidebar-menu-one {
         /* background-color:aquamarine; */
-        background-color: var(--Neutral-white-200);
+        background-color: var(--Neutral-white-100);
         width: 210px;
         height: 88px;
         padding: 00px 0px;
@@ -227,6 +229,7 @@
 
     .dropdown-sidebar-menu-two {
         /* background-color:aquamarine; */
+        background-color: var(--Neutral-white-100);
         width: 210px;
         height: 88px;
         padding: 00px 0px;
@@ -259,7 +262,7 @@
     }
 
     .btn-sidebar-drop-menu-NX:hover {
-        background-color: var(--primary-100);
+        background-color: var(--Neutral-white-300);
         color: var(--Neutral-Black-900);
         width: 68px;
         height: 44px;
@@ -271,7 +274,7 @@
     }
 
     .btn-sidebar-drop-menu-NX:active {
-        background-color: var(--primary-300);
+        background-color: var(--Neutral-white-500);
         color: var(--primary-900);
         width: 68px;
         height: 44px;
@@ -317,7 +320,7 @@
     }
 
     .btn-sidebar-drop-menu {
-        background-color: var(--Neutral-white-200);
+        background-color: var(--Neutral-white-100);
         width: 150px;
         height: 44px;
         padding: 10px 22px;
@@ -333,7 +336,7 @@
     }
 
     .btn-sidebar-drop-menu:hover {
-        background-color: var(--primary-100);
+        background-color: var(--Neutral-white-300);
         transition: 0.4s;
         transform: scale(1.02);
     }
@@ -344,7 +347,7 @@
 
     .dropdown-sidebar-menu-one {
         /* background-color:aquamarine; */
-        background-color: var(--Neutral-white-200);
+        background-color: var(--Neutral-white-100);
         width: 150px;
         height: 88px;
         padding: 00px 0px;
@@ -357,6 +360,7 @@
 
     .dropdown-sidebar-menu-two {
         /* background-color:aquamarine; */
+        background-color: var(--Neutral-white-100);
         width: 150px;
         height: 88px;
         padding: 00px 0px;
@@ -389,7 +393,7 @@
     }
 
     .btn-sidebar-drop-menu-NX:hover {
-        background-color: var(--primary-100);
+        background-color: var(--Neutral-white-300);
         color: var(--Neutral-Black-900);
         width: 50px;
         height: 34px;
@@ -401,7 +405,7 @@
     }
 
     .btn-sidebar-drop-menu-NX:active {
-        background-color: var(--primary-300);
+        background-color: var(--Neutral-white-500);
         color: var(--primary-900);
         width: 50px;
         height: 34px;
