@@ -75,6 +75,7 @@
     /* background: #FFDB99; */
     /* background: chartreuse; */
     border-radius: 5px;
+    background-color: var(--Neutral-White-200);
 }
 
 .btn-feedback-sort-img {
@@ -88,7 +89,7 @@
 }
 
 .btn-feedback-sort.active {
-    background: var(--primary-200);
+    background: var(--primary-400);
 }
 
 .feedback-sort-menu {
