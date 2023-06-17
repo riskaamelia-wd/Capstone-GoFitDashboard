@@ -8,6 +8,7 @@ import ForgotPassword from "../pages/Login/Forgot Password/ForgotPassword";
 import ResetPassword from "../pages/Login/Reset Password/ResetPassword";
 import Login from "../pages/Login/Login";
 import Dashboard from "../pages/Dashboard/DashboardPages";
+import ManageCustomers from "../pages/ManagesCustomers/ManageCustomers";
 
 export const routes = [
 
@@ -24,5 +25,6 @@ export const routes = [
     {path : '/forgotPassword', element : ForgotPassword},
     {path : '/resetPassword', element : ResetPassword},
     {path : '/', element : Login},
+    {path : '/manageCustomers', element : ManageCustomers},
 ]
 
