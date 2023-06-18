@@ -15,38 +15,70 @@ import { Puff } from "react-loader-spinner";
 import ColorPicker, { useColorPicker } from "react-best-gradient-color-picker";
 import ModalMembership from "./ModalMembership";
 import useAxios from "../../api/useAxios";
+import { useDispatch, useSelector } from "react-redux";
 
 const ManageMembership = () => {
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [id, setId] = useState(null);
   const [data, setData] = useState([]);
+  const token = useSelector((state) => state.tokenAuth);
 
+  const [api, setApi] = useState({
+    method: "get",
+    url: `/plans/all`,
+    body: JSON.stringify({}),
+    header: JSON.stringify({
+      Authorization: `Bearer ${token.token_jwt}`,
+    }),
+  });
+
+  const { response, isLoading, fetchData } = useAxios({
+    api: adminApi,
+    method: api.method,
+    url: api.url,
+    body: api.body,
+    header: api.header,
+  });
   const [membership, setMembership] = useState({
     title: "",
     duration: "",
     price: 0,
     description: "",
   });
-  const onSubmitHandle = (e) => {
+  console.log("====================================");
+  console.log(token);
+  console.log("====================================");
+  const onSubmitHandle = async (e) => {
     e.preventDefault();
-    alert(
-      `Title: ${membership.title} \n` +
-        `Duration: ${membership.duration} \n` +
-        `Price: ${membership.price} \n` +
-        `Description: ${membership.description}\n`
-    );
-  };
 
-  const { response, isLoading } = useAxios({
-    api: membershipApi,
-    method: "get",
-    url: `/newmembership/`,
-    body: JSON.stringify({}),
-  });
+    try {
+      await setApi({
+        method: "post",
+        url: `/admin/plans`,
+        body: JSON.stringify({
+          name: membership.title,
+          duration: parseInt(membership.duration),
+          price: parseInt(membership.price),
+          description: membership.description,
+        }),
+        header: JSON.stringify({
+          Authorization: `Bearer ${token.token_jwt}`,
+        }),
+      });
+      fetchData();
+    } catch (error) {
+      console.log("====================================");
+      console.log(error);
+      console.log("====================================");
+    }
+  };
+  console.log("====================================");
+  console.log(data);
+  console.log("====================================");
   useEffect(() => {
     if (response !== null) {
-      setData(response);
+      setData(response.data);
     }
   }, [response]);
 
@@ -83,46 +115,63 @@ const ManageMembership = () => {
   const generalView = () => {
     return (
       <>
-        <Carousel
-          swipeable={true}
-          draggable={true}
-          responsive={responsive}
-          ssr={true}
-          keyBoardControl={true}
-          partialVisbile={true}
-          // sliderClass={"p-3"}
-          // containerClass={"p-3 shadow"}
-          removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
-          itemClass="carousel-item-padding ">
-          {data.map((items) => {
-            return (
-              <>
-                <div key={items.id}>
-                  <CardMembership
-                    // id={items.id}
-                    title={items.title}
-                    duration={items.duration}
-                    price={items.price.toLocaleString("ID", {
-                      style: "currency",
-                      currency: "IDR",
-                    })}
-                    desc={items.desc}
-                    onClickEdit={() => {
-                      setShowEdit(true);
-                      setId(items.id);
-                      setMembership({
-                        title: items.title,
-                        duration: items.duration,
-                        price: parseFloat(items.price),
-                        description: items.desc,
-                      });
-                    }}
-                  />
-                </div>
-              </>
-            );
-          })}
-        </Carousel>
+        {isLoading ? (
+          <>
+            <div className="d-flex align-items-center justify-content-center">
+              <Puff
+                height="80"
+                width="80"
+                radius={1}
+                color="#FFA83F"
+                ariaLabel="puff-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <Carousel
+              swipeable={true}
+              draggable={true}
+              responsive={responsive}
+              ssr={true}
+              keyBoardControl={true}
+              partialVisbile={true}
+              // sliderClass={"p-3"}
+              // containerClass={"p-3 shadow"}
+              removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
+              itemClass="carousel-item-padding ">
+              {data?.map((items) => {
+                return (
+                  <>
+                    <div key={items.id}>
+                      <CardMembership
+                        // id={items.id}
+                        key={items.id}
+                        title={items.name}
+                        duration={items.duration}
+                        price={items.price}
+                        desc={items.description}
+                        onClickEdit={() => {
+                          setShowEdit(true);
+                          setId(items.id);
+                          setMembership({
+                            title: items.name,
+                            duration: items.duration,
+                            price: parseFloat(items.price),
+                            description: items.descrip,
+                          });
+                        }}
+                      />
+                    </div>
+                  </>
+                );
+              })}
+            </Carousel>
+          </>
+        )}
 
         <ModalMembership
           modaltitle={"Edit Plan"}

@@ -28,7 +28,7 @@ const CardMembership = ({
       <div
         id="card-membership"
         className="card rounded-4"
-        // style={{ boxShadow: "0px 0px 15px -3px rgba(0,0,0,0.5)" }}
+        style={{ height: "60vh" }}
         onMouseEnter={() => {
           setIsVisible(true);
         }}

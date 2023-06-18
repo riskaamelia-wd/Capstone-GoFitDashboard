@@ -1,0 +1,65 @@
+.cardAdd select{
+    border: 0;
+    width: 230px;
+    margin: 0 auto;
+    height: 44px;
+    font-size: 20px;
+    font-weight: 500;
+    /* padding-left: 22px; */
+    /* padding-right: 52px; */
+}
+
+.cardAdd{
+    width: 304px;
+    padding: 32px;
+    box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.12), 0px 10px 32px -4px rgba(24, 39, 75, 0.1);
+    border-radius: 10px;
+    background-color: white;
+}
+
+.btnCancel{
+    color: var(--primary-500);
+    border: 1px solid var(--primary-500);
+    border-radius:8px;
+    width: 96px;
+    /* height: 36px; */
+    font-size: 20px;
+    /* padding-right:34px;
+    padding-left:34px */
+  }
+
+  .btnSave{
+    background-color: var(--primary-500);
+    color: var(--primary-100);
+    border-radius:8px;
+    font-size: 20px;
+    width: 96px;
+    /* height: 36px; */
+    /* padding-right:34px;
+    padding-left:34px */
+  }
+
+  .btnCancel:hover{
+    background-color: var(--primary-300);
+    color: var(--primary-900);
+    transform: scale(1.02);
+  }
+  .btnSave:hover {
+    background-color: var(--primary-300);
+    color: var(--primary-900);
+    transform: scale(1.02);
+}
+ /* .cardAdd div select:focus{
+    margin-bottom: 80px !important;
+ } */
+
+ .btnHover{
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background-color: white;
+ }
+
+ .btnHover:hover{
+    background-color: var(--Neutral-White-400);
+ }

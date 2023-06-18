@@ -14,20 +14,25 @@ const useAxios = ({ api, method, url, body, header }) => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
-    try {
-      api[method](url, JSON.parse(body))
+    if (method) {
+      api({
+        method,
+        url,
+        data: JSON.parse(body),
+      })
         .then((res) => {
           setResponse(res.data);
         })
-        // .catch((err) => {
-        //   setError(err);
-        // })
+        .catch((err) => {
+          setError(err);
+        })
         .finally(() => {
           setIsLoading(false);
         });
-    } catch (err) {
-      setError(err);
-      // console.log(err);
+      // } catch (err) {
+      //   setError(err);
+      //   // console.log(err);
+      // }
     }
   };
   useEffect(() => {
