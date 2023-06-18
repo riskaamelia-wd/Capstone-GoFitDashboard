@@ -8,11 +8,11 @@ import TimeIcon from '../../assets/icons/time.svg'
 import CodeIcon from '../../assets/icons/code.svg'
 import { Col, Row } from "react-bootstrap"
 
-const DetailBooking = ({bookingType, periode, session, zoomCode, classType, descClass, status}) => {
+const DetailBooking = ({bookingType, periode, session, zoomCode, classType, descClass, status, image}) => {
     return (
         <>
             <CardCustomerBooking 
-                image={'https://source.unsplash.com/random/?profile'}
+                image={image}
                 name={classType}
                 date={descClass}
                 status={status}

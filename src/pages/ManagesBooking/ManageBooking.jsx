@@ -5,22 +5,40 @@ import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import axios from "axios";
 import Cover from "../../elements/Card/Cover";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+// import useAxios from "../../api/useAxios"
+// import { adminApi } from "../../api/Api"
 
 const ManageBooking = () => {
     const navigate = useNavigate();
-    const [customers, setCustomers] = useState([]);
+    const token = useSelector((state) => state.tokenAuth.token_jwt)
+    const [datas, setdatas] = useState([]);
     const [viewDetail, setViewDetail] = useState({});
 
+    // const { response, isLoading } = useAxios({
+    //     api: adminApi,
+    //     method: "get",
+    //     url: `/classes/ticket`,
+    //     body: JSON.stringify({}),
+    //     header: JSON.stringify({
+    //         Authorization: `Bearer ${token}`,
+    //     }),
+    // });
+    
     useEffect(() => {
-        axios.get('https://642feb34c26d69edc886a350.mockapi.io/class')
+        axios.get('http://18.141.56.154:8000/admin/classes/tickets',{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
         .then((response) => {
-            console.log(response);
-            setCustomers(response.data);
+            console.log(response.data.data);
+            setdatas(response.data.data);
         })
         .catch((error) => {
             console.log(error);
         })
-    },[])
+    },[token])
 
     const handleClick = (id) => {
         setViewDetail((prevState) => ({
@@ -31,6 +49,19 @@ const ManageBooking = () => {
 
     const handleViewDetail = (id) => {
         navigate(`/booking/detail/${id}`)
+    }
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const options = { month: 'long', day: 'numeric' };
+        const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+        return formattedDate;
+    }
+
+    function formatTime(dateString) {
+        const date = new Date(dateString);
+        const options = { hour: 'numeric', minute: 'numeric'};
+        const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+        return formattedTime;
     }
 
     return (
@@ -74,10 +105,10 @@ const ManageBooking = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {customers.length > 0 ? (
-                    customers.map((customer) => {
+                    {datas.length > 0 ? (
+                    datas.map((data) => {
                         return (
-                        <tr key={customer.id}>
+                        <tr key={data.id}>
                             <td style={{ width: '40px' }}>
                                 <div
                                 style={{
@@ -89,21 +120,25 @@ const ManageBooking = () => {
                                 }}
                                 ></div>
                             </td>
-                            <th>{customer.name}</th>
-                            <td>{customer.classCategory}</td>
-                            <td>{customer.classDate}, {customer.timeSession}</td>
-                            <td>{customer.dailyPrice}.000/daily</td>
-                            <td>{customer.location}</td>
+                            <th>{data.user.name}</th>
+                            <td>{data.class_package.class.class_type}</td>
+                            <td>{formatDate(data.class_package.class.started_at)}, {formatTime(data.class_package.class.started_at)}</td>
+                            <td>{data.class_package.price}/{data.class_package.period}</td>
+                            {
+                                data.class_package.class.class_type === 'online' ? 
+                                    <td>Via Zoom</td>:
+                                    <td>{data.class_package.class.location.address}, {data.class_package.class.location.city}</td>
+                            }
                             <td className="d-flex">
                                 <ButtonComponent
-                                    onClick={() => handleClick(customer.id)}
+                                    onClick={() => handleClick(data.id)}
                                     className={"border-0 bg-transparent text-bold"}
                                     buttonName={'...'}
                                 />
-                                {viewDetail[customer.id] && (
+                                {viewDetail[data.id] && (
                                     <button
                                         style={{color: "var(--info-600)", backgroundColor: "white"}}
-                                        onClick={() => handleViewDetail(customer.id)}
+                                        onClick={() => handleViewDetail(data.id)}
                                         className="shadow border-0 rounded-3"
                                         >
                                         View Detail
@@ -114,7 +149,9 @@ const ManageBooking = () => {
                         );
                     })
                     ) : (
-                        <p>Tidak ada customer</p>
+                        <tr>
+                            <td colSpan="7" className="text-center">Tidak ada data booking</td>
+                        </tr>
                     )}
                 </tbody>
             </table>
