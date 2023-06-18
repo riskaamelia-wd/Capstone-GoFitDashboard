@@ -4,8 +4,10 @@ import IconMember from '../../assets/icons/membership.svg'
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import axios from "axios";
 import Cover from "../../elements/Card/Cover";
+import { useNavigate } from "react-router";
 
 const ManageBooking = () => {
+    const navigate = useNavigate();
     const [customers, setCustomers] = useState([]);
     const [viewDetail, setViewDetail] = useState({});
 
@@ -27,8 +29,8 @@ const ManageBooking = () => {
         }));
     };
 
-    const handleViewDetail = () => {
-        //Navigate to detail
+    const handleViewDetail = (id) => {
+        navigate(`/booking/detail/${id}`)
     }
 
     return (
@@ -101,7 +103,7 @@ const ManageBooking = () => {
                                 {viewDetail[customer.id] && (
                                     <button
                                         style={{color: "var(--info-600)", backgroundColor: "white"}}
-                                        onClick={() => handleViewDetail}
+                                        onClick={() => handleViewDetail(customer.id)}
                                         className="shadow border-0 rounded-3"
                                         >
                                         View Detail
