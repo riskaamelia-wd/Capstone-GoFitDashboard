@@ -11,10 +11,10 @@ import { Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import TextField from "../../elements/TextField/TextField";
 import { adminApi, membershipApi } from "../../api/Api";
-import useAxios from "../../customhooks/useAxios";
 import { Puff } from "react-loader-spinner";
 import ColorPicker, { useColorPicker } from "react-best-gradient-color-picker";
 import ModalMembership from "./ModalMembership";
+import useAxios from "../../api/useAxios";
 
 const ManageMembership = () => {
   const [show, setShow] = useState(false);
