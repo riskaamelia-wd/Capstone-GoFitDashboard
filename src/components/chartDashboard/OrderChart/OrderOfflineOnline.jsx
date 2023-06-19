@@ -1,37 +1,60 @@
 import axios from "axios";
-import { on } from "events";
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
+import { useSelector } from "react-redux";
 
 const OrderChart = () => {
-
+    const token = useSelector((state) => state.tokenAuth.token_jwt);
     const [order, setOrder] = useState([]);
     const [onlineClass, setOnlineClass] = useState(0);
     const [offlineClass, setOfflineClass] = useState(0);
-
+    const [selectedOption, setSelectedOption] = useState("Weekly");
+ 
     useEffect(() => {
-        axios.get('https://642feb34c26d69edc886a350.mockapi.io/class')
+        axios
+            .get("http://18.141.56.154:8000/admin/classes/tickets", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
             .then((response) => {
-                setOrder(response.data);
+                console.log(response.data.data);
+                setOrder(response.data.data);
             })
             .catch((error) => {
                 console.log(error);
             });
-    }, []);
+    }, [token]);
 
     useEffect(() => {
         calculatedPercentage();
-    }, [order]);
+    }, [order, selectedOption]);
 
     const calculatedPercentage = () => {
-        const onlineClasses = order.filter((item) => item.classCategory === 'Online');
-        const offlineClasses = order.filter((item) => item.classCategory === 'Offline');
+        let filteredOrder = order;
+
+        if (selectedOption === "Weekly") {
+            // Filter order data based on weekly option
+            filteredOrder = filteredOrder.filter(
+                (item) => item.class_package.period === "weekly"
+            );
+        } else if (selectedOption === "Monthly") {
+            // Filter order data based on monthly option
+            filteredOrder = filteredOrder.filter(
+                (item) => item.class_package.period === "monthly"
+            );
+        }
+
+        const onlineClasses = filteredOrder.filter(
+            (item) => item.class_package.class.class_type === "online"
+        );
+        const offlineClasses = filteredOrder.filter(
+            (item) => item.class_package.class.class_type === "offline"
+        );
 
         setOnlineClass(onlineClasses.length);
         setOfflineClass(offlineClasses.length);
     };
-
-    const [selectedOption, setSelectedOption] = useState('');
 
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
@@ -44,24 +67,18 @@ const OrderChart = () => {
             fontFamily: "Josefin Sans",
             type: "pie",
         },
-        colors: [
-            "#FF7F00",
-            "#FFC166"
-        ],
+        colors: ["#FF7F00", "#FFC166"],
         dataLabels: {
             style: {
-                fontWeight: 700
+                fontWeight: 700,
             },
             background: {
                 foreColor: "#000000",
                 borderRadius: 0,
-                padding: 0
-            }
+                padding: 0,
+            },
         },
-        labels: [
-            "Offline class",
-            "Online class"
-        ],
+        labels: ["Offline class", "Online class"],
         legend: {
             position: "bottom",
             fontSize: 16,
@@ -70,7 +87,7 @@ const OrderChart = () => {
             markers: {
                 width: 16,
                 height: 16,
-                radius: 26
+                radius: 26,
             },
         },
     };
@@ -84,9 +101,18 @@ const OrderChart = () => {
                     </div>
                     <div className="col-4">
                         <div>
-                            <select className="dropdown" value={selectedOption} onChange={handleOptionChange} id="orderChart">
-                                <option className="selectOrder" value="Weekly">Weekly</option>
-                                <option className="selectOrder" value="Monthly">Monthly</option>
+                            <select
+                                className="dropdown"
+                                value={selectedOption}
+                                onChange={handleOptionChange}
+                                id="orderChart"
+                            >
+                                <option className="selectOrder" value="Weekly">
+                                    Weekly
+                                </option>
+                                <option className="selectOrder" value="Monthly">
+                                    Monthly
+                                </option>
                             </select>
                         </div>
                     </div>

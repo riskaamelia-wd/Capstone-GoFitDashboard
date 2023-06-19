@@ -27,8 +27,15 @@ const RecentTransaction = () => {
                     costTime={"08:00 AM"}
                 />
                 <DataRecentTransaction 
-                    img={outcome}
-                    costTransaction={"-Rp.150.000"}
+                    img={income}
+                    costTransaction={"+Rp.150.000"}
+                    costMember={"David Gunawan"}
+                    costDate={"23 June"}
+                    costTime={"08:00 AM"}
+                />
+                <DataRecentTransaction 
+                    img={income}
+                    costTransaction={"+Rp.150.000"}
                     costMember={"David Gunawan"}
                     costDate={"23 June"}
                     costTime={"08:00 AM"}
