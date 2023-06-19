@@ -7,7 +7,7 @@
 } */
 
 .side-nav-container {
-    /* background-color: var(--Neutral-white-0); */
+    background-color: var(--Neutral-white-0);
     color: var(--Neutral-Black-900);
     /* width: 300px; */
     /* height: 1503px; */
@@ -15,11 +15,11 @@
     /* overflow-y: scroll; */
 
     transition: 0.4s;
-    background-color: var(--Neutral-Black-100);
+    /* background-color: var(--Neutral-Black-100); */
 }
 
 .side-nav-container-NX {
-    /* background-color: var(--Neutral-white-0); */
+    background-color: var(--Neutral-white-0);
     color: var(--Neutral-Black-900);
     isolation: isolate;
     position: absolute;
@@ -27,7 +27,7 @@
     /* overflow-y: scroll; */
     /* width: 150px; */
     /* height: 1000px; */
-    background-color: var(--Neutral-Black-100);
+    /* background-color: var(--Neutral-Black-100); */
 }
 
 .nav-upper,
