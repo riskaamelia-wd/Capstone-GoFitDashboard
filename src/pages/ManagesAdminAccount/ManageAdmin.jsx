@@ -8,6 +8,7 @@ import { Button } from 'react-bootstrap'
 import TagRole from '../../elements/Tag/TagRole';
 import ResetPasswordIcon from '../../assets/icons/forward_media.svg'
 import DeleteIcon from '../../assets/icons/delete.svg'
+import ResetPasswordAdmin from '../../components/Form/ResetPasswordAdmin';
 
 const ManageAdmin = () => {
     const [datas, setdatas] = useState([
@@ -30,7 +31,22 @@ const ManageAdmin = () => {
             profile_image: 'https://placeholder.com/400x400'
         }
     ]);
+    const [showResetPassword, setShowResetPassword] = useState(false);
+    const [showAddAdmin, setShowAddAdmin] = useState(false);
 
+    const handleAddAdmin = () => {
+        setShowAddAdmin(!showAddAdmin);
+        alert('Added')
+    }
+
+    const handleResetPassword = () => {
+        setShowResetPassword(!showResetPassword);
+        alert('Reset')
+    }
+
+    const handleDelete = () => {
+        alert('Deleted')
+    }
     return (
         <div className="container">
             <Cover 
@@ -55,7 +71,7 @@ const ManageAdmin = () => {
                                 className = "search w-100 py-2"
                             />
                         </div>
-                        <Button variant='outline-none' className='text-white' style={{backgroundColor: 'var(--primary-500)'}}>
+                        <Button onClick={handleAddAdmin} variant='outline-none' className='text-white' style={{backgroundColor: 'var(--primary-500)'}}>
                             Add Admin
                             <img src={AddIcon} alt="" className='ps-2'/>
                         </Button>
@@ -119,11 +135,11 @@ const ManageAdmin = () => {
                                 </td>
                                 <td>
                                     <div className="d-flex gap-3 justify-content-end">
-                                        <Button variant='outline-none'>
+                                        <Button variant='outline-none' onClick={handleResetPassword}>
                                             <img src={ResetPasswordIcon} alt="" style={{ width: '20px', height: '20px' }} className='pe-2'/>
                                             Reset Password
                                         </Button>
-                                        <Button variant='outline-none'>
+                                        <Button variant='outline-none' onClick={handleDelete}>
                                             <img src={DeleteIcon} alt="" style={{ width: '20px', height: '20px' }} className='pe-2'/>
                                             Delete
                                         </Button>
