@@ -19,8 +19,8 @@
     margin-top: 40px;
 
     /* position: absolute; */
-    width: 1196px;
-    height: 605px;
+    /* width: 1196px; */
+    /* height: 605px; */
     /* overflow-y: scroll; */
 
     /* Neutral-White/0 */
@@ -41,7 +41,7 @@
 .feedback-history-top-review {
     width: 45px;
     height: 14px;
-    margin-right: 930px;
+    margin-right: 85%;
     /* Body/Body Medium SemiBold */
 
     font-family: 'Josefin Sans';
@@ -144,7 +144,7 @@
 
 .feedback-history-body-card {
     display: flex;
-    width: 1092px;
+    /* width: 1092px; */
     /* width: fit-content; */
     /* background-color: aqua; */
     /* gap: 550px; */
@@ -166,7 +166,7 @@
     display: flex;
     padding: 0.5rem;
     /* width: fit-content; */
-    width: 1000px;
+    width: 90%;
     /* background-color:aquamarine; */
     flex-direction: row;
 }
