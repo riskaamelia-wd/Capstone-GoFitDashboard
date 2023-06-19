@@ -20,6 +20,7 @@ import Icon14Dotblack from "../../assets/icons/Offline_dot.svg";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import { useDispatch } from "react-redux";
 import { addToken } from "../../redux/Slice/tokenSlice";
+import { addUser } from "../../redux/Slice/usersSlice";
 
 const SidebarComp = ({ isExpanded, setExpandState }) => {
   const [isClassDropdown, setClassDropdown] = useState(false);
@@ -43,6 +44,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
   };
   const handleLogout = () => {
     dispatch(addToken(""));
+    dispatch(addUser(""));
   };
   return (
     <div

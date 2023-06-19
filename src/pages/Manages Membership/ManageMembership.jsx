@@ -7,15 +7,13 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import add from "../../assets/icons/add.svg";
-import { Modal } from "react-bootstrap";
-import { useCallback, useEffect, useState } from "react";
-import TextField from "../../elements/TextField/TextField";
-import { adminApi, membershipApi } from "../../api/Api";
+import { useEffect, useState } from "react";
+import { adminApi } from "../../api/Api";
 import { Puff } from "react-loader-spinner";
-import ColorPicker, { useColorPicker } from "react-best-gradient-color-picker";
 import ModalMembership from "./ModalMembership";
 import useAxios from "../../api/useAxios";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const ManageMembership = () => {
   const [show, setShow] = useState(false);
@@ -23,10 +21,7 @@ const ManageMembership = () => {
   const [id, setId] = useState(null);
   const [data, setData] = useState([]);
   const token = useSelector((state) => state.tokenAuth);
-  const [isLoadingData, setIsLoadingData] = useState(true);
-  console.log("====================================");
-  console.log(token.token_jwt);
-  console.log("====================================");
+
   const { response, isLoading, error, fetchData } = useAxios({
     api: adminApi,
     method: "get",
@@ -39,25 +34,6 @@ const ManageMembership = () => {
       Authorization: `Bearer ${token.token_jwt}`,
     },
   };
-  const getData = useCallback(async () => {
-    await adminApi
-      .get("/plans/all")
-      .then(async (res) => {
-        const resData = res.data;
-        console.log("====================================");
-        console.log(resData);
-        console.log("====================================");
-        setData(resData.data);
-      })
-      .catch((err) => {
-        console.log("====================================");
-        console.log(err);
-        console.log("====================================");
-      })
-      .finally(() => {
-        setIsLoadingData(false);
-      });
-  }, []);
   const [membership, setMembership] = useState({
     title: "",
     duration: "",
@@ -73,31 +49,63 @@ const ManageMembership = () => {
       price: parseInt(membership.price),
       description: membership.description,
     };
-    await adminApi
-      .post("/admin/plans", body, {
-        headers: { Authorization: "Bearer " + token.token_jwt },
-      })
-      .then((res) => {
-        console.log("====================================");
-        console.log(res);
-        console.log("====================================");
+    await axios
+      .post("http://18.141.56.154:8000/admin/plans", body, config)
+      .then(() => {
+        alert("Plan added successfully");
+        setMembership({
+          title: "",
+          duration: "",
+          price: 0,
+          description: "",
+        });
+        handleClose();
         fetchData();
       })
       .catch((err) => {
         console.log("====================================");
         console.log(err);
         console.log("====================================");
+      });
+  };
+  const onSubmitEditHandle = async (e) => {
+    e.preventDefault();
+    const body = {
+      name: membership.title,
+      duration: parseInt(membership.duration),
+      price: parseInt(membership.price),
+      description: membership.description,
+    };
+    await axios
+      .put(`http://18.141.56.154:8000/admin/plans/${id}`, body, config)
+      .then(() => {
+        alert("Plan edited successfully");
+        setMembership({
+          title: "",
+          duration: "",
+          price: 0,
+          description: "",
+        });
+        handleClose();
+        fetchData();
       })
-      .finally(() => {
-        setShow(false);
+      .catch((err) => {
+        console.log("====================================");
+        console.log(err);
+        console.log("====================================");
       });
   };
   const HandleDelete = async (id) => {
-    // setIsLoadingData(true);
-    await adminApi.delete(`/admin/plans/${id}`, null, config).then(() => {
-      fetchData();
-      alert("Data deleted!");
-    });
+    await axios
+      .delete(`http://18.141.56.154:8000/admin/plans/${id}`, config)
+      .then(() => {
+        alert("Data deleted successfully!");
+        fetchData();
+      })
+      .catch((e) => {
+        console.log("==============");
+        console.log(e);
+      });
   };
   const handleClose = () => {
     setShow(false);
@@ -156,8 +164,6 @@ const ManageMembership = () => {
               ssr={true}
               keyBoardControl={true}
               partialVisbile={true}
-              // sliderClass={"p-3"}
-              // containerClass={"p-3 shadow"}
               removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
               itemClass="carousel-item-padding ">
               {data?.map((items) => {
@@ -178,7 +184,7 @@ const ManageMembership = () => {
                             title: items.name,
                             duration: items.duration,
                             price: parseFloat(items.price),
-                            description: items.descrip,
+                            description: items.description,
                           });
                         }}
                         onClickDelete={() => {
@@ -194,7 +200,7 @@ const ManageMembership = () => {
         )}
 
         <ModalMembership
-          modaltitle={"Edit Plan"}
+          modaltitle={"Add Plan"}
           show={show}
           handleClose={handleClose}
           title={(e) => {
@@ -264,23 +270,20 @@ const ManageMembership = () => {
             }));
           }}
           descriptionValue={membership.description}
-          onSubmitHandle={onSubmitHandle}
+          onSubmitHandle={onSubmitEditHandle}
         />
       </>
     );
   };
   useEffect(() => {
     if (response !== null) {
-      // getData();
       setData(response.data);
-    }
-    {
+    } else {
       console.log("====================================");
       console.log(error);
       console.log("====================================");
     }
-    // getData();
-  }, [error, getData, response]);
+  }, [error, response]);
   return (
     <>
       <div className="container mt-5" id="container">

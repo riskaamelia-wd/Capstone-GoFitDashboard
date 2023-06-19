@@ -16,16 +16,12 @@ import { addToken } from "../../redux/Slice/tokenSlice";
 import useAxios from "../../api/UseAxios";
 import { addUser } from "../../redux/Slice/usersSlice";
 const Login = () => {
-  const rememberCheck = useRef(null);
   const users = useSelector((state) => state.users);
 
-  const [email, setEmail] = useState(users.data.email);
-  const [password, setPassword] = useState(users.data.password);
+  const [email, setEmail] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const [password, setPassword] = useState("");
 
-  const [dataUsers, setDataUsers] = useState({
-    email: "",
-    password: "",
-  });
   const [bodyApi, setBodyApi] = useState({
     method: "",
     url: "",
@@ -43,22 +39,6 @@ const Login = () => {
       accept: "application/json",
     }),
   });
-  const remember = () => {
-    if (rememberCheck.current.checked) {
-      const data = {
-        email: dataUsers.email,
-        password: dataUsers.password,
-      };
-
-      dispatch(addUser(data));
-    } else {
-      const data = {
-        email: "",
-        password: "",
-      };
-      dispatch(addUser(data));
-    }
-  };
   const handleLogin = (e) => {
     e.preventDefault();
     try {
@@ -76,53 +56,24 @@ const Login = () => {
       console.log(error);
       console.log("====================================");
     }
-
-    // axiosFetch({
-    //   api: membershipApi,
-    //   method: "POST",
-    //   url: "/membership",
-    //   requestConfig: {
-    //     // headers: {
-    //     //   Accept: "application/json",
-    //     // },
-    //     data: {
-    //       // email: email,
-    //       // password: password,
-    //       receiver: "test1",
-    //       type: "test1",
-    //       status: "active",
-    //       date: "2023-06-02T01:27:40.923Z",
-    //       amount: "387.00",
-    //       img: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/826.jpg",
-    //       gender: "cwk",
-    //       email: "Westley_VonRueden81@gmail.com",
-    //       weight: 16,
-    //       height: 8,
-    //       goal_weight: 3,
-    //       payment: "payment 1",
-    //       id: "5",
-    //     },
-    //   },
-
-    // });
   };
-  // console.log(response);
-  // useEffect(() => {
+  const rememberUser = () => {
+    if (users?.token_user) {
+      navigate("/dashboard", { replace: true });
+    }
+  };
 
   useEffect(() => {
+    rememberUser();
     if (response !== null) {
-      setDataUsers({
-        email: response.data.email,
-        password: response.data.password,
-      });
-      remember();
-
       dispatch(addToken(response.token));
+      if (rememberMe === true) {
+        dispatch(addUser(response.token));
+      }
       let adminAuth = jwtDecode(response.token);
-      // ;
       adminAuth.isAdmin
-        ? navigate("/dashboard")
-        : alert("You are not admin, please login using admin authentication");
+        ? navigate("/dashboard", { replace: true })
+        : alert("You are not admin, please login using admin account");
     } else if (error) {
       const metaDataError = error?.response?.data.metadata;
       console.log("====================================");
@@ -185,9 +136,8 @@ const Login = () => {
                       type="checkbox"
                       className="form-check-input"
                       id="rememberme"
-                      // checked={rememberMe}
-                      // onChange={() => setRememberMe(!rememberMe)}
-                      ref={rememberCheck}
+                      checked={rememberMe}
+                      onChange={() => setRememberMe(!rememberMe)}
                     />
                     <label
                       className="form-check-label fw-semibold"
