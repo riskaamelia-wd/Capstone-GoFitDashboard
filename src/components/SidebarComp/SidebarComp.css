@@ -1,15 +1,15 @@
-.main-sidebar-margin{
+/* .main-sidebar-margin{
     margin-left: 220px;
 }
 
 .main-sidebar-margin-NX{
     margin-left: 80px;
-}
+} */
 
 .side-nav-container {
     background-color: var(--Neutral-white-0);
     color: var(--Neutral-Black-900);
-    width: 300px;
+    /* width: 300px; */
     /* height: 1503px; */
     position: absolute;
     /* overflow-y: scroll; */
@@ -23,10 +23,10 @@
     color: var(--Neutral-Black-900);
     isolation: isolate;
     position: absolute;
-    left: 10px;
+    /* left: 10px; */
     /* overflow-y: scroll; */
-    width: 150px;
-    height: 1000px;
+    /* width: 150px; */
+    /* height: 1000px; */
     /* background-color: var(--Neutral-Black-100); */
 }
 
@@ -288,17 +288,18 @@
 
 @media (max-width: 768px) {
     .main-sidebar-margin{
-        margin-left: 180px;
+        margin-left: 190px;
     }
     
     .main-sidebar-margin-NX{
-        margin-left: 80px;
+        margin-left: 105px;
     }
 
     .side-nav-container {
         background-color: var(--Neutral-white-0);
+        /* background-color: var(--Neutral-Black-100); */
         color: var(--Neutral-Black-900);
-        width: 150px;
+        /* width: 150px; */
         /* height: 900px; */
         position: absolute;
         /* overflow-y: scroll; */
@@ -308,13 +309,14 @@
 
     .side-nav-container-NX {
         background-color: var(--Neutral-white-0);
+        /* background-color: var(--Neutral-Black-100); */
         color: var(--Neutral-Black-900);
         isolation: isolate;
         position: absolute;
-        left: 5px;
+        /* left: 5px; */
         /* overflow-y: scroll; */
-        width: 80px;
-        height: 745px;
+        /* width: 80px; */
+        /* height: 745px; */
     }
 
     .nav-upper,
@@ -547,18 +549,18 @@
 
 @media (min-width: 768px) and (max-width: 990px) {
     .main-sidebar-margin{
-        margin-left: 210px;
+        margin-left: 240px;
     }
     
     .main-sidebar-margin-NX{
-        margin-left: 80px;
+        margin-left: 115px;
     }
 
     .side-nav-container {
         background-color: var(--Neutral-white-0);
         color: var(--Neutral-Black-900);
-        width: 230px;
-        height: 1200px;
+        /* width: 230px; */
+        /* height: 1200px; */
         position: absolute;
         /* overflow-y: scroll; */
 
@@ -570,10 +572,10 @@
         color: var(--Neutral-Black-900);
         isolation: isolate;
         position: absolute;
-        left: 8px;
+        /* left: 8px; */
         /* overflow-y: scroll; */
-        width: 120px;
-        height: 900px;
+        /* width: 120px; */
+        /* height: 900px; */
     }
 
     .nav-upper,

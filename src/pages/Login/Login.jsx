@@ -3,6 +3,7 @@ import LoginImg from "../../assets/gif/Login.gif";
 
 import TextField from "../../elements/TextField/TextField";
 
+
 import { NavLink, useNavigate } from "react-router-dom";
 import TextFieldPassword from "../../elements/TextField/TextFieldPassword";
 import { useEffect, useState } from "react";
@@ -21,6 +22,9 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const [bodyApi, setBodyApi] = useState({
+    method: "",
+    url: "",
+    body: null,
     method: "",
     url: "",
     body: null,
