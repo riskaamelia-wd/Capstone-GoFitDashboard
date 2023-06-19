@@ -26,6 +26,9 @@ import LevelDetail from "./pages/ManagesTraining/LevelDetail";
 import WorkoutDetail from "./pages/ManagesTraining/WorkoutDetail";
 import Invoices from "./pages/Invoices/Invoices";
 import Dashboard from "./pages/Dashboard/DashboardPages";
+import ManageBooking from "./pages/ManagesBooking/ManageBooking";
+import ManagesArticles from "./pages/ManagesArticles/ManagesArticles";
+import ManageTransaction from "./pages/ManageTransaction/ManageTransaction";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -60,7 +63,8 @@ function App() {
           <Route path="/resetpassword/:id_user" element={<ResetPassword />} />
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/feedback" element={<ManagesFeedback />} />
+            <Route path="/managesfeedback" element={<ManagesFeedback />} />
+            <Route path="/articles" element={<ManagesArticles />} />
             <Route path="onlineClass" element={<OnlineClass />} />
             <Route path="training" element={<ManageTraining />} />
             <Route path="levelDetail/:level" element={<LevelDetail />} />
@@ -74,8 +78,10 @@ function App() {
               element={<WorkoutDetail />}
             />
             <Route path="/invoices" element={<Invoices />} />
-            <Route path="managesFeedback" element={<ManagesFeedback />} />
             <Route path="/membership" element={<ManageMembership />} />
+            <Route path="/transaction" element={<ManageTransaction/>} />
+            <Route path="/booking" element={<ManageBooking />} />
+            <Route path="/booking/detail/:id" element={<ManageBookingDetail />} />
           </Route>
         </Routes>
       </BrowserRouter>

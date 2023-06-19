@@ -5,7 +5,7 @@ import SidebarComp from "../components/SidebarComp/SidebarComp";
 import NavbarComp from "../components/NavbarComp/NavbarComp";
 
 const PrivateRoute = () => {
-  const [isExpanded, setExpandState] = useState(true);
+  const [isExpanded, setExpandState] = useState(false);
   // const [isApps, setExpandApps] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const token = useSelector((state) => state.tokenAuth.token_jwt);
@@ -19,7 +19,9 @@ const PrivateRoute = () => {
     return (
       <>
         <div className="d-flex row sidebar-main-pages">
-          <div>
+          <div
+          className={isExpanded ? "col-lg-3" : "col-lg-1"}
+          >
             <SidebarComp
               isExpanded={isExpanded}
               setExpandState={setExpandState}
@@ -27,7 +29,8 @@ const PrivateRoute = () => {
           </div>
           {isExpanded ? (
             <div
-              className="main-sidebar-margin"
+              className="col-lg-9  main-sidebar-margin"
+              // className="main-sidebar-margin"
               // style={{marginLeft: "220px"}}
             >
               <NavbarComp
@@ -36,11 +39,12 @@ const PrivateRoute = () => {
                 isVisible={isVisible}
                 setIsVisible={setIsVisible}
               />
-              <Outlet />
+              <Outlet/>
             </div>
           ) : (
             <div
-              className="main-sidebar-margin-NX"
+              className="col-lg-11  main-sidebar-margin-NX"
+              // className="main-sidebar-margin-NX"
               //   style={{marginLeft: "80px"}}
             >
               <NavbarComp
@@ -49,7 +53,7 @@ const PrivateRoute = () => {
                 isVisible={isVisible}
                 setIsVisible={setIsVisible}
               />
-              <Outlet />
+              <Outlet/>
             </div>
           )}
         </div>

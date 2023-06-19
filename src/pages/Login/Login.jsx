@@ -1,15 +1,13 @@
 import "./Login.css";
 import LoginImg from "../../assets/gif/Login.gif";
-import google from "../../assets/icons/google.svg";
 
 import TextField from "../../elements/TextField/TextField";
 
 import { NavLink, useNavigate } from "react-router-dom";
 import TextFieldPassword from "../../elements/TextField/TextFieldPassword";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
-import { adminApi, membershipApi } from "../../api/Api";
-import { getUser, setUserSession } from "../../util/common";
+import { adminApi } from "../../api/Api";
 import jwtDecode from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../../redux/Slice/tokenSlice";
@@ -85,8 +83,6 @@ const Login = () => {
     }
   }, [dispatch, error, navigate, response]);
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [data, error]);
-  // console.log(error?.response.status);
 
   return (
     <>

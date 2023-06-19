@@ -89,7 +89,7 @@
     color: var(--Neutral-White-100);
 }
 
-.tag-booking-canceled {
+.tag-cancelled {
     background-color: var(--Danger-800);
     color: var(--Neutral-White-100);
 }
