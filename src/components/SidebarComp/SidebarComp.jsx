@@ -85,7 +85,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
               }
             ></ButtonComponent>
           </NavLink>
-          <NavLink to={"/dashboard"}>
+          <NavLink to={"/transaction"}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-sidebar" : "btn-sidebar-NX"}
@@ -151,7 +151,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                       buttonName={"Manage Booking"}
                     />
                   </NavLink>
-                  <NavLink to={"/dashboard"}>
+                  <NavLink to={"onlineClass"}>
                     <ButtonComponent
                       type={"button"}
                       className={"btn-sidebar-drop-menu"}
@@ -188,7 +188,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                       imgUrlStart={isExpanded ? "" : Icon14Dotblack}
                     />
                   </NavLink>
-                  <NavLink to={"/dashboard"}>
+                  <NavLink to={"onlineClass"}>
                     <ButtonComponent
                       type={"button"}
                       className={
@@ -297,7 +297,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
               </div>
             ) : null}
           </div>
-          <NavLink to={"/dashboard"}>
+          <NavLink to={"/managecustomer"}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-sidebar" : "btn-sidebar-NX"}
@@ -312,7 +312,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
           <h1 className={isExpanded ? "menu-item" : "menu-item menu-item-NX"}>
             Pages
           </h1>
-          <NavLink to={"/dashboard"}>
+          <NavLink to={"/manageadmin"}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-sidebar" : "btn-sidebar-NX"}

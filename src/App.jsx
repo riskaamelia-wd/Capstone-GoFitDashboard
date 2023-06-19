@@ -28,6 +28,7 @@ import Invoices from "./pages/Invoices/Invoices";
 import Dashboard from "./pages/Dashboard/DashboardPages";
 import ManageBooking from "./pages/ManagesBooking/ManageBooking";
 import ManagesArticles from "./pages/ManagesArticles/ManagesArticles";
+import ManageTransaction from "./pages/ManageTransaction/ManageTransaction";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -78,6 +79,7 @@ function App() {
             />
             <Route path="/invoices" element={<Invoices />} />
             <Route path="/membership" element={<ManageMembership />} />
+            <Route path="/transaction" element={<ManageTransaction/>} />
             <Route path="/booking" element={<ManageBooking />} />
             <Route path="/booking/detail/:id" element={<ManageBookingDetail />} />
           </Route>
