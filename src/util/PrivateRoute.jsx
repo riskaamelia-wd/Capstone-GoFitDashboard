@@ -20,7 +20,7 @@ const PrivateRoute = () => {
       <>
         <div className="d-flex row sidebar-main-pages">
           <div
-          className={isExpanded ? "col-3" : "col-1"}
+          className={isExpanded ? "col-lg-3" : "col-lg-1"}
           >
             <SidebarComp
               isExpanded={isExpanded}
@@ -29,7 +29,7 @@ const PrivateRoute = () => {
           </div>
           {isExpanded ? (
             <div
-              className="col-9"
+              className="col-lg-9  main-sidebar-margin"
               // className="main-sidebar-margin"
               // style={{marginLeft: "220px"}}
             >
@@ -43,7 +43,7 @@ const PrivateRoute = () => {
             </div>
           ) : (
             <div
-              className="col-11"
+              className="col-lg-11  main-sidebar-margin-NX"
               // className="main-sidebar-margin-NX"
               //   style={{marginLeft: "80px"}}
             >
