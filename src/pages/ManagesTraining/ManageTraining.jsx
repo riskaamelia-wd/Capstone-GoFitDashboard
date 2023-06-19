@@ -101,7 +101,7 @@ const ManageTraining = () => {
 
 
     return(
-        <div className="container-fluid" style={{marginLeft:"60px"}}>
+        <div className="container-fluid">
             <Cover
                 img={imgCover}
                 list1={'Home'}
