@@ -5,7 +5,7 @@ import SidebarComp from "../components/SidebarComp/SidebarComp";
 import NavbarComp from "../components/NavbarComp/NavbarComp";
 
 const PrivateRoute = () => {
-  const [isExpanded, setExpandState] = useState(false);
+  const [isExpanded, setExpandState] = useState(true);
   // const [isApps, setExpandApps] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const token = useSelector((state) => state.tokenAuth.token_jwt);
@@ -36,7 +36,7 @@ const PrivateRoute = () => {
                 isVisible={isVisible}
                 setIsVisible={setIsVisible}
               />
-              <Outlet/>
+              <Outlet />
             </div>
           ) : (
             <div
@@ -49,7 +49,7 @@ const PrivateRoute = () => {
                 isVisible={isVisible}
                 setIsVisible={setIsVisible}
               />
-              <Outlet/>
+              <Outlet />
             </div>
           )}
         </div>

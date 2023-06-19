@@ -7,7 +7,7 @@ const membershipApi = axios.create({
 
 const adminApi = axios.create({
   baseURL: "http://18.141.56.154:8000",
-  // headers: { Accept: "application/json" },
+  headers: { Accept: "application/json" },
 });
 
 const trainingApi = axios.create({

@@ -8,7 +8,7 @@ import "react-multi-carousel/lib/styles.css";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import add from "../../assets/icons/add.svg";
 import { Modal } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TextField from "../../elements/TextField/TextField";
 import { adminApi, membershipApi } from "../../api/Api";
 import { Puff } from "react-loader-spinner";
@@ -23,65 +23,82 @@ const ManageMembership = () => {
   const [id, setId] = useState(null);
   const [data, setData] = useState([]);
   const token = useSelector((state) => state.tokenAuth);
-
-  const [api, setApi] = useState({
-    method: "get",
-    url: `/plans/all`,
-    body: JSON.stringify({}),
-    header: JSON.stringify({
-      Authorization: `Bearer ${token.token_jwt}`,
-    }),
-  });
-
-  const { response, isLoading, fetchData } = useAxios({
+  const [isLoadingData, setIsLoadingData] = useState(true);
+  console.log("====================================");
+  console.log(token.token_jwt);
+  console.log("====================================");
+  const { response, isLoading, error, fetchData } = useAxios({
     api: adminApi,
-    method: api.method,
-    url: api.url,
-    body: api.body,
-    header: api.header,
+    method: "get",
+    url: "/plans/all",
+    body: JSON.stringify({}),
+    header: JSON.stringify({}),
   });
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token.token_jwt}`,
+    },
+  };
+  const getData = useCallback(async () => {
+    await adminApi
+      .get("/plans/all")
+      .then(async (res) => {
+        const resData = res.data;
+        console.log("====================================");
+        console.log(resData);
+        console.log("====================================");
+        setData(resData.data);
+      })
+      .catch((err) => {
+        console.log("====================================");
+        console.log(err);
+        console.log("====================================");
+      })
+      .finally(() => {
+        setIsLoadingData(false);
+      });
+  }, []);
   const [membership, setMembership] = useState({
     title: "",
     duration: "",
     price: 0,
     description: "",
   });
-  console.log("====================================");
-  console.log(token);
-  console.log("====================================");
+
   const onSubmitHandle = async (e) => {
     e.preventDefault();
-
-    try {
-      await setApi({
-        method: "post",
-        url: `/admin/plans`,
-        body: JSON.stringify({
-          name: membership.title,
-          duration: parseInt(membership.duration),
-          price: parseInt(membership.price),
-          description: membership.description,
-        }),
-        header: JSON.stringify({
-          Authorization: `Bearer ${token.token_jwt}`,
-        }),
+    const body = {
+      name: membership.title,
+      duration: parseInt(membership.duration),
+      price: parseInt(membership.price),
+      description: membership.description,
+    };
+    await adminApi
+      .post("/admin/plans", body, {
+        headers: { Authorization: "Bearer " + token.token_jwt },
+      })
+      .then((res) => {
+        console.log("====================================");
+        console.log(res);
+        console.log("====================================");
+        fetchData();
+      })
+      .catch((err) => {
+        console.log("====================================");
+        console.log(err);
+        console.log("====================================");
+      })
+      .finally(() => {
+        setShow(false);
       });
-      fetchData();
-    } catch (error) {
-      console.log("====================================");
-      console.log(error);
-      console.log("====================================");
-    }
   };
-  console.log("====================================");
-  console.log(data);
-  console.log("====================================");
-  useEffect(() => {
-    if (response !== null) {
-      setData(response.data);
-    }
-  }, [response]);
-
+  const HandleDelete = async (id) => {
+    // setIsLoadingData(true);
+    await adminApi.delete(`/admin/plans/${id}`, null, config).then(() => {
+      fetchData();
+      alert("Data deleted!");
+    });
+  };
   const handleClose = () => {
     setShow(false);
     setShowEdit(false);
@@ -163,6 +180,9 @@ const ManageMembership = () => {
                             price: parseFloat(items.price),
                             description: items.descrip,
                           });
+                        }}
+                        onClickDelete={() => {
+                          HandleDelete(items.id);
                         }}
                       />
                     </div>
@@ -249,6 +269,18 @@ const ManageMembership = () => {
       </>
     );
   };
+  useEffect(() => {
+    if (response !== null) {
+      // getData();
+      setData(response.data);
+    }
+    {
+      console.log("====================================");
+      console.log(error);
+      console.log("====================================");
+    }
+    // getData();
+  }, [error, getData, response]);
   return (
     <>
       <div className="container mt-5" id="container">

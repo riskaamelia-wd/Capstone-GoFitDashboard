@@ -6,18 +6,26 @@ import TextField from "../../elements/TextField/TextField";
 
 import { NavLink, useNavigate } from "react-router-dom";
 import TextFieldPassword from "../../elements/TextField/TextFieldPassword";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import { adminApi, membershipApi } from "../../api/Api";
 import { getUser, setUserSession } from "../../util/common";
 import jwtDecode from "jwt-decode";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../../redux/Slice/tokenSlice";
 import useAxios from "../../api/UseAxios";
+import { addUser } from "../../redux/Slice/usersSlice";
 const Login = () => {
-  const [rememberMe, setRememberMe] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const rememberCheck = useRef(null);
+  const users = useSelector((state) => state.users);
+
+  const [email, setEmail] = useState(users.data.email);
+  const [password, setPassword] = useState(users.data.password);
+
+  const [dataUsers, setDataUsers] = useState({
+    email: "",
+    password: "",
+  });
   const [bodyApi, setBodyApi] = useState({
     method: "",
     url: "",
@@ -25,9 +33,7 @@ const Login = () => {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const [response, error, loading, axiosFetch] = useAxiosFunction();
-  // const { data, isLoading, error, postData } = useCrudApi(adminApi);
-  // const { data, isLoading, error, createData } = useCrudApi(adminApi, "/login");
+
   const { response, isLoading, error, fetchData } = useAxios({
     api: adminApi,
     method: bodyApi.method,
@@ -37,7 +43,22 @@ const Login = () => {
       accept: "application/json",
     }),
   });
+  const remember = () => {
+    if (rememberCheck.current.checked) {
+      const data = {
+        email: dataUsers.email,
+        password: dataUsers.password,
+      };
 
+      dispatch(addUser(data));
+    } else {
+      const data = {
+        email: "",
+        password: "",
+      };
+      dispatch(addUser(data));
+    }
+  };
   const handleLogin = (e) => {
     e.preventDefault();
     try {
@@ -90,7 +111,12 @@ const Login = () => {
 
   useEffect(() => {
     if (response !== null) {
-      // setUserSession(response.token, response.data);
+      setDataUsers({
+        email: response.data.email,
+        password: response.data.password,
+      });
+      remember();
+
       dispatch(addToken(response.token));
       let adminAuth = jwtDecode(response.token);
       // ;
@@ -106,10 +132,6 @@ const Login = () => {
         `status code : ${metaDataError?.status_code} \n message : ${metaDataError?.message} \n reason : ${metaDataError?.error_reason}`
       );
     }
-    //  if (
-    //   error?.response?.status === 400 ||
-    //   error?.response?.status === 401
-    // )
   }, [dispatch, error, navigate, response]);
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [data, error]);
@@ -163,8 +185,9 @@ const Login = () => {
                       type="checkbox"
                       className="form-check-input"
                       id="rememberme"
-                      checked={rememberMe}
-                      onChange={() => setRememberMe(!rememberMe)}
+                      // checked={rememberMe}
+                      // onChange={() => setRememberMe(!rememberMe)}
+                      ref={rememberCheck}
                     />
                     <label
                       className="form-check-label fw-semibold"

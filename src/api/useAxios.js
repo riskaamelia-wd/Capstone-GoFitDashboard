@@ -29,12 +29,9 @@ const useAxios = ({ api, method, url, body, header }) => {
         .finally(() => {
           setIsLoading(false);
         });
-      // } catch (err) {
-      //   setError(err);
-      //   // console.log(err);
-      // }
     }
   };
+
   useEffect(() => {
     if (header) {
       api.interceptors.request.use(
@@ -49,7 +46,7 @@ const useAxios = ({ api, method, url, body, header }) => {
       );
     }
     fetchData();
-  }, [api, body, method, url]);
+  }, [api, body, header, method, url]);
 
   return { response, error, isLoading, fetchData };
 };
