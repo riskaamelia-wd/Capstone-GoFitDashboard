@@ -1,4 +1,4 @@
-import "../../ChartDashboard/ChartDashboard.css";
+import '../ChartDashboard.css'
 
 const DetailSpending = ({img, text1, text2}) => {
     return (

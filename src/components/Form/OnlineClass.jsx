@@ -4,7 +4,6 @@ import '@mobiscroll/react/dist/css/mobiscroll.min.css';
 import { Datepicker, Input } from '@mobiscroll/react';
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from 'react-redux'
-import { addOnlineClass, updateOnlineClass } from "../../redux/Slice/OnlineClassSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import Textarea from '../../elements/TextField/Textarea' 
 import add from '../../assets/icons/add.svg'
@@ -14,6 +13,7 @@ import axios from "axios";
 import useAxios from "../../api/UseAxios";
 import { classApi } from "../../api/Api";
 import { useParams } from 'react-router-dom';
+import { addOnlineClass } from "../../redux/Slice/classOnlineSlice";
 
 
 

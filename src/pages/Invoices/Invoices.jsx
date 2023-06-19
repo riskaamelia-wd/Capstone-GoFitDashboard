@@ -40,7 +40,7 @@ const Invoices = () => {
         )
     }
     return(
-        <div>
+        <div style={{marginLeft:"80px"}}>
             <Row>
                 <Col md={4} lg={3}>
                     <Card

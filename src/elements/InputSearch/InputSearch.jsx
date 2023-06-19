@@ -11,8 +11,8 @@ const InputSearch = ({type, name, id, onChange, value, placeholder, width, heigh
                     name={name}
                     id={id}
                     placeholder={placeholder}                
-                    className = "search"
-                    style={{ width: `${width}px`, height: `${height}px` }}
+                    className = "search w-100"
+                    // style={{ width: `${width}vw`, height: `${height}vw` }}
                     onChange={onChange}
                     value={value}  
                 />
