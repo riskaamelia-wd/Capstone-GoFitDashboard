@@ -38,6 +38,10 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
   const handleMouseLeave = () => {
     setExpandState(false);
   };
+  const handleLogout = () => {
+    dispatch(addToken(""));
+    dispatch(addUser(""));
+  };
   return (
     <div
       className={
@@ -349,7 +353,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
           <h1 className={isExpanded ? "menu-item" : "menu-item menu-item-NX"}>
             Auth
           </h1>
-          <NavLink to={"/"}>
+          <NavLink to={"/"} onClick={handleLogout}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-logout" : "btn-sidebar-NX"}
@@ -357,8 +361,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
               imgUrlStart={Icon11Logout}
               imgClassName={
                 isExpanded ? "btn-sidebar-icon" : "btn-sidebar-icon-NX"
-              }
-            ></ButtonComponent>
+              }></ButtonComponent>
           </NavLink>
         </div>
       </div>
