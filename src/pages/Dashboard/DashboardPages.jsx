@@ -13,26 +13,7 @@ import Outcome from "../../components/chartDashboard/IncomeOutcome/Outcome"
 import WalletBalance from "../../components/chartDashboard/WalletBalance/WalletBalance"
 
 const Dashboard = () => {
-    const radialBarChart = [
-        {
-            level: 'Beginner',
-            series: [95],
-            colorBackground: '#FFEFCC',
-            colorText: '#FF7F00'
-        },
-        {
-            level: 'Intermediate',
-            series: [70],
-            colorBackground: '#CCCCFF',
-            colorText: '#3F3FFF'
-        },
-        {
-            level: 'Advanced',
-            series: [73],
-            colorBackground: '#98F2FE',
-            colorText: '#00ACFC'
-        },
-    ];
+    
     return (
         <>
             <div className="container dashboard" id="dashboard">
