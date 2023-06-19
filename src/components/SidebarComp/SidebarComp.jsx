@@ -176,7 +176,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                       : "sidebar-drop-menu-option-NX"
                   }
                 >
-                  <NavLink to={"/dashboard"}>
+                  <NavLink to={"/booking"}>
                     <ButtonComponent
                       type={"button"}
                       className={

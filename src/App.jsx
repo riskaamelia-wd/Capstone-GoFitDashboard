@@ -26,6 +26,7 @@ import LevelDetail from "./pages/ManagesTraining/LevelDetail";
 import WorkoutDetail from "./pages/ManagesTraining/WorkoutDetail";
 import Invoices from "./pages/Invoices/Invoices";
 import Dashboard from "./pages/Dashboard/DashboardPages";
+import ManageBooking from "./pages/ManagesBooking/ManageBooking";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -76,6 +77,8 @@ function App() {
             <Route path="/invoices" element={<Invoices />} />
             <Route path="managesFeedback" element={<ManagesFeedback />} />
             <Route path="/membership" element={<ManageMembership />} />
+            <Route path="/booking" element={<ManageBooking />} />
+            <Route path="/booking/detail/:id" element={<ManageBookingDetail />} />
           </Route>
         </Routes>
       </BrowserRouter>
