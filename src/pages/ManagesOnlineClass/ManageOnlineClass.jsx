@@ -27,7 +27,7 @@ const ManagesOnlineClass = () => {
         started_at:null,
         description:'',
         imageFile:'',
-        linkClass:'',
+        link:'',
         class_type:'online'
     })
     const { response, isLoading, error, fetchData } = useAxios({
@@ -90,7 +90,7 @@ const ManagesOnlineClass = () => {
             name:online.name,
             started_at:formatDate,
             description:online.description,
-            link:online.linkClass,
+            link:online.link,
             class_type:'online'
         };
         
@@ -187,10 +187,10 @@ const ManagesOnlineClass = () => {
                             linkClass={(e) => {
                                 setOnline((filledState) => ({
                                   ...filledState,
-                                  linkClass: e.target.value,
+                                  link: e.target.value,
                                 }));
                             }}
-                            linkClassValue={online?.linkClass}
+                            linkClassValue={online?.link}
                             imageFile={(e) => {
                                 const file = e.target.files[0];
                                 setOnline((prevData) => ({
@@ -234,8 +234,8 @@ const ManagesOnlineClass = () => {
                                             img={addSmall}
                                             key={id}
                                             text={item.name}
-                                            date={item.started_at}
-                                            timeSession={item.link}
+                                            date={item.link}
+                                            timeSession={item.started_at}
                                             category={item.description}
                                             onClickDelete={()=>handleDelete(item.id)}
                                             onClickEdit={() => handleEdit(item.id)}
