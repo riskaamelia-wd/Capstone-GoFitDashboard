@@ -14,6 +14,7 @@ import OnlineClass from "../../components/Form/OnlineClass";
 import "./OnlineClass.css";
 import Loading from "../../components/Loading";
 import useAxios from "../../api/useAxios";
+import axios from "axios";
 
 const ManagesOnlineClass = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const ManagesOnlineClass = () => {
     class_type: "online",
   });
   const { response, isLoading, error, fetchData } = useAxios({
-    api: "http://18.141.56.154:8000",
+    api: adminApi,
     method: "get",
     url: `/classes?search=${inputSearch}`,
     body: JSON.stringify({}),
@@ -71,17 +72,21 @@ const ManagesOnlineClass = () => {
   }, [error, getData, response]);
 
   const handleDelete = async (id) => {
-    await adminApi.delete(`/admin/classes/${id}`, null, config).then(() => {
-      fetchData();
-      alert("Data deleted successfully");
-    });
+    await axios
+      .delete(`http://18.141.56.154:8000/admin/classes/${id}`, config)
+      .then(() => {
+        fetchData();
+        alert("Data deleted successfully");
+      });
   };
 
   const handleEdit = async (id) => {
-    await adminApi.get(`/admin/classes/${id}`, config).then(async (res) => {
-      await fetchData();
-      setOnline(res?.data?.data);
-    });
+    await axios
+      .get(`http://18.141.56.154:8000/admin/classes/${id}`, config)
+      .then(async (res) => {
+        await fetchData();
+        setOnline(res?.data?.data);
+      });
   };
 
   const handleSubmit = async (e) => {
@@ -98,8 +103,12 @@ const ManagesOnlineClass = () => {
 
     if (window.confirm("Are you sure you want to submit?")) {
       if (finder) {
-        await adminApi
-          .put(`/admin/classes/${online.id}`, body, config)
+        await axios
+          .put(
+            `http://18.141.56.154:8000/admin/classes/${online.id}`,
+            body,
+            config
+          )
           .then((res) => {
             alert("data edited successfully");
             console.log(res);
@@ -109,8 +118,8 @@ const ManagesOnlineClass = () => {
             console.log(err);
           });
       } else {
-        await adminApi
-          .post("/admin/classes", body, config)
+        await axios
+          .post("http://18.141.56.154:8000/admin/classes", body, config)
           .then((res) => {
             alert("data added successfully");
             console.log(res);
