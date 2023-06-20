@@ -103,6 +103,7 @@ const handleEdit=async  (id) => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   const finder = data.find(item => item.id === loc.id)
+  console.log(finder, ' fid');
   const body = {
     name:loc.name,
     city:loc.city,
@@ -110,7 +111,6 @@ const handleSubmit = async (e) => {
     latitude:lat,
     longitude:lng,
   };
-  
   if(window.confirm('Are you sure you want to submit?')){
       if (finder){
           await adminApi
@@ -138,7 +138,7 @@ const handleSubmit = async (e) => {
 
 return (
   <>
-    <div className="col-10 ms-5">
+    <div>
     <Cover
         text={'Manage Offline Class'}
         list1={'Class Data'}
