@@ -13,7 +13,6 @@ const ModalMembership = ({
   priceValue,
   description,
   descriptionValue,
-
   onSubmitHandle,
   modaltitle,
 }) => {
