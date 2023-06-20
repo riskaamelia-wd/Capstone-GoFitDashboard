@@ -6,7 +6,7 @@ const membershipApi = axios.create({
 });
 
 const adminApi = axios.create({
-  baseURL: "https://18.141.56.154:8000",
+  baseURL: "http://18.141.56.154:8000",
 });
 
 const trainingApi = axios.create({
