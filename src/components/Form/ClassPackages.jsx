@@ -3,9 +3,9 @@ import './Form.css'
 import React, {useEffect, useState} from "react";
 import { useSelector} from 'react-redux'
 import { useNavigate } from "react-router-dom";
-import useAxios from "../../api/UseAxios";
 import { adminApi } from "../../api/Api";
 import { Select } from "../Recomended/CardAdd";
+import useAxios from "../../api/useAxios";
 
 
 

@@ -2,7 +2,7 @@
     /* background-color: var(--Neutral-Black-100); */
     background-color: var(--Neutral-white-0);
     height: 105px;
-    width: 1125px;
+    /* width: 1125px; */
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -11,6 +11,7 @@
     /* gap: 50px; */
 
     position: relative;
+    /* position: absolute; */
 
 }
 
@@ -34,6 +35,10 @@
 .top-nav-mid-NX {
     position: absolute;
     left: 500px;
+    transition: 0.4s;
+}
+
+.search {
     transition: 0.4s;
 }
 

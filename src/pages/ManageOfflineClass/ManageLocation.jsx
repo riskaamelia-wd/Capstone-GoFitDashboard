@@ -6,11 +6,11 @@ import {Row,  Col} from 'react-bootstrap'
 import addSmall from '../../assets/icons/add_small.svg'
 import { useSelector } from "react-redux"  
 import ClassLocation from "../../components/Form/ClassLocation";
-import useAxios from "../../api/UseAxios";
 import { adminApi } from "../../api/Api";
 
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import Loading from "../../components/Loading";
+import useAxios from "../../api/useAxios";
   
 const ManageLocation = () => {
   const [data, setData]= useState([])

@@ -1,18 +1,23 @@
 import { configureStore } from "@reduxjs/toolkit";
-import usersSlice from "./Slice/usersSlice";
-import paymentMethodsSlice from "./Slice/paymentMethodsSlice";
-import classesSlice from "./Slice/classesSlice";
-import trainingSlice from "./Slice/trainingSlice";
-import onlineClassSlice from "./Slice/OnlineClassSlice";
-import recomendedSlice from "./Slice/recomendedSlice";
+import { persistedReducer } from "./persistConfig";
+import {
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
 
 export const store = configureStore({
-    reducer:{
-        users : usersSlice,
-        paymentMethod : paymentMethodsSlice,
-        classes : classesSlice,
-        training: trainingSlice,
-        onlineClass : onlineClassSlice,
-        recomended : recomendedSlice
-    }
-})
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
+
+export const persistor = persistStore(store);

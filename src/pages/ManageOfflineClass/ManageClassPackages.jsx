@@ -6,10 +6,10 @@ import Cover from "../../elements/Card/Cover"
 import imgCover from '../../assets/icons/Appreciation 1.svg'
 import {Row,  Col} from 'react-bootstrap'
 import { adminApi } from "../../api/Api"
-import useAxios from "../../api/UseAxios"
 import ClassPackages from "../../components/Form/classPackages"
 import addSmall from '../../assets/icons/add_small.svg'
 import Loading from "../../components/Loading"
+import useAxios from "../../api/useAxios"
 
 const ManageClassPackages = () => {
     const token = useSelector((state) => state.tokenAuth.token_jwt)

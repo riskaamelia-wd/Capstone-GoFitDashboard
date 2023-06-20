@@ -7,13 +7,13 @@ import { Col,  Row } from "react-bootstrap"
 import { useSelector } from "react-redux"
 import { adminApi, classApi } from "../../api/Api"
 import { useEffect, useState, useCallback } from "react"
-import useAxios from "../../api/UseAxios"
 import addSmall from '../../assets/icons/add_small.svg'
 import ButtonComponent from "../../elements/Buttons/ButtonComponent"
 import OfflineClass from "../../components/Form/OfflineClass"
 import moment from 'moment'
 import { Puff } from "react-loader-spinner";
 import Loading from "../../components/Loading"
+import useAxios from "../../api/useAxios"
 
 const ManagesOfflineClass = () => {
     const navigate = useNavigate()

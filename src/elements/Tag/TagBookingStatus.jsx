@@ -5,9 +5,9 @@ const TagBookingStatus = ({status}) => {
     
     return (
         <> 
-            <div className={`tag tag-${status == 'booked'? 'booked': 'booking-canceled'}`}>
+            <div className={`tag tag-${status}`}>
                 <span>
-                    {status == 'booked'? 'Booked' : 'Booking canceled'}
+                    {status}
                 </span>
             </div>        
         </>

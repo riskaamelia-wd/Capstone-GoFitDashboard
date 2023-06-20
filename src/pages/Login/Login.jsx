@@ -1,36 +1,114 @@
 import "./Login.css";
-import LoginImg from "../../assets/gif/Login.gif";
-import google from "../../assets/icons/google.svg";
 
 import TextField from "../../elements/TextField/TextField";
-import { NavLink } from "react-router-dom";
+
+import { NavLink, useNavigate } from "react-router-dom";
 import TextFieldPassword from "../../elements/TextField/TextFieldPassword";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
+import { adminApi } from "../../api/Api";
+import jwtDecode from "jwt-decode";
+import { useDispatch, useSelector } from "react-redux";
+import { addToken } from "../../redux/Slice/tokenSlice";
+import { addUser } from "../../redux/Slice/usersSlice";
+import useAxios from "../../api/useAxios";
 const Login = () => {
+  const users = useSelector((state) => state.users);
+
+  const [email, setEmail] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [password, setPassword] = useState("");
+
+  const [bodyApi, setBodyApi] = useState({
+    method: "",
+    url: "",
+    body: null,
+  });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { response, isLoading, error, fetchData } = useAxios({
+    api: adminApi,
+    method: bodyApi.method,
+    url: bodyApi.url,
+    body: bodyApi.body,
+    header: JSON.stringify({
+      accept: "application/json",
+    }),
+  });
+  const handleLogin = (e) => {
+    e.preventDefault();
+    try {
+      setBodyApi({
+        method: "post",
+        url: "/login",
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+      fetchData();
+    } catch (error) {
+      console.log("====================================");
+      console.log(error);
+      console.log("====================================");
+    }
+  };
+  const rememberUser = () => {
+    if (users?.token_user) {
+      navigate("/dashboard", { replace: true });
+    }
+  };
+
+  useEffect(() => {
+    rememberUser();
+    if (response !== null) {
+      dispatch(addToken(response.token));
+      if (rememberMe === true) {
+        dispatch(addUser(response.token));
+      }
+      let adminAuth = jwtDecode(response.token);
+      adminAuth.isAdmin
+        ? navigate("/dashboard", { replace: true })
+        : alert("You are not admin, please login using admin account");
+    } else if (error) {
+      const metaDataError = error?.response?.data.metadata;
+      console.log("====================================");
+      console.log(error);
+      console.log("====================================");
+      alert(
+        `status code : ${metaDataError?.status_code} \n message : ${metaDataError?.message} \n reason : ${metaDataError?.error_reason}`
+      );
+    }
+  }, [dispatch, error, navigate, response]);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+
   return (
     <>
       <div className="overflow-hidden overflow-x-hidden">
         <div className="row">
           <div className="col-6 d-none d-md-block">
             <img
-              src={LoginImg}
+              src={
+                "https://firebasestorage.googleapis.com/v0/b/capstone-45030.appspot.com/o/Login.gif?alt=media&token=47c4190e-284a-4971-866c-8d4be44f6242"
+              }
               alt=""
               style={{ height: "100vh", width: "55vw" }}
             />
           </div>
           <div className=" col-md-6 LoginRightSide rounded-5 d-flex justify-content-center align-items-center ">
             <div className=" w-75 ">
-              <p className=" mt-5 fw-bold fs-1 h1-rightside">Welcome!</p>
-              <p className=" mt-3 fw-semibold fs-5 mb-4">Log in you account</p>
+              <p className="fw-bold fs-1 h1-rightside">Welcome!</p>
+              <p className="fw-semibold fs-5 mb-4">Log in you account</p>
               <TextField
                 label={`Your Email`}
-                type={"text"}
+                type={"email"}
                 name={"email"}
                 id={"email"}
-                onChange={() => {}}
-                // value={}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                value={email}
                 placeholder={"userName@gmail.com"}
                 classNameLabel={"mb-2 text-secondary"}
               />
@@ -41,8 +119,10 @@ const Login = () => {
                   label="Password"
                   id={"password"}
                   name={"password"}
-                  // value={}
-                  onChange={() => {}}
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                   classNameLabel={"mb-2 text-secondary"}
                 />
               </div>
@@ -64,9 +144,11 @@ const Login = () => {
                   </div>
                 </div>
                 <div className="col-6 text-end">
-                  {/* <NavLink to={""}> */}
-                  <p className="ForgotPasswordText">Forgot Password?</p>
-                  {/* </NavLink> */}
+                  <NavLink
+                    to={"/forgotpassword"}
+                    style={{ textDecoration: "none" }}>
+                    <p className="ForgotPasswordText">Forgot Password?</p>
+                  </NavLink>
                 </div>
               </div>
 
@@ -74,28 +156,8 @@ const Login = () => {
                 type={"submit"}
                 className={"btn-login fs-5"}
                 id={"login"}
-                onClick={() => {
-                  console.log("logging in");
-                }}
+                onClick={handleLogin}
                 buttonName={"Log in"}
-              />
-              <div className="LineTextMiddle mt-5 mb-5">
-                <span className="fs-5">or</span>
-              </div>
-
-              <ButtonComponent
-                type={"button"}
-                className={"btnGoogle p-2"}
-                id={"googlelogin"}
-                onClick={() => {
-                  console.log("login with google");
-                }}
-                imgUrlStart={google}
-                buttonName={
-                  <span className="fs-5 ms-3 fw-semibold">
-                    Continue with Google
-                  </span>
-                }
               />
             </div>
           </div>
