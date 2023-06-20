@@ -1,0 +1,74 @@
+.borderInput{
+    border:1px solid var(--Neutral-Black-100) !important;
+    color: var(--Neutral-Black-100);
+    cursor: pointer;
+}
+
+.borderInput:hover{  
+    border:2px solid var(--Neutral-Black-200) !important;
+    color: var(--Neutral-Black-100);
+}
+
+.borderInput:focus{  
+    border: 2px solid var(--primary-500) !important;
+    color: var(--Neutral-Black-100);
+    box-shadow: var(--primary-500) ;
+    outline-color: var(--primary-500);
+}
+
+.borderPassword{
+    border:1px solid var(--Neutral-Black-100) !important;
+    color: var(--Neutral-Black-100);
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.borderPassword:hover{  
+    border:2px solid var(--Neutral-Black-200) !important;
+    color: var(--Neutral-Black-100);
+}
+
+
+.pointer:focus{  
+    border: 2px solid var(--primary-500) !important;
+    color: var(--Neutral-Black-100);
+    box-shadow: var(--primary-500) ;
+}
+
+.divTextarea{
+    width: fit-content;
+}
+
+.textarea{
+    /* width: fit-content; */
+    border:1px solid var(--Neutral-Black-100) !important;
+    color: var(--Neutral-Black-100);
+    cursor: pointer;
+}
+
+.textarea:hover{  
+    border:2px solid var(--Neutral-Black-200) !important;
+    color: var(--Neutral-Black-100);
+}
+
+.textarea:checked{  
+    border: 2px solid var(--primary-500) !important;
+    color: var(--Neutral-Black-100);
+    background-color: aqua;
+}
+
+.textarea textarea{
+    border: 0;
+}
+
+.textarea textarea:focus{
+    border: 0;
+    box-shadow: var(--Neutral-White-0);
+}
+
+.boxTextarea{
+    height:'16vh';
+    width:'50vw' !important; 
+}

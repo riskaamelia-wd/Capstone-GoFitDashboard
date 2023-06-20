@@ -1,0 +1,65 @@
+.btnLogout:hover{
+    background-color: var(--primary-100);
+}
+.btnLogout:active{
+    background-color: var(--primary-300);
+}
+.btnLogout{
+    background-color: var(--primary-400);
+    width: fit-content;
+}
+
+.appDisplay:hover{
+    background-color: var(--primary-100);
+}
+.appDisplay{
+    width: fit-content;
+    text-align: center;
+}
+
+.listMenu{
+    width: fit-content;
+    border-radius: 20px;
+}
+
+.listMenu img{
+    border-radius: 20px;
+    width: 6vw;
+}
+
+.listMenu:hover{
+    background-color: var(--primary-100);
+}
+
+.listMenu:active{
+    background-color: var(--primary-400);
+}
+
+.cardTraining{
+    overflow: hidden;
+}
+
+.parentCardTraining{
+    box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.12), 0px 10px 32px -4px rgba(24, 39, 75, 0.1);
+    cursor: pointer;
+    /* width: 28vw; */
+}
+
+.cardTraining img{
+    /* width:  28vw; */
+    /* height: 19em; */
+    transition: 0.5s all ease-in-out;
+    background-color: #151515;
+}
+
+.cardTraining:hover img{
+    transform: scale(1.2);
+}
+
+.cardTraining:active img{
+    opacity: 0.35;
+}
+
+.text-hover:hover{
+    background-color: var(--primary-200);
+}

@@ -1,0 +1,104 @@
+.button {
+    margin: 60px, 0px;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+}
+
+.img-button-left {
+    margin: 14px 20px 12px 0;
+}
+
+.img-button-right {
+    margin: 14px 0 12px 100px;
+}
+
+/* template classname 1 */
+
+.btn-sport {
+    background-color: var(--Neutral-white-200);
+    padding: 12px 24px 12px 24px;
+    margin: 20px 18px;
+    color: var(--Neutral-Black-900);
+    font-family: 'Josefin Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 20px;
+    /* outline: 3px solid var(--Neutral-Black-900); */
+
+    transition: 0.4s;
+}
+
+.btn-sport:hover {
+    background-color: var(--primary-100);
+    color: var(--Neutral-Black-900);
+    transform: scale(1.02);
+}
+
+.btn-sport:active {
+    background-color: var(--primary-400);
+    color: var(--Neutral-Black-900);
+    transform: scale(1.02);
+}
+
+/* template classname 2 */
+
+.btn-google {
+    background-color: var(--primary-500);
+    padding: 12px 24px 12px 24px;
+    margin: 20px 18px;
+    color: var(--primary-100);
+    font-family: 'Josefin Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 20px;
+    /* outline: 3px solid var(--Neutral-Black-900); */
+
+    transition: 0.4s;
+}
+
+.btn-google:hover {
+    background-color: var(--primary-300);
+    color: var(--primary-900);
+    transform: scale(1.02);
+}
+
+.btn-google:active {
+    background-color: var(--primary-200);
+    color: var(--primary-900);
+    transform: scale(1.02);
+}
+
+/* template classname 3 */
+
+/* .btn-sidebar {
+    background-color: var(--Neutral-white-200);
+    padding: 12px 24px 12px 24px;
+    margin: 20px 18px;
+    color: var(--Neutral-Black-900);
+    font-family: 'Josefin Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 20px;
+    outline: 3px solid var(--Neutral-Black-900);
+
+    transition: 0.4s;
+}
+
+.btn-sidebar:hover {
+    background-color: var(--primary-100);
+    color: var(--Neutral-Black-900);
+    transform: scale(1.02);
+}
+
+.btn-google:active {
+    background-color: var(--primary-300);
+    color: var(--primary-900);
+    transform: scale(1.02);
+} */
+
+/* ngisi classnamenya enak bikin file css lagi di folder tujuan sama file tujuan.
+klo disini nanti bingung. */
