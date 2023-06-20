@@ -1,91 +1,62 @@
-import Cover from "../../elements/Card/Cover"
-import imgCover from '../../assets/icons/Appreciation 1.svg'
-import InputSearch from "../../elements/InputSearch/InputSearch"
-import "../ManagesCustomers/ManageCustomers.css"
-import { useState } from "react"
-import CardCustomers from "../../elements/CardCustomers/CardCustomers"
-import CardDetailCustomers from "../../elements/CardCustomers/CardDetailCustomer"
-//import PopUP from "./PopUpDetailClass"
+import React, { useState, useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import Cover from "../../elements/Card/Cover";
+import imgCover from "../../assets/icons/Appreciation 1.svg";
+import InputSearch from "../../elements/InputSearch/InputSearch";
+import CardCustomers from "../../elements/CardCustomers/CardCustomers";
+import CardDetailCustomers from "../../elements/CardCustomers/CardDetailCustomer";
+import CardCustomerBooking from "../../components/CardCustomerBooking/CardCustomerBooking";
 
-//Belum Selesai
 const ManageCustomers = () => {
+    const token = useSelector((state) => state.tokenAuth);
+    const [isVisible, setIsVisible] = useState(false);
+    const [data, setData] = useState([]);
 
-    const [isVisible, setIsVisible] = useState(false)
+    const getData = useCallback(
+        async () => {
+            await axios
+            .get("http://18.141.56.154:8000/admin/classes/tickets", {
+                headers: {
+                    Authorization: `Bearer ${token.token_jwt}`,
+                },
+            })
+            .then((response) => {
+                console.log(response.data.data);
+                setData(response.data.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        }, []
+    )
 
-    const [customers, setCustomers] = useState([
-        {
-            id: 1,
-            image: "https://source.unsplash.com/random/?profile",
-            name: "Mr. Jack",
-            height: 170,
-            weight: 70,
-            goal_weight: 65,
-            training_level: "Beginner"
-        },
-        {
-            id: 2,
-            image: "https://source.unsplash.com/random/?profile",
-            name: "Mr. Johns",
-            height: 170,
-            weight: 70,
-            goal_weight: 65,
-            training_level: "Intermediate"
-        },
-        {
-            id: 3,
-            image: "https://source.unsplash.com/random/?profile",
-            name: "Mrs. Anna",
-            height: 160,
-            weight: 60,
-            goal_weight: 50,
-            training_level: "Intermediate"
-        },
-
-    ])
+    useEffect(() => {
+        getData();
+    }, []);
 
     const [selectedCustomerId, setSelectedCustomerId] = useState(null);
 
     const getSelectedCustomer = () => {
-        return customers.find(customer => customer.id === selectedCustomerId);
+        return data.find((customer) => customer.user?.id === selectedCustomerId);
     };
 
-    const [booking, setBooking] = useState([
-        {
-            id: 1,
-            bookingType: 'Weekly',
-            periode: '30 April 2050',
-            session: '5AM - 12PM',
-            zoomCode: 'KSN-KNG-KSD',
-            classType: 'Online Class',
-            descClass: 'Private zoom with mentor',
-            status: 'booked'
-        },
-        {
-            id: 2,
-            bookingType: 'Weekly',
-            periode: '30 April 2050',
-            session: '5AM - 12PM',
-            zoomCode: 'KSN-KNG-KSD',
-            classType: 'Offline Class',
-            descClass: 'Private zoom with mentor',
-            status: 'booked-canceled'
-        },
-    ])
+    // Mendapatkan kelas yang dimiliki oleh pengguna tertentu
+    const getUserClasses = (user) => {
+        const userClasses = data.filter((booking) => booking.user?.id === user?.user?.id);
+        return userClasses;
+      };
+      
 
-    
     return (
         <>
-            <div className="container manage-customer">
-                <Cover
-                    text={'Manage Customers'}
-                    list1={'Home'}
-                    img={imgCover}
-                />
+            <div className="container manage-customer" id="manageCustomers">
+                <Cover text={"Manage Customers"} list1={"Home"} img={imgCover} />
 
                 <div className="row p-3 all-customers">
                     <div className={isVisible ? "col-4" : "col-12"}>
                         <div className="col-12">
-                            <h2 className='text-customers'>Customers</h2>
+                            <h2 className="text-customers">Customers</h2>
                         </div>
                         <div className="col-12 py-3">
                             <InputSearch
@@ -95,56 +66,59 @@ const ManageCustomers = () => {
                         </div>
 
                         <div className="col-12">
-                            {
-                                customers.length > 0 ? (
-                                    customers.map((customer) => {
-                                        return (
-                                            <CardCustomers
-                                                onClick={(e) => { setSelectedCustomerId(customer.id); setIsVisible(true); }}
-                                                key={customer.id}
-                                                image={customer.image}
-                                                name={customer.name}
-                                                height={customer.height}
-                                                weight={customer.weight}
-                                                goal_weight={customer.goal_weight}
-                                                training_level={customer.training_level}
-                                            />
-                                        )
-                                    })
-                                ) :
-                                    (
-                                        <div>Data Kosong</div>
-                                    )
-                            }
+                            {data.length > 0 ? (
+                                data.map((customer) => {
+                                    return (
+                                        <CardCustomers
+                                            onClick={(e) => {
+                                                setSelectedCustomerId(customer.user?.id);
+                                                setIsVisible(true);
+                                            }}
+                                            key={customer.user?.id}
+                                            image={`http://18.141.56.154:8000/${customer.user.profile_picture}`}
+                                            name={customer.user?.name}
+                                            height={customer.user?.height}
+                                            weight={customer.user?.weight}
+                                            goal_weight={customer.user?.goal_weight}
+                                            training_level={customer.user?.training_level}
+                                        />
+                                    );
+                                })
+                            ) : (
+                                <div>Data Kosong</div>
+                            )}
                         </div>
                     </div>
 
-                    {isVisible ? <>
-                        <div className="col-lg-8">
-                            <h2 className='text-customers'>Details</h2>
-                            <CardDetailCustomers
-                                customer={getSelectedCustomer()}
-                            />
-                            <h3 className="mt-2" style={{fontWeight:"600", fontSize:"24px", color:"#606060"}}>Activities</h3>
-                            {/* {
-                                booking.map((booking) => {
-                                    return (
-                                        <CardCustomerBooking
-                                            image={'https://source.unsplash.com/random/?profile'}
-                                            name={booking.classType}
-                                            date={booking.descClass}
-                                            status={booking.status}
-                                            key={booking.id}
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#detailClass"
-                                        />
-                                    )
-                                })
-                            } */}
-                        </div>
-                    </> : <>  </>
-                    }
+                    {isVisible ? (
+                        <>
+                            <div className="col-lg-8">
+                                <h2 className="text-customers">Details</h2>
+                                <CardDetailCustomers customer={getSelectedCustomer()} setData={setData}/>
 
+                                {getSelectedCustomer() && (
+                                    <>
+                                        <h3 className="mt-2" style={{ fontWeight: "600", fontSize: "24px", color: "#606060" }}>Activities</h3>
+                                        {getUserClasses(getSelectedCustomer()).map((booking) => (
+                                            <CardCustomerBooking
+                                                key={booking.id}
+                                                image={booking.user?.profile_picture}
+                                                name={booking.class_package?.class.class_type + " class"}
+                                                date={booking.class_package?.class.class_type === 'online' ? 'Private zoom with mentor' : 'offline class with trainer'}
+                                                status={booking.status}
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#detailClass"
+                                            />
+                                        ))}
+                                    </>
+                                )}
+
+
+                            </div>
+                        </>
+                    ) : (
+                        <> </>
+                    )}
                 </div>
             </div>
             {/* <div
@@ -165,7 +139,7 @@ const ManageCustomers = () => {
             </div> */}
             {/* <PopUP /> */}
         </>
-    )
-}
+    );
+};
 
-export default ManageCustomers
+export default ManageCustomers;

@@ -204,6 +204,7 @@
     color: #FFFFFF;
     background: var(--primary-500);
     border-radius: 8px;
+    border: none;
 
 }
 

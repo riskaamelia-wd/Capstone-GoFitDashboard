@@ -12,7 +12,7 @@ const CardCustomers = ({ image, name, height, weight, goal_weight, training_leve
             <Card className="card-customers w-100" id="card-customer" onClick={onClick}>
                 <div className="row">
                     <div className="col-lg-2 col-sm-2">
-                        <img src={image} alt="Person" className="rounded-circle"/>
+                        <img src={image} alt="Person" className="rounded-circle" />
                     </div>
                     <div className="col-lg-10 col-sm-8 mt-2">
                         <div className="row">
