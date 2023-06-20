@@ -105,7 +105,7 @@ const ManageClassPackages = () => {
         }
     }
     return(
-        <div className="col-10 ms-5">
+        <div>
         <Cover
             text={'Manage Offline Class'}
             list1={'Class Data'}
