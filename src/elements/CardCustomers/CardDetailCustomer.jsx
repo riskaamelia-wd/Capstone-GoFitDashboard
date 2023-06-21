@@ -17,6 +17,7 @@ import { useCallback } from "react";
 
 const CardDetailCustomers = ({ customer, setData }) => {
 
+    // Fetching API Get Data Customer dan class 
     const getData = useCallback(
         async () => {
             await axios
@@ -52,6 +53,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
         training_level: "",
     });
 
+    // Function edit data customer
     const HandleEdit = (id) => {
         setEditData({
             name: customer.user.name,
@@ -65,8 +67,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
         setId(id);
     }
 
-    console.log(id);
-
+    // Function Put data customer ke API
     const handleSave = async () => {
         try {
             await axios.put(
@@ -93,6 +94,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
         }
     };
 
+    //Function Delete data customer ke API
     const HandleDelete = async (id) => {
         if (window.confirm("Are you sure you want to delete this data?")) {
             await axios
@@ -110,14 +112,15 @@ const CardDetailCustomers = ({ customer, setData }) => {
         }
     };
 
-    const handleFileUpload = async (event) => {
+    //Function Upload Image ke API users
+    const handleFileUpload = (event) => {
         const file = event.target.files[0];
         console.log(file);
         const formData = new FormData();
         formData.append("profile_picture", file);
 
         try {
-            await axios.post(
+            axios.post(
                 `http://18.141.56.154:8000/users/profile/${customer.user.id}`,
                 formData,
                 {
@@ -135,19 +138,19 @@ const CardDetailCustomers = ({ customer, setData }) => {
         }
     };
 
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        const options = { month: 'long', day: 'numeric' };
-        const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
-        return formattedDate;
-    }
+    // function formatDate(dateString) {
+    //     const date = new Date(dateString);
+    //     const options = { month: 'long', day: 'numeric' };
+    //     const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+    //     return formattedDate;
+    // }
 
-    function formatTime(dateString) {
-        const date = new Date(dateString);
-        const options = { hour: 'numeric', minute: 'numeric'};
-        const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
-        return formattedTime;
-    }
+    // function formatTime(dateString) {
+    //     const date = new Date(dateString);
+    //     const options = { hour: 'numeric', minute: 'numeric'};
+    //     const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+    //     return formattedTime;
+    // }
 
     return (
 
