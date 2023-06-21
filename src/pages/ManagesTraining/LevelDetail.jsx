@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { classApi, trainingApi } from "../../api/Api";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import useAxios from "../../api/useAxios";
+import useFetch from "../../api/useFetch";
 
 const LevelDetail = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const LevelDetail = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [data, setData] = useState([]);
 
-  const { response, isLoading } = useAxios({
+  const { response, isLoading } = useFetch({
     api: trainingApi,
     method: "get",
     url: `/training?category=${state.level}`,
