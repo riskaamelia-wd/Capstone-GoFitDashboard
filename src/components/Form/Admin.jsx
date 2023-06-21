@@ -201,7 +201,7 @@ const Admin = ({onClick,classNameImg,style, className, btnModalText, btnModalImg
                 aria-labelledby="exampleModalLabel" 
                 aria-hidden="true"
             >
-            <div  className="modal-dialog modal-lg">
+            <div className="modal-dialog modal-lg">
                 <div 
                 style={{width:'fit-content'}} className="modal-content">
                 <div className="modal-body">

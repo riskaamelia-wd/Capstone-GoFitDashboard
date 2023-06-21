@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Cover from '../../elements/Card/Cover'
 import CoverIcon from '../../assets/icons/Appreciation 1.svg'
 import SearchIcon from "../../assets/icons/search.svg";
@@ -9,43 +9,55 @@ import TagRole from '../../elements/Tag/TagRole';
 import ResetPasswordIcon from '../../assets/icons/forward_media.svg'
 import DeleteIcon from '../../assets/icons/delete.svg'
 import ResetPasswordAdmin from '../../components/Form/ResetPasswordAdmin';
+import Admin from '../../components/Form/Admin';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const ManageAdmin = () => {
-    const [datas, setdatas] = useState([
-        {
-            name: 'admin',
-            email: 'admin@domain.com',
-            role: 'admin',
-            profile_image: 'https://placeholder.com/400x400'
-        },
-        {
-            name: 'manager',
-            email: 'manager@domain.com',
-            role: 'manager',
-            profile_image: 'https://placeholder.com/400x400'
-        },
-        {
-            name: 'auditor',
-            email: 'auditor@domain.com',
-            role: 'auditor',
-            profile_image: 'https://placeholder.com/400x400'
+    const token = useSelector((state) => state.tokenAuth.token_jwt)
+    const [datas, setdatas] = useState([]);
+    const [fetchStatus, setFetchStatus] = useState(true)
+
+    useEffect(() => {
+        if(fetchStatus){
+            axios.get('http://18.141.56.154:8000/users',{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                console.log(response.data.data);
+                setdatas(response.data.data);
+                setFetchStatus(false);
+            })
+            .catch((error) => {
+                console.log(error);
+                setFetchStatus(false);
+            })
         }
-    ]);
-    const [showResetPassword, setShowResetPassword] = useState(false);
-    const [showAddAdmin, setShowAddAdmin] = useState(false);
+    },[fetchStatus, setFetchStatus, token])
 
     const handleAddAdmin = () => {
-        setShowAddAdmin(!showAddAdmin);
-        alert('Added')
+        // alert('Added')
     }
 
     const handleResetPassword = () => {
-        setShowResetPassword(!showResetPassword);
-        alert('Reset')
+        // alert('Reset')
     }
 
-    const handleDelete = () => {
-        alert('Deleted')
+    const handleDelete = (id) => {
+        axios.delete(`http://18.141.56.154:8000/users/${id}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then((response) => {
+            console.log('user deleted');
+            setFetchStatus(true);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }
     return (
         <div className="container">
@@ -71,10 +83,11 @@ const ManageAdmin = () => {
                                 className = "search w-100 py-2"
                             />
                         </div>
-                        <Button onClick={handleAddAdmin} variant='outline-none' className='text-white' style={{backgroundColor: 'var(--primary-500)'}}>
-                            Add Admin
-                            <img src={AddIcon} alt="" className='ps-2'/>
-                        </Button>
+                        <Admin 
+                            onClick={handleAddAdmin}
+                            btnModalText={'Add Admin'}
+                            btnModalImg={AddIcon}
+                        />
                     </div>
                 </div>
                 <table className="table table-borderless">
@@ -120,7 +133,7 @@ const ManageAdmin = () => {
                                 <td>
                                     <div className="d-flex align-items-center">
                                         <div className="me-3">
-                                            <img src={data.profile_image} alt="Booking" className="rounded-circle" style={{ width: '40px', height: '40px' }} />
+                                            <img src={`http://18.141.56.154:8000/${data.profile_picture}`} alt="Booking" className="rounded-circle" style={{ width: '40px', height: '40px' }} />
                                         </div>
                                         <div className='d-flex flex-column'>
                                             <span style={{fontWeight: 'bold', fontSize: '14px'}}>{data.name}</span>
@@ -135,11 +148,12 @@ const ManageAdmin = () => {
                                 </td>
                                 <td>
                                     <div className="d-flex gap-3 justify-content-end">
-                                        <Button variant='outline-none' onClick={handleResetPassword}>
-                                            <img src={ResetPasswordIcon} alt="" style={{ width: '20px', height: '20px' }} className='pe-2'/>
-                                            Reset Password
-                                        </Button>
-                                        <Button variant='outline-none' onClick={handleDelete}>
+                                        <ResetPasswordAdmin 
+                                            onClick={handleResetPassword}
+                                            btnModalText={'Reset Password'}
+                                            btnModalImg={ResetPasswordIcon}
+                                        />
+                                        <Button variant='outline-none' onClick={() => handleDelete(data.id)}>
                                             <img src={DeleteIcon} alt="" style={{ width: '20px', height: '20px' }} className='pe-2'/>
                                             Delete
                                         </Button>

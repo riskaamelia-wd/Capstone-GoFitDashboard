@@ -52,8 +52,9 @@ const ResetPasswordAdmin = ({onClick,classNameImg,style, className, btnModalText
                 data-bs-target="#resetPasswordAdmin"
             >
                 <img src={btnModalImg} 
-                className={classNameImg?classNameImg:"ms-4"} 
-                alt="" />
+                className={classNameImg?classNameImg:"ms-4 pe-2"} 
+                alt="" 
+                style={{ width: '20px', height: '20px' }}/>
                 {btnModalText}
 
             </button>
