@@ -211,8 +211,8 @@ const ManageLocation = () => {
           handleClose={handleClose}
           cityValue={loc?.city}
           nameValue={loc?.name}
-          longitudeValue={loc?.longitude || lat}
-          latitudeValue={loc?.latitude || lng}
+          longitudeValue={lng || loc?.longitude}
+          latitudeValue={lat || loc?.latitude}
           addressValue={loc?.address}
           city={(e) => {
             setLoc((filledState) => ({
@@ -276,8 +276,8 @@ const ManageLocation = () => {
           handleClose={handleClose}
           cityValue={loc?.city}
           nameValue={loc?.name}
-          longitudeValue={loc?.longitude || lat}
-          latitudeValue={loc?.latitude || lng}
+          longitudeValue={lng || loc?.longitude}
+          latitudeValue={lat || loc?.latitude}
           addressValue={loc?.address}
           city={(e) => {
             setLoc((filledState) => ({
