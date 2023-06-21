@@ -112,7 +112,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
 
     const handleFileUpload = async (event) => {
         const file = event.target.files[0];
-
+        console.log(file);
         const formData = new FormData();
         formData.append("profile_picture", file);
 
@@ -126,7 +126,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                         "Content-Type": "multipart/form-data",
                     },
                 }
-            );
+            );            
 
             console.log("File uploaded successfully");
         } catch (error) {
@@ -135,6 +135,19 @@ const CardDetailCustomers = ({ customer, setData }) => {
         }
     };
 
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const options = { month: 'long', day: 'numeric' };
+        const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+        return formattedDate;
+    }
+
+    function formatTime(dateString) {
+        const date = new Date(dateString);
+        const options = { hour: 'numeric', minute: 'numeric'};
+        const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+        return formattedTime;
+    }
 
     return (
 
