@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import ClassLocation from "../../components/Form/ClassLocation";
 import { adminApi } from "../../api/Api";
 
-import { GoogleMap, Marker } from "@react-google-maps/api";
+// import { GoogleMap, Marker } from "@react-google-maps/api";
 import Loading from "../../components/Loading";
 import useAxios from "../../api/useAxios";
 
