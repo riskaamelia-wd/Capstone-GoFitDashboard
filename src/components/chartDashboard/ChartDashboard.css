@@ -1,11 +1,48 @@
 .orderChart {
-    padding: 16px 20px 24px;
-    margin-top: 2%;
+    padding: 3%;
     width: 100%;
     height: 100%;
-
     background: var(--Neutral-White-0);
     border-radius: 10px;
+}
+
+.IncomeDashboard {
+    /* margin-left: 3%; */
+    padding: 3%;
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF;
+    border-radius: 10px;
+}
+
+.area-chart-income .apexcharts-gridline {
+    stroke-opacity: 0 !important;
+}
+
+.area-chart-outcome .apexcharts-gridline {
+    stroke-opacity: 0 !important;
+}
+
+.area-chart-income .apexcharts-area {
+    stroke: var(--success-900) !important;
+}
+
+.area-chart-outcome .apexcharts-area {
+    stroke: var(--Danger-900) !important;
+}
+
+.detailIncome {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 2px 4px;
+    gap: 4px;
+    margin-left: 40%;
+    width: 106px;
+    height: 24px;
+    color: #0D6A50;
+    background: rgba(49, 190, 110, 0.4);
+    border-radius: 4px;
 }
 
 .textOrderChart {
@@ -93,6 +130,7 @@
     height: 28px;
     background: #111111;
     border-radius: 8px;
+    text-decoration: none !important;
 }
 
 .ViewAll {
@@ -122,43 +160,6 @@
     color: #030303;
 }
 
-.IncomeDashboard {
-    /* margin-left: 3%; */
-    width: 100%;
-    height: 100%;
-    background: #FFFFFF;
-    border-radius: 10px;
-}
-
-.area-chart-income .apexcharts-gridline {
-    stroke-opacity: 0 !important;
-}
-
-.area-chart-outcome .apexcharts-gridline {
-    stroke-opacity: 0 !important;
-}
-
-.area-chart-income .apexcharts-area {
-    stroke: var(--success-900) !important;
-}
-
-.area-chart-outcome .apexcharts-area {
-    stroke: var(--Danger-900) !important;
-}
-
-.detailIncome {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 2px 4px;
-    gap: 4px;
-    margin-left: 40%;
-    width: 106px;
-    height: 24px;
-    color: #0D6A50;
-    background: rgba(49, 190, 110, 0.4);
-    border-radius: 4px;
-}
 
 .OutcomeDashboard {
     /* margin-left: 3%; */

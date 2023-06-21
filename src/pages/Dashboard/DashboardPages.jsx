@@ -16,34 +16,38 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 
 const Dashboard = () => {
-
     const token = useSelector((state) => state.tokenAuth.token_jwt);
     const [GymPlaces, setGymPlaces] = useState([]);
     const [membership, setMembership] = useState([]);
 
-    const GymPlace = axios.get("http://18.141.56.154:8000/locations", {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
 
-    const Membership = axios.get("http://18.141.56.154:8000/admin/memberships", {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    })
+    useEffect(() => {
+        const fetchData = () => {
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
 
-    Promise.all([GymPlace, Membership])
-        .then((response) => {
-            const GymPlaceData = response[0].data;
-            const membershipData = response[1].data;
+            axios
+                .get("http://18.141.56.154:8000/locations", { headers })
+                .then((response) => {
+                    setGymPlaces(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
 
-            setGymPlaces(GymPlaceData);
-            setMembership(membershipData);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+            axios
+                .get("http://18.141.56.154:8000/admin/memberships", { headers })
+                .then((response) => {
+                    setMembership(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        };
+
+        fetchData();
+    }, [token]);
 
     const dataGymLength = GymPlaces.data ? GymPlaces.data.length : 0;
     console.log("Lokasi Gym:", dataGymLength);
@@ -51,76 +55,50 @@ const Dashboard = () => {
     const dataMembershipLength = membership.data ? membership.data.length : 0;
     console.log("Membership:", dataMembershipLength);
 
-
     return (
         <>
-            <div className="container dashboard" id="dashboard">
-                <div className="row gy-2 gx-2">
-                    <div className="col-lg-3">
-                        <CardDashboard
-                            text1={"Net Profit"}
-                            text3={"Rp. 300.000.000"}
-                            img1={img}
-                            text6={" + Rp. 500.000.000"}
-                            text7={" Since last month"}
-                            img2={dashboard1}
-                        />
+            <div className="container-fluid dashboard pt-2" id="dashboard">
+                <div className="row">
+                    <div className="col-lg-6">
+                        <div className="row gy-2 gx-2">
+                            <div className="col-lg-12">
+                                <CardDashboard
+                                    text1={"Total Partners"}
+                                    text3={dataGymLength}
+                                    text4={" Gym Places"}
+                                    img1={img}
+                                    text6={`+ ${dataGymLength}`}
+                                    text7={" Since last month (In Java Island)"}
+                                    img2={dashboard3}
+                                />
+                            </div>
+                            <div className="col-lg-12">
+                                <CardDashboard
+                                    text1={"Total membership"}
+                                    text3={dataMembershipLength}
+                                    text5={" (Members)"}
+                                    img1={img}
+                                    text6={`+ ${dataMembershipLength} Member`}
+                                    img2={dashboard4}
+                                />
+                            </div>
+                        </div>
                     </div>
-                    <div className="col-lg-3">
-                        <CardDashboard
-                            text1={"We already have"}
-                            text2={"up to "}
-                            text3={"20 coach"}
-                            text7={" (In all area)"}
-                            img2={dashboard2}
-                        />
-                    </div>
-                    <div className="col-lg-3">
-                        <CardDashboard
-                            text1={"Total Partners"}
-                            text3={dataGymLength}
-                            text4={" Gym Places"}
-                            img1={img}
-                            text6={`+ ${dataGymLength}`}
-                            text7={" Since last month (In Java Island)"}
-                            img2={dashboard3}
-                        />
-                    </div>
-                    <div className="col-lg-3">
-                        <CardDashboard
-                            text1={"Total membership"}
-                            text3={dataMembershipLength}
-                            text5={" (Members)"}
-                            img1={img}
-                            text6={`+ ${dataMembershipLength} Member`}
-                            img2={dashboard4}
-                        />
+                    <div className="col-lg-6">
+                        <RecentTransaction />
+                        {/* <OrderChart /> */}
                     </div>
                 </div>
-                <div className="row mt-2 gx-2 gy-2">
-                    <div className="col-lg-7 col-md-12 col-sm-12">
-                        <WalletBalance />
-                    </div>
-                    <div className="col-lg-5 col-md-12 col-sm-12">
-                        <OrderChart />
-                    </div>
-                </div>
-                <div className="container">
+
+                <div className="">
                     <div className="row mt-3 gx-4 gy-2">
-                        <div className="col-lg-4">
-                            <div className="row">
-                                <Income />
-                            </div>
-                            <div className="row">
-                                <Outcome />
-                            </div>
+                        <div className="col-lg-6">
+                            <OrderChart />
                         </div>
-                        <div className="col-lg-4">
-                            <SpendingCost />
+                        <div className="col-lg-6">
+                            <Income />
                         </div>
-                        <div className="col-lg-4">
-                            <RecentTransaction />
-                        </div>
+
                     </div>
                 </div>
             </div>

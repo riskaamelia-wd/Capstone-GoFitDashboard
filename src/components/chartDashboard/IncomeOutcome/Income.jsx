@@ -2,8 +2,42 @@ import '../ChartDashboard.css'
 import React from 'react';
 import Chart from 'react-apexcharts';
 import income from "../../../assets/img/ikon_income.svg"
-
+import { useSelector } from "react-redux"
+import { useState, useEffect } from "react"
+import axios from "axios"
 const Income = () => {
+
+    const token = useSelector((state) => state.tokenAuth.token_jwt);
+    const [incomeData, setIncomeData] = useState([]);
+    const [JanFeb, setJanFeb] = useState();
+    const [MarApr, setMarApr] = useState();
+    const [MeiJun, setMeiJun] = useState();
+    const [JulAug, setJulAug] = useState();
+    const [SepOct, setSepOct] = useState();
+    const [NovDec, setNovDec] = useState();
+
+    useEffect(() => {
+        axios
+            .get("http://18.141.56.154:8000/admin/classes/tickets", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then((response) => {
+                console.log(response.data);
+                setIncomeData(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [token]);
+
+    const CalculateData = () => {
+        
+    }
+
+
+
     const options = {
         chart: {
             id: 'area-chart',
@@ -64,7 +98,7 @@ const Income = () => {
 
     return (
         <div className="IncomeDashboard" id="IncomeDashboard">
-            <div style={{ display: "flex"}} className="mt-3">
+            <div style={{ display: "flex"}} className="">
                 <span style={{ fontWeight: "600", fontSize: "14px" }}>Income</span>
                 <div className="detailIncome" style={{marginLeft:"45%"}}>
                     <img src={income} alt="income" />
@@ -80,8 +114,8 @@ const Income = () => {
                 options={options}
                 series={series}
                 type="area"
-                height={"100%"}
-                width={"100%"}
+                height={"70%"}
+                width={"70%"}
                 className="area-chart-income"
                 style={{ marginTop: "-20px" }}
             />

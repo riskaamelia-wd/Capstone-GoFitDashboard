@@ -123,7 +123,7 @@ const OrderChart = () => {
                             options={options}
                             series={series}
                             type="pie"
-                            width={"100%"}
+                            width={"70%"}
                         />
                     </div>
                 </div>
