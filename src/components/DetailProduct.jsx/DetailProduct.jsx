@@ -21,13 +21,9 @@ const DetailProduct = ({img, text, date, timeSession, category, onClickDelete, o
                     </div>
                 </div>
             <div className='me-2'>
-                {onClickEdit && <AddOnlineClass
-                    className={'btn btn-link p-0'}
-                    btnModalImg={pencil}
-                    style={{borderRadius:'10px', border:'5px solid #E9ECEF',}}
-                    classNameImg={'ms-0'}
-                    onClick={onClickEdit}
-                />}
+                {onClickEdit && 
+              <img src={pencil} className='ms-3' onClick={onClickEdit} style={{borderRadius:'10px', border:'5px solid #E9ECEF',}}alt="" />
+                }
                 {
                     onClickUpdate && 
                     <ClassLocation
