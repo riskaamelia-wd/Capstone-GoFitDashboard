@@ -7,19 +7,20 @@ import Bar from "../../components/Chart/Bar";
 import useAxios from "../../api/useAxios";
 import { classApi, trainingApi } from "../../api/Api";
 import { useEffect, useState } from "react";
+import useFetch from "../../api/useFetch";
 
 const ManageTraining = () => {
     const navigate = useNavigate()
     const [data, setData] = useState()
     const [classData, setClassData] = useState()
 
-    const { response, isLoading } = useAxios({
+    const { response, isLoading } = useFetch({
         api: trainingApi,
         method: 'get',
         url: `/training`,
     });
 
-    const { response : res, isLoading : load} = useAxios({
+    const { response : res, isLoading : load} = useFetch({
         api: classApi,
         method: 'get',
         url: `/class`,
@@ -32,6 +33,8 @@ const ManageTraining = () => {
         if(res !== null){
             setClassData(res)
         }
+        console.log(res, ' ter');
+        console.log(response, ' rere');
     })
 
     const calculatePercentage = (category) => {
@@ -101,7 +104,7 @@ const ManageTraining = () => {
 
 
     return(
-        <div className="container-fluid" style={{marginLeft:"60px"}}>
+        <div className="container-fluid">
             <Cover
                 img={imgCover}
                 list1={'Home'}

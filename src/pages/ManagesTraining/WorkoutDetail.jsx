@@ -5,9 +5,9 @@ import './ManagesTraining.css'
 import { useEffect, useState } from "react";
 import add from '../../assets/icons/add.svg'
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import useAxios from "../../api/UseAxios";
 import { trainingApi } from "../../api/Api";
 import VideoTraining from "../../components/Form/VideoTraining";
+import useFetch from "../../api/useFetch";
 
 const WorkoutDetail = () => {
     const location = useLocation()
@@ -33,7 +33,7 @@ const WorkoutDetail = () => {
           }
     ]
 
-    const {response, isLoading} = useAxios({
+    const {response, isLoading} = useFetch({
         api: trainingApi,
         method: 'get',
         url:`/training/${param.id}/videoTraining?category=${param.level}`

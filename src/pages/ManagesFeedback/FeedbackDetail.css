@@ -83,12 +83,12 @@
 
 .feedback-history-bottom-2{
     position: relative;
-    bottom: -220px;
-    right: -470px;
+    /* bottom: -220px; */
+    right: -400px;
 }
 
 .feedback-history-bottom-back{
     position: relative;
     bottom: 180px;
-    right: -500px;
+    right: -400px;
 }
