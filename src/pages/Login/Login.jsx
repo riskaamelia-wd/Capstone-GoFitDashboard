@@ -1,6 +1,4 @@
 import "./Login.css";
-import LoginImg from "../../assets/gif/Login.gif";
-import google from "../../assets/icons/google.svg";
 
 import TextField from "../../elements/TextField/TextField";
 
@@ -8,16 +6,19 @@ import { NavLink, useNavigate } from "react-router-dom";
 import TextFieldPassword from "../../elements/TextField/TextFieldPassword";
 import { useEffect, useState } from "react";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
-import { adminApi, membershipApi } from "../../api/Api";
-import { getUser, setUserSession } from "../../util/common";
+import { adminApi } from "../../api/Api";
 import jwtDecode from "jwt-decode";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../../redux/Slice/tokenSlice";
-import useAxios from "../../api/UseAxios";
+import { addUser } from "../../redux/Slice/usersSlice";
+import useAxios from "../../api/useAxios";
 const Login = () => {
-  const [rememberMe, setRememberMe] = useState(false);
+  const users = useSelector((state) => state.users);
+
   const [email, setEmail] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [password, setPassword] = useState("");
+
   const [bodyApi, setBodyApi] = useState({
     method: "",
     url: "",
@@ -25,12 +26,9 @@ const Login = () => {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const [response, error, loading, axiosFetch] = useAxiosFunction();
-  // const { data, isLoading, error, postData } = useCrudApi(adminApi);
-  // const { data, isLoading, error, createData } = useCrudApi(adminApi, "/login");
+
   const { response, isLoading, error, fetchData } = useAxios({
     api: adminApi,
-
     method: bodyApi.method,
     url: bodyApi.url,
     body: bodyApi.body,
@@ -38,7 +36,6 @@ const Login = () => {
       accept: "application/json",
     }),
   });
-
   const handleLogin = (e) => {
     e.preventDefault();
     try {
@@ -56,63 +53,35 @@ const Login = () => {
       console.log(error);
       console.log("====================================");
     }
-
-    // axiosFetch({
-    //   api: membershipApi,
-    //   method: "POST",
-    //   url: "/membership",
-    //   requestConfig: {
-    //     // headers: {
-    //     //   Accept: "application/json",
-    //     // },
-    //     data: {
-    //       // email: email,
-    //       // password: password,
-    //       receiver: "test1",
-    //       type: "test1",
-    //       status: "active",
-    //       date: "2023-06-02T01:27:40.923Z",
-    //       amount: "387.00",
-    //       img: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/826.jpg",
-    //       gender: "cwk",
-    //       email: "Westley_VonRueden81@gmail.com",
-    //       weight: 16,
-    //       height: 8,
-    //       goal_weight: 3,
-    //       payment: "payment 1",
-    //       id: "5",
-    //     },
-    //   },
-
-    // });
   };
-  // console.log(response);
-  // useEffect(() => {
+  const rememberUser = () => {
+    if (users?.token_user) {
+      navigate("/dashboard", { replace: true });
+    }
+  };
 
   useEffect(() => {
+    rememberUser();
     if (response !== null) {
-      // setUserSession(response.token, response.data);
       dispatch(addToken(response.token));
+      if (rememberMe === true) {
+        dispatch(addUser(response.token));
+      }
       let adminAuth = jwtDecode(response.token);
-      // ;
       adminAuth.isAdmin
-        ? navigate("/dashboard")
-        : alert("You are not admin, please login using admin authentication");
-    }
-    //  if (
-    //   error?.response?.status === 400 ||
-    //   error?.response?.status === 401
-    // )
-    else {
-      // alert(error.response.data.metadata.message);
+        ? navigate("/dashboard", { replace: true })
+        : alert("You are not admin, please login using admin account");
+    } else if (error) {
+      const metaDataError = error?.response?.data.metadata;
       console.log("====================================");
       console.log(error);
       console.log("====================================");
+      alert(
+        `status code : ${metaDataError?.status_code} \n message : ${metaDataError?.message} \n reason : ${metaDataError?.error_reason}`
+      );
     }
   }, [dispatch, error, navigate, response]);
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [data, error]);
-  // console.log(error?.response.status);
 
   return (
     <>
@@ -120,7 +89,9 @@ const Login = () => {
         <div className="row">
           <div className="col-6 d-none d-md-block">
             <img
-              src={LoginImg}
+              src={
+                "https://firebasestorage.googleapis.com/v0/b/capstone-45030.appspot.com/o/Login.gif?alt=media&token=47c4190e-284a-4971-866c-8d4be44f6242"
+              }
               alt=""
               style={{ height: "100vh", width: "55vw" }}
             />

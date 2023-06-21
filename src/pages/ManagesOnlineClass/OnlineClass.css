@@ -24,3 +24,25 @@
 .btn-edit{
     background-color: var(--primary-300);
 }
+
+.btn-onl{
+    background-color: white !important;
+    color: var(--Warning-900) !important;
+    border-radius: 8px;
+}
+
+.btn-off{
+    background-color: var(--primary-500) !important;
+    color: white;
+    border-radius: 8px;
+}
+
+.btn-class{
+    background-color: var(--primary-500) !important;
+    color: var(--primary-100);
+    border-radius: 8px;
+}
+
+.bgColor{
+    background-color: var(--Neutral-White-100) !important;
+}

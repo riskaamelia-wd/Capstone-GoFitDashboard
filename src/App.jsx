@@ -61,8 +61,13 @@ function App() {
           <Route path="/resetpassword/:id_user" element={<ResetPassword />} />
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/feedback" element={<ManagesFeedback />} />
-            <Route path="onlineClass" element={<OnlineClass />} />
+            <Route path="/managesfeedback" element={<ManagesFeedback />} />
+            <Route path="/articles" element={<ManagesArticles />} />
+            <Route path="onlineClass" element={<ManagesOnlineClass />} />
+            <Route path="onlineClass/classPackages" element={<ManagePackagesOnline />} />
+            <Route path="offlineClass" element={<ManagesOfflineClass />} />
+            <Route path="offlineClass/classPackages" element={<ManageClassPackages />} />
+            <Route path="offlineClass/location" element={<ManageLocation />} />
             <Route path="training" element={<ManageTraining />} />
             <Route path="/manageCustomers" element={<ManageCustomers />} />
             <Route path="levelDetail/:level" element={<LevelDetail />} />
@@ -76,8 +81,10 @@ function App() {
               element={<WorkoutDetail />}
             />
             <Route path="/invoices" element={<Invoices />} />
-            <Route path="managesFeedback" element={<ManagesFeedback />} />
             <Route path="/membership" element={<ManageMembership />} />
+            <Route path="/transaction" element={<ManageTransaction/>} />
+            <Route path="/booking" element={<ManageBooking />} />
+            <Route path="/booking/detail/:id" element={<ManageBookingDetail />} />
           </Route>
         </Routes>
       </BrowserRouter>

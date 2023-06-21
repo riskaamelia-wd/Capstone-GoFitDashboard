@@ -3,33 +3,38 @@ import ButtonComponent from "../../elements/Buttons/ButtonComponent"
 import './Recomended.css'
 import { useState } from "react"
 
+export const Select = ({onSelect, classNameLabel, label,  name,  options, className}) => {
+    return (
+        <>    
+            {label && <label htmlFor={name} className={classNameLabel}>
+                {label}
+            </label>}     
+            <select 
+                id={name}  
+                // disabled={value.length === 1}
+                className={className}
+                name={name} 
+                onChange={onSelect}
+            >
+                {
+                    options?.map(option => (
+                        <option 
+                            key={option.value}
+                            value={option.value}
+                            >
+                                {option.text}
+                            </option>
+                    ))
+                }
+            </select>
+
+        </>
+    )
+}
+
 const CardAdd = ({handleSubmit, handleSave, HandleClose, handleChange, workoutList, levelList, valueLevel, valueWorkout, nameLevel, nameWorkout}) => {
 
-    const Select = ({onSelect,  name,  options, className}) => {
-        return (
-            <>         
-                <select 
-                    id={name}  
-                    // disabled={value.length === 1}
-                    className={className}
-                    name={name} 
-                    onChange={onSelect}
-                >
-                    {
-                        options?.map(option => (
-                            <option 
-                                key={option.value}
-                                value={option.value}
-                                >
-                                    {option.text}
-                                </option>
-                        ))
-                    }
-                </select>
-    
-            </>
-        )
-    }
+   
 
    
     
