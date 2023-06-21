@@ -17,7 +17,7 @@ import axios from "axios";
 
 
 /* eslint-disable react/prop-types */
-import "react-multi-carousel/lib/styles.css";
+// import "react-multi-carousel/lib/styles.css";
 
 const ManageOfflineClass = () => {
     const navigate = useNavigate()
