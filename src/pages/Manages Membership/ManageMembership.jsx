@@ -14,6 +14,7 @@ import ModalMembership from "./ModalMembership";
 import useAxios from "../../api/useAxios";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import moment from "moment";
 
 const ManageMembership = () => {
   const [show, setShow] = useState(false);
@@ -68,6 +69,17 @@ const ManageMembership = () => {
         console.log("====================================");
       });
   };
+  // console.log("====================================");
+  // console.log(token.token_jwt);
+  // console.log("====================================");
+  // console.log("====================================");
+  // console.log(moment().format("YYYY-MM-DTHH:mm:ss"));
+  // console.log("====================================");
+  // const currentTime = moment().format("YYYY-MM-DTHH:mm:ss");
+  // console.log("====================================");
+  // console.log(currentTime);
+  // console.log("====================================");
+
   const onSubmitEditHandle = async (e) => {
     e.preventDefault();
     const body = {
@@ -75,6 +87,9 @@ const ManageMembership = () => {
       duration: parseInt(membership.duration),
       price: parseInt(membership.price),
       description: membership.description,
+      // metadata: {
+      //   created_at: currentTime,
+      // },
     };
     await axios
       .put(`http://18.141.56.154:8000/admin/plans/${id}`, body, config)
@@ -277,7 +292,8 @@ const ManageMembership = () => {
   };
   useEffect(() => {
     if (response !== null) {
-      setData(response.data);
+      const dataPlan = response.data;
+      setData(dataPlan.sort((a, b) => b.id - a.id));
     } else {
       console.log("====================================");
       console.log(error);
