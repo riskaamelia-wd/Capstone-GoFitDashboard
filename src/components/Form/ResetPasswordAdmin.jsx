@@ -11,7 +11,7 @@ const ResetPasswordAdmin = ({onClick,classNameImg,style, className, btnModalText
         newPass:'',
         confirmPass:''
     })
-    console.log(data);
+    // console.log(data);
 
     const handleInput = (e) => {
         e.preventDefault()

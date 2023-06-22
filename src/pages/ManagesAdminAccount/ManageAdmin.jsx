@@ -12,22 +12,31 @@ import ResetPasswordAdmin from '../../components/Form/ResetPasswordAdmin';
 import Admin from '../../components/Form/Admin';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import IconArrowBack from '../../assets/icons/arrow_left.svg'
+import IconArrowNext from '../../assets/icons/arrow_right.svg'
 
 const ManageAdmin = () => {
     const token = useSelector((state) => state.tokenAuth.token_jwt)
-    const [datas, setdatas] = useState([]);
+    const [datas, setDatas] = useState([]);
+    const [search, setSearch] = useState('')
     const [fetchStatus, setFetchStatus] = useState(true)
+    const [pagination, setPagination] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
+    const [totalData, setTotalData] = useState(1)
+    const [itemPerPage, setItemPerPage] = useState(10)
 
     useEffect(() => {
         if(fetchStatus){
-            axios.get('http://18.141.56.154:8000/users',{
+            axios.get(`http://18.141.56.154:8000/users?page=${pagination}`,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             })
             .then((response) => {
                 console.log(response.data.data);
-                setdatas(response.data.data);
+                setDatas(response.data.data);
+                setTotalPages(Math.ceil(response.data.pagination.total_data / itemPerPage))
+                setTotalData(response.data.pagination.total_data)
                 setFetchStatus(false);
             })
             .catch((error) => {
@@ -35,7 +44,7 @@ const ManageAdmin = () => {
                 setFetchStatus(false);
             })
         }
-    },[fetchStatus, setFetchStatus, token])
+    },[fetchStatus, setFetchStatus, pagination, setPagination, itemPerPage, token])
 
     const handleAddAdmin = () => {
         // alert('Added')
@@ -59,6 +68,23 @@ const ManageAdmin = () => {
             console.log(error);
         })
     }
+
+    const handlePaginations = (value) => {
+        const newPagination = pagination + parseInt(value);
+        if (newPagination > 0 && newPagination <= totalPages) {
+            setPagination(newPagination);
+            setFetchStatus(true);
+        }
+    }
+
+    const handleSearch = (e) => {
+        setSearch(e.target.value);
+    }
+
+    const filteredByName = datas.filter(data => {
+        return data.name.toLowerCase().includes(search.toLowerCase());
+    });
+
     return (
         <div className="container">
             <Cover 
@@ -81,6 +107,8 @@ const ManageAdmin = () => {
                                 id={'inputSearch'}
                                 placeholder={'Search your name'}                
                                 className = "search w-100 py-2"
+                                value={search}
+                                onChange={handleSearch}
                             />
                         </div>
                         <Admin 
@@ -115,8 +143,8 @@ const ManageAdmin = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {datas.length > 0 ? (
-                        datas.map((data) => {
+                        {filteredByName.length > 0 ? (
+                        filteredByName.map((data) => {
                             return (
                             <tr key={data.id}>
                                 <td style={{ width: '40px' }}>
@@ -169,6 +197,26 @@ const ManageAdmin = () => {
                         )}
                     </tbody>
                 </table>
+                <div className='d-flex justify-content-between align-items-center' style={{borderTop: '1px solid black'}}>
+                    <div className="d-flex gap-5 justify-content-between">
+                        <div className="d-flex gap-2">
+                            item per page:
+                            <input type="number" value={itemPerPage} style={{ width: '44px', border: 'none' }} disabled/>
+                        </div>
+                        <div className="d-flex gap-2">
+                            {pagination * itemPerPage - 9} - {pagination * itemPerPage > totalData? totalData: pagination * itemPerPage} of {totalData}
+                        </div>
+                    </div>
+                    <div className="d-flex gap-2 align-items-center">
+                        {pagination} of {totalPages} pages
+                        <Button onClick={() => handlePaginations(-1)} className="bg-white border-0">
+                            <img src={IconArrowBack} alt="" />
+                        </Button>
+                        <Button onClick={() => handlePaginations(1)} className="bg-white border-0">
+                            <img src={IconArrowNext} alt="" />
+                        </Button>
+                    </div>
+                </div>
             </div>
         </div>
     )
