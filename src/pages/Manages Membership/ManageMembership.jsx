@@ -39,8 +39,11 @@ const ManageMembership = () => {
         const responseData = response.data.data;
         if (page === 1) {
           setData(responseData);
-        } else {
-          setData((prevData) => [...prevData, ...responseData]);
+        }
+
+        if (page > 1) {
+          console.log(responseData);
+          setData([...data, ...responseData]);
         }
 
         if (responseData.length % 10 === 0) {
@@ -84,8 +87,8 @@ const ManageMembership = () => {
           description: "",
         });
         setPage(1);
-        handleClose();
         getData(1);
+        handleClose();
       })
       .catch((err) => {
         console.log("====================================");
@@ -128,7 +131,7 @@ const ManageMembership = () => {
       .then(() => {
         alert("Data deleted successfully!");
         setPage(1);
-        fetchData();
+        getData(1);
       })
       .catch((e) => {
         console.log("==============");
