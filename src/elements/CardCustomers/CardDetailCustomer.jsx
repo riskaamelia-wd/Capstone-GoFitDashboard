@@ -117,7 +117,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
         const file = event.target.files[0];
         console.log(file);
         const formData = new FormData();
-        formData.append("profile_picture", file);
+        formData.append("file", file);
 
         try {
             axios.post(
@@ -268,7 +268,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                                     </div>
                                     <p style={{ fontSize: "16px", fontWeight: "400", color: "#030303", paddingTop: "10px" }}>To change your password please confirm here</p>
                                     <TextFieldPassword
-                                        value={customer.user.password}
+                                        defaultValue={customer.user.password}
                                         label='Current Password'
                                         name='password'
                                         id='password'
