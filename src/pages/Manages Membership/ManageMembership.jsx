@@ -7,7 +7,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import add from "../../assets/icons/add.svg";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { adminApi } from "../../api/Api";
 import { Puff } from "react-loader-spinner";
 import ModalMembership from "./ModalMembership";
@@ -17,6 +17,7 @@ import axios from "axios";
 
 const ManageMembership = () => {
   const token = useSelector((state) => state.tokenAuth);
+  const [isLoading, setIsLoading] = useState(true);
   const carouselRef = useRef(null);
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -24,18 +25,40 @@ const ManageMembership = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [shouldRenderLoadMore, setShouldRenderLoadMore] = useState(true);
-  const { response, isLoading, error, fetchData } = useAxios({
-    api: adminApi,
-    method: "get",
-    url: `/plans/all?page=${page}`,
-    body: JSON.stringify({}),
-    header: JSON.stringify({}),
-  });
+
   const config = {
     headers: {
       Authorization: `Bearer ${token.token_jwt}`,
     },
   };
+  const getData = async (page) => {
+    setIsLoading(true);
+    await axios
+      .get(`http://18.141.56.154:8000/plans/all?page=${page}`)
+      .then((response) => {
+        const responseData = response.data.data;
+        if (page === 1) {
+          setData(responseData);
+        } else {
+          setData((prevData) => [...prevData, ...responseData]);
+        }
+
+        if (responseData.length % 10 === 0) {
+          setShouldRenderLoadMore(true);
+        } else {
+          setShouldRenderLoadMore(false);
+        }
+      })
+      .catch((err) => {
+        console.log("====================================");
+        console.log(err);
+        console.log("====================================");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   const [membership, setMembership] = useState({
     title: "",
     duration: "",
@@ -62,7 +85,7 @@ const ManageMembership = () => {
         });
         setPage(1);
         handleClose();
-        fetchData();
+        getData(1);
       })
       .catch((err) => {
         console.log("====================================");
@@ -70,9 +93,7 @@ const ManageMembership = () => {
         console.log("====================================");
       });
   };
-  console.log("====================================");
-  console.log(data);
-  console.log("====================================");
+
   const onSubmitEditHandle = async (e) => {
     e.preventDefault();
     const body = {
@@ -92,8 +113,8 @@ const ManageMembership = () => {
           description: "",
         });
         setPage(1);
+        getData(1);
         handleClose();
-        fetchData();
       })
       .catch((err) => {
         console.log("====================================");
@@ -149,6 +170,7 @@ const ManageMembership = () => {
   const handleLoadClick = () => {
     setPage((prevPage) => prevPage + 1);
     carouselRef.current.goToSlide(0);
+    getData(page + 1);
   };
   const generalView = () => {
     return (
@@ -177,33 +199,35 @@ const ManageMembership = () => {
               responsive={responsive}
               ssr={true}
               keyBoardControl={true}
-              partialVisbile={true}
+              partialVisible={true}
               removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
               itemClass="carousel-item-padding">
-              {data?.map((items) => (
-                <div key={items.id}>
-                  <CardMembership
-                    key={items.id}
-                    title={items.name}
-                    duration={items.duration}
-                    price={items.price}
-                    desc={items.description}
-                    onClickEdit={() => {
-                      setShowEdit(true);
-                      setId(items.id);
-                      setMembership({
-                        title: items.name,
-                        duration: items.duration,
-                        price: parseFloat(items.price),
-                        description: items.description,
-                      });
-                    }}
-                    onClickDelete={() => {
-                      HandleDelete(items.id);
-                    }}
-                  />
-                </div>
-              ))}
+              {data
+                ?.sort((a, b) => b.id - a.id)
+                .map((items) => (
+                  <div key={items.id}>
+                    <CardMembership
+                      key={items.id}
+                      title={items.name}
+                      duration={items.duration}
+                      price={items.price}
+                      desc={items.description}
+                      onClickEdit={() => {
+                        setShowEdit(true);
+                        setId(items.id);
+                        setMembership({
+                          title: items.name,
+                          duration: items.duration,
+                          price: parseFloat(items.price),
+                          description: items.description,
+                        });
+                      }}
+                      onClickDelete={() => {
+                        HandleDelete(items.id);
+                      }}
+                    />
+                  </div>
+                ))}
               {/* {hasMoreData && !isLoading && (
                 <div>
                   <CardLoad />
@@ -290,23 +314,8 @@ const ManageMembership = () => {
   };
 
   useEffect(() => {
-    if (response !== null) {
-      const dataPlan = response.data;
-      const filteredDataPlan = dataPlan.sort((a, b) => b.id - a.id);
-      setData((prevData) => [...prevData, ...filteredDataPlan]);
-
-      if (dataPlan.length % 10 === 0) {
-        setShouldRenderLoadMore(true);
-      } else {
-        setShouldRenderLoadMore(false);
-      }
-      carouselRef.current.goToSlide(0);
-    } else {
-      console.log("====================================");
-      console.log(error);
-      console.log("====================================");
-    }
-  }, [error, response]);
+    getData(page);
+  }, [page]);
   return (
     <>
       <div className="container mt-5" id="container">
