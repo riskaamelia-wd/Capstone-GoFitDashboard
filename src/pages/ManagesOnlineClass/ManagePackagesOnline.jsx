@@ -12,6 +12,7 @@ import Loading from "../../components/Loading";
 import useAxios from "../../api/useAxios";
 import moment from "moment";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
+import PaginateButton from "./PaginateButton";
 
 
 const ManagePackagesOnline = () => {
@@ -19,23 +20,54 @@ const ManagePackagesOnline = () => {
     const [showEdit, setShowEdit] = useState(false);
     const [id, setId] = useState(null);
     const [data, setData] = useState([]);
-    const [inputSearch, setInputSearch] = useState("");
-    const token = useSelector((state) => state.tokenAuth);
-    const [startDate, setStartDate] = useState(new Date());
-    const formatDate = moment(startDate).format("YYYY-MM-DD HH:mm:ss");
+    const token = useSelector((state) => state.tokenAuth.token_jwt);
+    const[isLoading, setIsLoading] = useState(false)
+    const [currentPage, setCurrentPage] = useState(1);
 
-    const { response, isLoading, error, fetchData } = useAxios({
-        api: adminApi,
-        method: "get",
-        url: "/admin/classes/packages",
-        body: JSON.stringify({}),
-        header: JSON.stringify({
-            Authorization: `Bearer ${token.token_jwt}`,
-        }),
-    });
+     
+    const fetchData = async (currentPage) => {
+        setIsLoading(true);
+        await axios
+          .get(`http://18.141.56.154:8000/admin/classes/packages?page=${currentPage}`, 
+          {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+          .then((response) => {
+            
+            const { data } = response.data;
+            setData(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
+    }
+
+      
+    const handleNextPage = () => {
+        setCurrentPage((prevPage) => prevPage + 1);
+    };
+    const handlePrevPage = () => {
+        setCurrentPage((prevPage) => prevPage - 1);
+    }; 
+
+    useEffect(() => {
+        fetchData(currentPage);
+    }, [currentPage]);
+    
+    useEffect(() => {
+        if (data.length > 10) {
+          handleNextPage();
+        }
+    }, [data, handleNextPage]);
+
     const config = {
         headers: {
-        Authorization: `Bearer ${token.token_jwt}`,
+        Authorization: `Bearer ${token}`,
         },
     };
     const [packages, setPackage] = useState({
@@ -59,8 +91,15 @@ const ManagePackagesOnline = () => {
                 period: "",
                 price: "",
             });
+            if(data.length>=10){
+                const nextPage = currentPage+1
+                setCurrentPage(nextPage);
+                fetchData(nextPage);
+            }else{
+                setCurrentPage(currentPage)
+                fetchData(currentPage)
+            }
             handleClose();
-            fetchData();
         })
         .catch((err) => {
             console.log(err);
@@ -82,8 +121,9 @@ const ManagePackagesOnline = () => {
                 period: "",
                 price: "",
             });
+            setCurrentPage(currentPage)
+            fetchData(currentPage)
             handleClose();
-            fetchData();
         })
         .catch((err) => {
             console.log(err);
@@ -94,7 +134,14 @@ const ManagePackagesOnline = () => {
         .delete(`http://18.141.56.154:8000/admin/classes/packages/${id}`, config)
         .then(() => {
             alert("Package deleted successfully!");
-            fetchData();
+            if(data.length<=1){
+                const previousPage = currentPage-1
+                setCurrentPage(previousPage);
+                fetchData(previousPage);
+            }else{
+                setCurrentPage(currentPage)
+                fetchData(currentPage)
+            }
         })
         .catch((e) => {
             console.log(e);
@@ -110,6 +157,7 @@ const ManagePackagesOnline = () => {
         });
         setId(null);
     };
+    const filteredData = data?.filter(item => item.class.class_type == 'online');
     const generalView = () => {
         return (
         <>
@@ -117,8 +165,8 @@ const ManagePackagesOnline = () => {
             
             <Loading />
             : 
-            data?.length > 0 ? (
-                data?.map((item, id) => {
+            filteredData?.length > 0 ? (
+                filteredData?.sort((a,b) => b.id - a.id)?.map((item, id) => {
                 return (
                     <div key={id} className="mb-3 p-0">
                     <DetailProduct
@@ -210,16 +258,6 @@ const ManagePackagesOnline = () => {
         </>
         );
     };
-    useEffect(() => {
-        if (response !== null) {
-            const onlineData = response?.data.filter(
-                (item) => item.class.class_type === "online"
-              );
-            setData(onlineData)
-          } else {
-        console.log(error);
-        }
-    }, [error, response]);
     return (
             <div className="container mt-5" id="container">
                 <div className="mb-5">
@@ -256,7 +294,13 @@ const ManagePackagesOnline = () => {
                             </div>
                         </Col>
                     
-                    <div className="mt-5">
+                    <div className="mt-3">
+                        <PaginateButton
+                            handleNextPage={handleNextPage}
+                            handlePrevPage={handlePrevPage}
+                            disabledNext={data?.length < 10}
+                            disabledPrevious={currentPage == 1}
+                        />
                         {isLoading ? (
                         <Loading/>)
                         : 
