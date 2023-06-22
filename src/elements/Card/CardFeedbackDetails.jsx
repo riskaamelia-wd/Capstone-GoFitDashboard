@@ -25,7 +25,7 @@ const CardFeedbackDetails = ({
             <div className={className2}>
               <div>
                 <p className={className3}>{feedback.title}</p>
-                <p className={className4}>{feedback.date}</p>
+                <p className={className4}>{feedback.time}</p>
               </div>
             </div>
           </div>
