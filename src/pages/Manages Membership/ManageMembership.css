@@ -18,9 +18,7 @@
   background-color: var(--primary-500);
   color: var(--primary-100);
   border: 1px solid var(--primary-500);
-  padding: 0.3vw;
   border-radius: 8px;
-  width: 100%;
 }
 .btn-add:hover {
   background-color: var(--primary-300);

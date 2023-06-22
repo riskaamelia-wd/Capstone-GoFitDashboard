@@ -14,19 +14,21 @@ import ModalMembership from "./ModalMembership";
 import useAxios from "../../api/useAxios";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import moment from "moment";
+// import moment from "moment";
 
 const ManageMembership = () => {
+  const token = useSelector((state) => state.tokenAuth);
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [id, setId] = useState(null);
   const [data, setData] = useState([]);
-  const token = useSelector((state) => state.tokenAuth);
-
+  const [page, setPage] = useState(1);
+  const [totalDataCount, setTotalDataCount] = useState(0);
+  const [shouldRenderLoadMore, setShouldRenderLoadMore] = useState(true);
   const { response, isLoading, error, fetchData } = useAxios({
     api: adminApi,
     method: "get",
-    url: "/plans/all",
+    url: `/plans/all?page=${page}`,
     body: JSON.stringify({}),
     header: JSON.stringify({}),
   });
@@ -41,7 +43,6 @@ const ManageMembership = () => {
     price: 0,
     description: "",
   });
-
   const onSubmitHandle = async (e) => {
     e.preventDefault();
     const body = {
@@ -69,17 +70,6 @@ const ManageMembership = () => {
         console.log("====================================");
       });
   };
-  // console.log("====================================");
-  // console.log(token.token_jwt);
-  // console.log("====================================");
-  // console.log("====================================");
-  // console.log(moment().format("YYYY-MM-DTHH:mm:ss"));
-  // console.log("====================================");
-  // const currentTime = moment().format("YYYY-MM-DTHH:mm:ss");
-  // console.log("====================================");
-  // console.log(currentTime);
-  // console.log("====================================");
-
   const onSubmitEditHandle = async (e) => {
     e.preventDefault();
     const body = {
@@ -87,9 +77,6 @@ const ManageMembership = () => {
       duration: parseInt(membership.duration),
       price: parseInt(membership.price),
       description: membership.description,
-      // metadata: {
-      //   created_at: currentTime,
-      // },
     };
     await axios
       .put(`http://18.141.56.154:8000/admin/plans/${id}`, body, config)
@@ -120,6 +107,7 @@ const ManageMembership = () => {
       .catch((e) => {
         console.log("==============");
         console.log(e);
+        console.log("==============");
       });
   };
   const handleClose = () => {
@@ -152,6 +140,13 @@ const ManageMembership = () => {
       items: 1,
     },
   };
+  console.log("====================================");
+  console.log(data);
+  console.log("====================================");
+
+  const handleLoadClick = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
   const generalView = () => {
     return (
       <>
@@ -180,40 +175,39 @@ const ManageMembership = () => {
               keyBoardControl={true}
               partialVisbile={true}
               removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
-              itemClass="carousel-item-padding ">
-              {data?.map((items) => {
-                return (
-                  <>
-                    <div key={items.id}>
-                      <CardMembership
-                        // id={items.id}
-                        key={items.id}
-                        title={items.name}
-                        duration={items.duration}
-                        price={items.price}
-                        desc={items.description}
-                        onClickEdit={() => {
-                          setShowEdit(true);
-                          setId(items.id);
-                          setMembership({
-                            title: items.name,
-                            duration: items.duration,
-                            price: parseFloat(items.price),
-                            description: items.description,
-                          });
-                        }}
-                        onClickDelete={() => {
-                          HandleDelete(items.id);
-                        }}
-                      />
-                    </div>
-                  </>
-                );
-              })}
+              itemClass="carousel-item-padding">
+              {data?.map((items) => (
+                <div key={items.id}>
+                  <CardMembership
+                    key={items.id}
+                    title={items.name}
+                    duration={items.duration}
+                    price={items.price}
+                    desc={items.description}
+                    onClickEdit={() => {
+                      setShowEdit(true);
+                      setId(items.id);
+                      setMembership({
+                        title: items.name,
+                        duration: items.duration,
+                        price: parseFloat(items.price),
+                        description: items.description,
+                      });
+                    }}
+                    onClickDelete={() => {
+                      HandleDelete(items.id);
+                    }}
+                  />
+                </div>
+              ))}
+              {/* {hasMoreData && !isLoading && (
+                <div>
+                  <CardLoad />
+                </div>
+              )} */}
             </Carousel>
           </>
         )}
-
         <ModalMembership
           modaltitle={"Add Plan"}
           show={show}
@@ -290,10 +284,20 @@ const ManageMembership = () => {
       </>
     );
   };
+  console.log("====================================");
+  console.log(data.length);
+  console.log("====================================");
   useEffect(() => {
     if (response !== null) {
       const dataPlan = response.data;
-      setData(dataPlan.sort((a, b) => b.id - a.id));
+      const filteredDataPlan = dataPlan.sort((a, b) => b.id - a.id);
+      setData((prevData) => [...prevData, ...filteredDataPlan]);
+      // setTotalDataCount((prevCount) => prevCount + dataPlan.length);
+      if (dataPlan.length % 10 === 0) {
+        setShouldRenderLoadMore(true);
+      } else {
+        setShouldRenderLoadMore(false);
+      }
     } else {
       console.log("====================================");
       console.log(error);
@@ -305,7 +309,16 @@ const ManageMembership = () => {
       <div className="container mt-5" id="container">
         <div className="mb-5">
           <Cover text={"Membership"} list1={"Home"} img={member1} />
-          <div className="mt-5">
+          <div className="col-12 d-flex align-items-center justify-content-end mt-3">
+            {shouldRenderLoadMore && (
+              <button
+                onClick={handleLoadClick}
+                className="btn-add fw-semibold fs-5 rounded-3">
+                Load More Data
+              </button>
+            )}
+          </div>
+          <div className="mt-3">
             {isLoading ? (
               <>
                 <div className="d-flex align-items-center justify-content-center">
