@@ -14,6 +14,7 @@ import useAxios from "../../api/useAxios";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import InputSearch from "../../elements/InputSearch/InputSearch";
+import PaginateButton from "../ManagesOnlineClass/PaginateButton";
 
 
 const ManageLocation = () => {
@@ -22,7 +23,9 @@ const ManageLocation = () => {
   const [showEdit, setShowEdit] = useState(false);
   const [id, setId] = useState(null);
   const [data, setData] = useState([]);
-  const token = useSelector((state) => state.tokenAuth);
+  const token = useSelector((state) => state.tokenAuth.token_jwt);
+  const[isLoading, setIsLoading] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1);
 
   const containerStyle = {
     width: "180%",
@@ -47,16 +50,58 @@ const ManageLocation = () => {
   const lat = lastMarker ? lastMarker.lat.toString() : null;
   const lng = lastMarker ? lastMarker.lng.toString() : null;
 
-  const { response, isLoading, error, fetchData } = useAxios({
-      api: adminApi,
-      method: "get",
-      url: "/locations",
-      body: JSON.stringify({}),
-      header: JSON.stringify({}),
-  });
+  // const { response, isLoading, error, fetchData } = useAxios({
+  //     api: adminApi,
+  //     method: "get",
+  //     url: "/locations",
+  //     body: JSON.stringify({}),
+  //     header: JSON.stringify({}),
+  // });
+  
+  const fetchData = async (currentPage) => {
+    setIsLoading(true);
+    await axios
+      .get(`http://18.141.56.154:8000/locations?page=${currentPage}`, 
+      {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+      .then((response) => {
+        
+        const { data } = response.data;
+        setData(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+}
+
+      
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  }; 
+
+  useEffect(() => {
+    fetchData(currentPage);
+  }, [currentPage]);
+
+  useEffect(() => {
+    if (data.length > 10) {
+      handleNextPage();
+    }
+  }, [data, handleNextPage]);
+
+
   const config = {
       headers: {
-      Authorization: `Bearer ${token.token_jwt}`,
+      Authorization: `Bearer ${token}`,
       },
   };
   const [loc, setLoc] = useState({
@@ -86,8 +131,15 @@ const ManageLocation = () => {
             latitude: lat,
             longitude: lng,
           });
+          if(data.length>=10){
+              const nextPage = currentPage+1
+              setCurrentPage(nextPage);
+              fetchData(nextPage);
+          }else{
+              setCurrentPage(currentPage)
+              fetchData(currentPage)
+          }
           handleClose();
-          fetchData();
       })
       .catch((err) => {
           console.log(err);
@@ -113,8 +165,9 @@ const ManageLocation = () => {
             latitude: lat,
             longitude: lng,
           });
+          setCurrentPage(currentPage)
+          fetchData(currentPage)
           handleClose();
-          fetchData();
       })
       .catch((err) => {
           console.log(err);
@@ -125,7 +178,14 @@ const ManageLocation = () => {
       .delete(`http://18.141.56.154:8000/admin/locations/${id}`, config)
       .then(() => {
           alert("Location deleted successfully!");
-          fetchData();
+          if(data.length<=1){
+              const previousPage = currentPage-1
+              setCurrentPage(previousPage);
+              fetchData(previousPage);
+          }else{
+              setCurrentPage(currentPage)
+              fetchData(currentPage)
+          }
       })
       .catch((e) => {
           console.log(e);
@@ -151,7 +211,7 @@ const ManageLocation = () => {
           <Loading />
           : 
           data?.length > 0 ? (
-              data?.map((item, id) => {
+              data?.sort((a,b) => b.id - a.id)?.map((item, id)  => {
               return (
                   <div key={id} className="mb-3 p-0">
                   <DetailProduct
@@ -314,13 +374,6 @@ const ManageLocation = () => {
       </>
       );
   };
-  useEffect(() => {
-      if (response !== null) {
-          setData(response.data);
-        } else {
-      console.log(error);
-      }
-  }, [error, response]);
   return (
           <div className="container mt-5" id="container">
               <div className="mb-5">
@@ -354,7 +407,13 @@ const ManageLocation = () => {
                           </div>
                       </Col>
                   
-                  <div className="mt-5">
+                  <div className="mt-3">
+                     <PaginateButton
+                        handleNextPage={handleNextPage}
+                        handlePrevPage={handlePrevPage}
+                        disabledNext={data?.length < 10}
+                        disabledPrevious={currentPage == 1}
+                      />
                       {isLoading ? (
                       <Loading/>)
                       : 

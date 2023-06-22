@@ -25,7 +25,29 @@ const ClassPackages = ({
 }) => {
     const token = useSelector((state) => state.tokenAuth.token_jwt)
     const [classTitle, setClassTitle] =  useState([])
-   
+    // const[isLoading, setIsLoading] = useState(false)
+
+// const fetchData = async (currentPage) => {
+//     setIsLoading(true);
+//     await axios
+//       .get(`http://18.141.56.154:8000/admin/classes`, 
+//       {
+//         headers: {
+//             Authorization: `Bearer ${token}`,
+//         },
+//     })
+//       .then((response) => {
+        
+//         const { data } = response.data;
+//         setData(data);
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       })
+//       .finally(() => {
+//         setIsLoading(false);
+//       });
+// }
 
     const { response , isLoading, error, fetchData } = useAxios({
         api: adminApi,
@@ -60,12 +82,11 @@ const ClassPackages = ({
         if(onlineData){
 
             const titles = onlineData?.map((item) =>({ name : item.name, id : item.id}));
-                const uniqueTitles = titles.filter((value, index, self) => self.indexOf(value) === index);
+                const uniqueTitles = titles?.filter((value, index, self) => self.indexOf(value) === index);
                 setClassTitle(uniqueTitles)
-                console.log(uniqueTitles);
         }
     }
-  }, [response, isLoading])
+  }, [response, isLoading, error])
     
   return(
     <>
