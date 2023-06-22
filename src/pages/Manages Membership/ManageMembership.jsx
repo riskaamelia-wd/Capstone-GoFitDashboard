@@ -23,7 +23,6 @@ const ManageMembership = () => {
   const [id, setId] = useState(null);
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
-  const [totalDataCount, setTotalDataCount] = useState(0);
   const [shouldRenderLoadMore, setShouldRenderLoadMore] = useState(true);
   const { response, isLoading, error, fetchData } = useAxios({
     api: adminApi,
@@ -140,9 +139,6 @@ const ManageMembership = () => {
       items: 1,
     },
   };
-  console.log("====================================");
-  console.log(data);
-  console.log("====================================");
 
   const handleLoadClick = () => {
     setPage((prevPage) => prevPage + 1);
@@ -284,15 +280,12 @@ const ManageMembership = () => {
       </>
     );
   };
-  console.log("====================================");
-  console.log(data.length);
-  console.log("====================================");
+
   useEffect(() => {
     if (response !== null) {
       const dataPlan = response.data;
       const filteredDataPlan = dataPlan.sort((a, b) => b.id - a.id);
       setData((prevData) => [...prevData, ...filteredDataPlan]);
-      // setTotalDataCount((prevCount) => prevCount + dataPlan.length);
       if (dataPlan.length % 10 === 0) {
         setShouldRenderLoadMore(true);
       } else {
@@ -344,9 +337,7 @@ const ManageMembership = () => {
                 onClick={() => {
                   setShow(true);
                 }}
-                // imgClassName={""}
                 imgUrlStart={add}
-                // imgUrlEnd,
                 buttonName={"Add Membership Plan"}
               />
             </div>
