@@ -10,7 +10,7 @@ import {
 } from "../../redux/Slice/recomendedSlice";
 import { v4 as uuidv4 } from "uuid";
 import { trainingApi } from "../../api/Api";
-import useAxios from "../../api/useAxios";
+import useFetch from "../../api/useFetch";
 
 const Recomended = ({}) => {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const Recomended = ({}) => {
     workout: [],
   });
 
-  const { response, isLoading } = useAxios({
+  const { response, isLoading } = useFetch({
     api: trainingApi,
     method: "get",
     url: `/training`,
@@ -45,6 +45,8 @@ const Recomended = ({}) => {
       );
       setWorkout(uniqueTitles);
     }
+    console.log(response);
+    console.log(workout);
   }, [response]);
 
   const levelList = [
