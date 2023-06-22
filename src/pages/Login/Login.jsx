@@ -27,7 +27,7 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { response, isLoading, error, fetchData } = useAxios({
+  const { response, error, fetchData } = useAxios({
     api: adminApi,
     method: bodyApi.method,
     url: bodyApi.url,

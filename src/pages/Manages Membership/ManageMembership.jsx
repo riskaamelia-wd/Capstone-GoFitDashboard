@@ -60,6 +60,7 @@ const ManageMembership = () => {
           price: 0,
           description: "",
         });
+        setPage(1);
         handleClose();
         fetchData();
       })
@@ -87,6 +88,7 @@ const ManageMembership = () => {
           price: 0,
           description: "",
         });
+        setPage(1);
         handleClose();
         fetchData();
       })
@@ -101,6 +103,7 @@ const ManageMembership = () => {
       .delete(`http://18.141.56.154:8000/admin/plans/${id}`, config)
       .then(() => {
         alert("Data deleted successfully!");
+        setPage(1);
         fetchData();
       })
       .catch((e) => {
@@ -285,7 +288,12 @@ const ManageMembership = () => {
     if (response !== null) {
       const dataPlan = response.data;
       const filteredDataPlan = dataPlan.sort((a, b) => b.id - a.id);
-      setData((prevData) => [...prevData, ...filteredDataPlan]);
+      setData(filteredDataPlan);
+      if (data.length !== filteredDataPlan) {
+        setData((prevData) => [...prevData, ...filteredDataPlan]);
+      } else {
+        setData(filteredDataPlan);
+      }
       if (dataPlan.length % 10 === 0) {
         setShouldRenderLoadMore(true);
       } else {
@@ -306,7 +314,7 @@ const ManageMembership = () => {
             {shouldRenderLoadMore && (
               <button
                 onClick={handleLoadClick}
-                className="btn-add fw-semibold fs-5 rounded-3">
+                className="btn-load fw-semibold fs-5 rounded-3">
                 Load More Data
               </button>
             )}
