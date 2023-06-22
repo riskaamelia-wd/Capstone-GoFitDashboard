@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import IconMember from '../../assets/icons/membership.svg'
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
@@ -10,25 +11,50 @@ import { Button } from "react-bootstrap";
 const ManageBooking = () => {
     const navigate = useNavigate();
     const token = useSelector((state) => state.tokenAuth.token_jwt)
-    const [datas, setdatas] = useState([]);
+    const [datas, setDatas] = useState([]);
     const [viewDetail, setViewDetail] = useState({});
     const [selectedButton, setSelectedButton] = useState('online');
-    
+    const [pagination, setPagination] = useState({
+        page: 1,
+        dataShown: 0,
+        totalData: 0
+    });
+
     useEffect(() => {
-        //get semua data booking
-        axios.get('http://18.141.56.154:8000/admin/classes/tickets',{
-            headers: {
-                'Authorization': `Bearer ${token}`
+        const fetchData = async () => {
+            try {
+                let allData = [];
+                let page = 1;
+                let totalData = 0;
+                let dataShown = 0;
+
+                while (dataShown < totalData || page === 1) {
+                    const response = await axios.get(`http://18.141.56.154:8000/admin/classes/tickets?page=${page}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    const { data, pagination } = response.data;
+                    allData = [...allData, ...data];
+                    page = pagination.page + 1;
+                    totalData = pagination.total_data;
+                    dataShown += pagination.data_shown;
+                }
+
+                setDatas(allData);
+                setPagination({
+                    page: page - 1,
+                    dataShown,
+                    totalData
+                });
+            } catch (error) {
+                console.log(error);
             }
-        })
-        .then((response) => {
-            console.log(response.data.data);
-            setdatas(response.data.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-    },[token])
+        };
+
+        fetchData();
+    }, [token]);
 
     const handleClick = (id) => {
         //untuk menampilkan tombol view detail
@@ -64,7 +90,7 @@ const ManageBooking = () => {
 
     //untuk filter data yg ditampilkan online/offline
     const filteredDatas = datas.filter(data => data.class_package.class.class_type === selectedButton);
-    console.log(filteredDatas.length);
+
     return (
         <>
         <Cover

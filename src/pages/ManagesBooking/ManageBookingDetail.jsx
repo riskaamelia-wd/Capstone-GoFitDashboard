@@ -16,21 +16,47 @@ const ManageBookingDetail = () => {
     const [booking, setBooking] = useState({})
     const token = useSelector((state) => state.tokenAuth.token_jwt)
     const [selectedButton, setSelectedButton] = useState('online');
+    const [pagination, setPagination] = useState({
+        page: 1,
+        dataShown: 0,
+        totalData: 0
+    });
 
     useEffect(() => {
         //get data booking untuk ditampilkan di customers data
-        axios.get('http://18.141.56.154:8000/admin/classes/tickets',{
-            headers: {
-                'Authorization': `Bearer ${token}`
+        const fetchData = async () => {
+            try {
+                let allData = [];
+                let page = 1;
+                let totalData = 0;
+                let dataShown = 0;
+
+                while (dataShown < totalData || page === 1) {
+                    const response = await axios.get(`http://18.141.56.154:8000/admin/classes/tickets?page=${page}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    const { data, pagination } = response.data;
+                    allData = [...allData, ...data];
+                    page = pagination.page + 1;
+                    totalData = pagination.total_data;
+                    dataShown += pagination.data_shown;
+                }
+
+                setCustomers(allData);
+                setPagination({
+                    page: page - 1,
+                    dataShown,
+                    totalData
+                });
+            } catch (error) {
+                console.log(error);
             }
-        })
-        .then((response) => {
-            // console.log(response.data.data);
-            setCustomers(response.data.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+        };
+
+        fetchData();
 
         //untuk get detail booking dari id yg dikirimkan di param
         axios.get(`http://18.141.56.154:8000/admin/classes/tickets/${id}`,{
@@ -123,7 +149,7 @@ const ManageBookingDetail = () => {
                             location={booking.class_package?.class.location.address}
                             classType={booking.class_package?.class.class_type + " class"}
                             descClass={
-                                booking.class_package?.class.class_type === 'online'? 'Private zoom with mentor': 'offline class with trainer'
+                                booking.class_package?.class.class_type === 'online'? 'Private zoom with mentor': booking.class_package?.class.name
                             }
                             status={booking.status}
                             image={`http://18.141.56.154:8000/${booking.user?.profile_picture}`}
