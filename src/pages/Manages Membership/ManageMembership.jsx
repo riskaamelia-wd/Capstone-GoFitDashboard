@@ -7,36 +7,61 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import add from "../../assets/icons/add.svg";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { adminApi } from "../../api/Api";
 import { Puff } from "react-loader-spinner";
 import ModalMembership from "./ModalMembership";
 import useAxios from "../../api/useAxios";
 import { useSelector } from "react-redux";
 import axios from "axios";
-// import moment from "moment";
 
 const ManageMembership = () => {
   const token = useSelector((state) => state.tokenAuth);
+  const [isLoading, setIsLoading] = useState(true);
+  const carouselRef = useRef(null);
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [id, setId] = useState(null);
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
-  const [totalDataCount, setTotalDataCount] = useState(0);
   const [shouldRenderLoadMore, setShouldRenderLoadMore] = useState(true);
-  const { response, isLoading, error, fetchData } = useAxios({
-    api: adminApi,
-    method: "get",
-    url: `/plans/all?page=${page}`,
-    body: JSON.stringify({}),
-    header: JSON.stringify({}),
-  });
+
   const config = {
     headers: {
       Authorization: `Bearer ${token.token_jwt}`,
     },
   };
+  const getData = async (page) => {
+    setIsLoading(true);
+    await axios
+      .get(`http://18.141.56.154:8000/plans/all?page=${page}`)
+      .then((response) => {
+        const responseData = response.data.data;
+        if (page === 1) {
+          setData(responseData);
+        }
+
+        if (page > 1) {
+          console.log(responseData);
+          setData([...data, ...responseData]);
+        }
+
+        if (responseData.length % 10 === 0) {
+          setShouldRenderLoadMore(true);
+        } else {
+          setShouldRenderLoadMore(false);
+        }
+      })
+      .catch((err) => {
+        console.log("====================================");
+        console.log(err);
+        console.log("====================================");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   const [membership, setMembership] = useState({
     title: "",
     duration: "",
@@ -61,8 +86,9 @@ const ManageMembership = () => {
           price: 0,
           description: "",
         });
+        setPage(1);
+        getData(1);
         handleClose();
-        fetchData();
       })
       .catch((err) => {
         console.log("====================================");
@@ -70,6 +96,7 @@ const ManageMembership = () => {
         console.log("====================================");
       });
   };
+
   const onSubmitEditHandle = async (e) => {
     e.preventDefault();
     const body = {
@@ -88,8 +115,9 @@ const ManageMembership = () => {
           price: 0,
           description: "",
         });
+        setPage(1);
+        getData(1);
         handleClose();
-        fetchData();
       })
       .catch((err) => {
         console.log("====================================");
@@ -102,7 +130,8 @@ const ManageMembership = () => {
       .delete(`http://18.141.56.154:8000/admin/plans/${id}`, config)
       .then(() => {
         alert("Data deleted successfully!");
-        fetchData();
+        setPage(1);
+        getData(1);
       })
       .catch((e) => {
         console.log("==============");
@@ -140,12 +169,11 @@ const ManageMembership = () => {
       items: 1,
     },
   };
-  console.log("====================================");
-  console.log(data);
-  console.log("====================================");
 
   const handleLoadClick = () => {
     setPage((prevPage) => prevPage + 1);
+    carouselRef.current.goToSlide(0);
+    getData(page + 1);
   };
   const generalView = () => {
     return (
@@ -168,38 +196,41 @@ const ManageMembership = () => {
         ) : (
           <>
             <Carousel
+              ref={carouselRef}
               swipeable={true}
               draggable={true}
               responsive={responsive}
               ssr={true}
               keyBoardControl={true}
-              partialVisbile={true}
+              partialVisible={true}
               removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
               itemClass="carousel-item-padding">
-              {data?.map((items) => (
-                <div key={items.id}>
-                  <CardMembership
-                    key={items.id}
-                    title={items.name}
-                    duration={items.duration}
-                    price={items.price}
-                    desc={items.description}
-                    onClickEdit={() => {
-                      setShowEdit(true);
-                      setId(items.id);
-                      setMembership({
-                        title: items.name,
-                        duration: items.duration,
-                        price: parseFloat(items.price),
-                        description: items.description,
-                      });
-                    }}
-                    onClickDelete={() => {
-                      HandleDelete(items.id);
-                    }}
-                  />
-                </div>
-              ))}
+              {data
+                ?.sort((a, b) => b.id - a.id)
+                .map((items) => (
+                  <div key={items.id}>
+                    <CardMembership
+                      key={items.id}
+                      title={items.name}
+                      duration={items.duration}
+                      price={items.price}
+                      desc={items.description}
+                      onClickEdit={() => {
+                        setShowEdit(true);
+                        setId(items.id);
+                        setMembership({
+                          title: items.name,
+                          duration: items.duration,
+                          price: parseFloat(items.price),
+                          description: items.description,
+                        });
+                      }}
+                      onClickDelete={() => {
+                        HandleDelete(items.id);
+                      }}
+                    />
+                  </div>
+                ))}
               {/* {hasMoreData && !isLoading && (
                 <div>
                   <CardLoad />
@@ -284,26 +315,10 @@ const ManageMembership = () => {
       </>
     );
   };
-  console.log("====================================");
-  console.log(data.length);
-  console.log("====================================");
+
   useEffect(() => {
-    if (response !== null) {
-      const dataPlan = response.data;
-      const filteredDataPlan = dataPlan.sort((a, b) => b.id - a.id);
-      setData((prevData) => [...prevData, ...filteredDataPlan]);
-      // setTotalDataCount((prevCount) => prevCount + dataPlan.length);
-      if (dataPlan.length % 10 === 0) {
-        setShouldRenderLoadMore(true);
-      } else {
-        setShouldRenderLoadMore(false);
-      }
-    } else {
-      console.log("====================================");
-      console.log(error);
-      console.log("====================================");
-    }
-  }, [error, response]);
+    getData(page);
+  }, [page]);
   return (
     <>
       <div className="container mt-5" id="container">
@@ -313,7 +328,7 @@ const ManageMembership = () => {
             {shouldRenderLoadMore && (
               <button
                 onClick={handleLoadClick}
-                className="btn-add fw-semibold fs-5 rounded-3">
+                className="btn-load fw-semibold fs-5 rounded-3">
                 Load More Data
               </button>
             )}
@@ -344,9 +359,7 @@ const ManageMembership = () => {
                 onClick={() => {
                   setShow(true);
                 }}
-                // imgClassName={""}
                 imgUrlStart={add}
-                // imgUrlEnd,
                 buttonName={"Add Membership Plan"}
               />
             </div>
