@@ -7,17 +7,17 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import add from "../../assets/icons/add.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { adminApi } from "../../api/Api";
 import { Puff } from "react-loader-spinner";
 import ModalMembership from "./ModalMembership";
 import useAxios from "../../api/useAxios";
 import { useSelector } from "react-redux";
 import axios from "axios";
-// import moment from "moment";
 
 const ManageMembership = () => {
   const token = useSelector((state) => state.tokenAuth);
+  const carouselRef = useRef(null);
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [id, setId] = useState(null);
@@ -70,6 +70,9 @@ const ManageMembership = () => {
         console.log("====================================");
       });
   };
+  console.log("====================================");
+  console.log(data);
+  console.log("====================================");
   const onSubmitEditHandle = async (e) => {
     e.preventDefault();
     const body = {
@@ -145,6 +148,7 @@ const ManageMembership = () => {
 
   const handleLoadClick = () => {
     setPage((prevPage) => prevPage + 1);
+    carouselRef.current.goToSlide(0);
   };
   const generalView = () => {
     return (
@@ -167,6 +171,7 @@ const ManageMembership = () => {
         ) : (
           <>
             <Carousel
+              ref={carouselRef}
               swipeable={true}
               draggable={true}
               responsive={responsive}
@@ -288,17 +293,14 @@ const ManageMembership = () => {
     if (response !== null) {
       const dataPlan = response.data;
       const filteredDataPlan = dataPlan.sort((a, b) => b.id - a.id);
-      setData(filteredDataPlan);
-      if (data.length !== filteredDataPlan) {
-        setData((prevData) => [...prevData, ...filteredDataPlan]);
-      } else {
-        setData(filteredDataPlan);
-      }
+      setData((prevData) => [...prevData, ...filteredDataPlan]);
+
       if (dataPlan.length % 10 === 0) {
         setShouldRenderLoadMore(true);
       } else {
         setShouldRenderLoadMore(false);
       }
+      carouselRef.current.goToSlide(0);
     } else {
       console.log("====================================");
       console.log(error);
