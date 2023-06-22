@@ -7,14 +7,16 @@ const PaginateButton = ({handleNextPage, handlePrevPage, disabledNext, disabledP
             // disabled={currentPage == 1}
             disabled={disabledPrevious}
             onClick={handlePrevPage}
-            className="btn-page border border-0 p-2 rounded-3 ">
-                Previous
+            className={` border border-0 p-2 rounded-3 ${disabledPrevious ? 'btn' : 'btn-class'}`}
+        >
+            Previous
         </button>
         <button
             // disabled={data?.length < 10}
             disabled={disabledNext}
             onClick={handleNextPage}
-            className="btn-page border border-0 p-2 ms-3 rounded-3">
+            className={` border border-0 p-2 rounded-3 ms-2 ${disabledNext ? 'btn' : 'btn-class'}`}
+        >
                 Next
         </button>
     </div>

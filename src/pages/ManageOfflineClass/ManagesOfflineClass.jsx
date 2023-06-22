@@ -450,7 +450,7 @@ const ManageOfflineClass = () => {
                         </Col>
                         </Row>
                     
-                    <div className="mt-5">
+                    <div className="mt-3">
                         <PaginateButton
                             handleNextPage={handleNextPage}
                             handlePrevPage={handlePrevPage}
