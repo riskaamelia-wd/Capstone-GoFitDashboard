@@ -217,8 +217,7 @@ const ManageClassPackages = () => {
             const offlineData = response?.data.filter(
                 (item) => item.class.class_type === "offline"
               );
-            setData(offlineData)
-            setData(response.data)
+            setData(offlineData) 
           } else {
         console.log(error);
         }
