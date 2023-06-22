@@ -268,7 +268,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                                     </div>
                                     <p style={{ fontSize: "16px", fontWeight: "400", color: "#030303", paddingTop: "10px" }}>To change your password please confirm here</p>
                                     <TextFieldPassword
-                                        defaultValue={customer.user.password}
+                                        value={customer.user.password}
                                         label='Current Password'
                                         name='password'
                                         id='password'
