@@ -233,7 +233,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                         <h5 className="textChangeProfile">
                             Change Profile
                         </h5>
-                        <div className="modal-content">
+                        <div className="modal-content-customer">
                             <div className="modal-body">
                                 <form>
                                     <p style={{ textAlign: "center", fontWeight: "600", fontSize: "16px" }}>Change your profile picture from here</p>
@@ -271,7 +271,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                                         value={customer.user.password}
                                         label='Current Password'
                                         name='password'
-                                        id='password'
+                                        id='password_customer'
                                         classNameLabel={'label-customer'}
 
                                     />
@@ -298,7 +298,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                                                 classNameInput={'TextFieldInput'}
                                                 label={'Name'}
                                                 name={'name'}
-                                                id={'name'}
+                                                id={'name_customer'}
                                                 type={'text'}
                                                 classNameLabel={'label-customer'}
                                             />
@@ -317,7 +317,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                                                 classNameInput={'TextFieldInput'}
                                                 label={'Email'}
                                                 name={'email'}
-                                                id={'email'}
+                                                id={'email_customer'}
                                                 type={'text'}
                                                 classNameLabel={'label-customer'}
                                             />
@@ -459,7 +459,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                     aria-hidden="true"
                 >
                     <div className="modal-dialog reset-password">
-                        <div className="modal-content">
+                        <div className="modal-content-customer">
                             <div className="content-reset">
                                 <img src={warning} alt="Warning" />
                                 <p style={{ fontWeight: "400", fontSize: "16px", color: "#000000", paddingTop: "4%" }}>Are you sure you want to reset password?</p>

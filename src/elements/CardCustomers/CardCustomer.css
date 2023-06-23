@@ -117,10 +117,10 @@
     color: #030303;
 }
 
-#password,
-#name,
+#password_customer,
+#name_customer,
 #username,
-#email,
+#email_customer,
 #phone,
 #address,
 #gender,
@@ -131,10 +131,10 @@
     background-color: var(--Neutral-White-700);
 }
 
-#password:focus,
-#name:focus,
+#password_customer:focus,
+#name_customer:focus,
 #username:focus,
-#email:focus,
+#email_customer:focus,
 #phone:focus,
 #address:focus,
 #gender:focus,
@@ -245,7 +245,7 @@
     border-radius: 10px;
 }
 
-.modal-content {
+.modal-content-customer {
     width: 380px;
     height: 234px;
     background: #FFFFFF;

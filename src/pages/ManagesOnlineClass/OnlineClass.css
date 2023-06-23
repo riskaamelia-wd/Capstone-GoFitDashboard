@@ -56,3 +56,7 @@
     background-color: var(--primary-500) !important;
     color: var(--primary-300);
 }
+
+.btn-dnone{
+    display: none;
+}
