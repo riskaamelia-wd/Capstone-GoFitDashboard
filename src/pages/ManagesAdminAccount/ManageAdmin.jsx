@@ -50,8 +50,8 @@ const ManageAdmin = () => {
         // alert('Added')
     }
 
-    const handleResetPassword = () => {
-        // alert('Reset')
+    const handleResetPassword = (id) => {
+        alert(id)
     }
 
     const handleDelete = (id) => {
@@ -176,8 +176,9 @@ const ManageAdmin = () => {
                                 </td>
                                 <td>
                                     <div className="d-flex gap-3 justify-content-end">
-                                        <ResetPasswordAdmin 
-                                            onClick={handleResetPassword}
+                                        <ResetPasswordAdmin
+                                            // id={data.id}
+                                            onClick={handleResetPassword(data.id)}
                                             btnModalText={'Reset Password'}
                                             btnModalImg={ResetPasswordIcon}
                                         />
