@@ -1,4 +1,4 @@
-import { PropTypes } from 'prop-types';
+/* eslint-disable react/prop-types */
 import './Tag.css'
 
 const TagRole = ({role}) => {
@@ -15,7 +15,3 @@ const TagRole = ({role}) => {
 }
 
 export default TagRole
-
-TagRole.propTypes = {
-    role: PropTypes.string.isRequired
-}

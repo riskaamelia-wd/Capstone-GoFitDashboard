@@ -35,6 +35,7 @@ import ManagePackagesOnline from "./pages/ManagesOnlineClass/ManagePackagesOnlin
 import ManageLocation from "./pages/ManageOfflineClass/ManageLocation";
 import ManageTransaction from "./pages/ManageTransaction/ManageTransaction";
 import ManageBooking from "./pages/ManagesBooking/ManageBooking";
+import ManageAdmin from "./pages/ManagesAdminAccount/ManageAdmin";
 
 
 function App() {
@@ -73,6 +74,7 @@ function App() {
             <Route path="/transaction" element={<ManageTransaction/>} />
             <Route path="/booking" element={<ManageBooking />} />
             <Route path="/booking/detail/:id" element={<ManageBookingDetail />} />
+            <Route path='/manageadmin' element={<ManageAdmin />} />
           </Route>
         </Routes>
       </BrowserRouter>
