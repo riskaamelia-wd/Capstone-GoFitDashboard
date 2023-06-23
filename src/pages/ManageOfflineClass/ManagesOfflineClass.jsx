@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import Cover from "../../elements/Card/Cover";
 import imgCover from "../../assets/icons/Appreciation 1.svg";
 import { useNavigate } from "react-router-dom";
@@ -12,11 +13,7 @@ import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import OfflineClass from "../../components/Form/OfflineClass";
 import moment from "moment";
 import Loading from "../../components/Loading";
-import useAxios from "../../api/useAxios";
 import axios from "axios";
-
-
-/* eslint-disable react/prop-types */
 import "react-multi-carousel/lib/styles.css";
 import PaginateButton from "../ManagesOnlineClass/PaginateButton";
 
@@ -198,8 +195,8 @@ const ManageOfflineClass = () => {
             fetchData(currentPage)
             handleClose();
         }
-        catch(err) {
-            console.log(err);
+        catch(error_reason) {
+            alert(error_reason);
         };
     };
     const HandleDelete = async (id) => {
@@ -234,7 +231,11 @@ const ManageOfflineClass = () => {
         setId(null);
     };
     
-    const filteredData = data?.filter(item => item.class_type == 'offline');
+    // const filteredData = data?.filter(item => item.class_type == 'offline');
+    const filteredData = data?.filter(item => {
+    return item.class_type === 'offline' && item.name.toLowerCase().includes(inputSearch.toLowerCase());
+    });
+
     const generalView = () => {
         return (
         <>
@@ -247,13 +248,13 @@ const ManageOfflineClass = () => {
                 return (
                     <div key={id} className="mb-3 p-0">
                     <DetailProduct
-                        key={item.id}
-                        text={item.name}
+                        key={item?.id}
+                        text={item?.name}
                         // img={item.image_banner}
                         img={`http://18.141.56.154:8000/${item.image_banner}`}
-                        date={item.started_at}
-                        timeSession={item.location.name}
-                        category={item.location.address}
+                        date={item?.started_at}
+                        timeSession={item?.location?.name}
+                        category={item?.location?.address}
                         onClickDelete={() => HandleDelete(item.id)}
                         // onClickEdit={() => handleEdit(item.id)}
                         onClickEdit={() => {
@@ -279,6 +280,7 @@ const ManageOfflineClass = () => {
             }
 
             <OfflineClass
+            disabled={true}
             modaltitle={"Add Class"}
             show={show}
             handleClose={handleClose}
@@ -366,16 +368,6 @@ const ManageOfflineClass = () => {
         </>
         );
     };
-    // useEffect(() => {
-    //     if (response !== null) {
-    //         const offlineData = response.data.filter(
-    //           (item) => item.class_type === "offline"
-    //         );
-    //         setData(offlineData);
-    //       } else {
-    //     console.log(error);
-    //     }
-    // }, [error, response]);
     return (
             <div className="container mt-5" id="container">
                 <div className="mb-5">

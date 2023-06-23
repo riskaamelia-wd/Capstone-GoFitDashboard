@@ -169,19 +169,19 @@ const ManageOnlineClass = () => {
         };
         
         try{
+            
         await axios
         .put(`http://18.141.56.154:8000/admin/classes/${id}`, body, config)
-        
-        await axios.post(
-            `http://18.141.56.154:8000/admin/classes/banner/${id}`,
-            formData,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",
-                },
-            }
-        ); 
+            await axios.post(
+                `http://18.141.56.154:8000/admin/classes/banner/${id}`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            ); 
             alert("Data edited successfully");
             setOnline({
                 name: "",
@@ -197,8 +197,8 @@ const ManageOnlineClass = () => {
             handleClose();
             // fetchData();
         }
-        catch(err) {
-            console.log(err);
+        catch(error_reason) {
+            alert(error_reason);
         };
     };
     const HandleDelete = async (id) => {
@@ -248,7 +248,11 @@ const ManageOnlineClass = () => {
     // }, [error, response]);
 
     
-    const filteredData = data?.filter(item => item.class_type == 'online');
+    // const filteredData = data?.filter(item => item.class_type == 'online');
+    
+    const filteredData = data?.filter(item => {
+        return item.class_type === 'online' && item.name.toLowerCase().includes(inputSearch.toLowerCase());
+    });
 
     const generalView = () => {
         return (
@@ -292,6 +296,7 @@ const ManageOnlineClass = () => {
             }
 
             <OnlineClass
+            disabled={true}
             modaltitle={"Add Class"}
             show={show}
             handleClose={handleClose}
