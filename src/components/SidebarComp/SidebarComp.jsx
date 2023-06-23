@@ -18,11 +18,14 @@ import Icon12Expandmore from "../../assets/icons/expand_more.svg";
 import Icon13Expandless from "../../assets/icons/expand_less.svg";
 import Icon14Dotblack from "../../assets/icons/Offline_dot.svg";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
+import { useDispatch } from "react-redux";
+import { addToken } from "../../redux/Slice/tokenSlice";
+import { addUser } from "../../redux/Slice/usersSlice";
 
 const SidebarComp = ({ isExpanded, setExpandState }) => {
   const [isClassDropdown, setClassDropdown] = useState(false);
   const [isItemDropdown, setItemDropdown] = useState(false);
-
+  const dispatch = useDispatch();
   const handleClassDropdown = () => {
     setClassDropdown(!isClassDropdown);
   };
@@ -37,6 +40,10 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
 
   const handleMouseLeave = () => {
     setExpandState(false);
+  };
+  const handleLogout = () => {
+    dispatch(addToken(""));
+    dispatch(addUser(""));
   };
   return (
     <div
@@ -71,8 +78,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
               imgUrlStart={Icon1Gym}
               imgClassName={
                 isExpanded ? "btn-sidebar-icon" : "btn-sidebar-icon-NX"
-              }
-            ></ButtonComponent>
+              }></ButtonComponent>
           </NavLink>
           <NavLink to={"/invoices"}>
             <ButtonComponent
@@ -82,8 +88,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
               imgUrlStart={Icon2Invoices}
               imgClassName={
                 isExpanded ? "btn-sidebar-icon" : "btn-sidebar-icon-NX"
-              }
-            ></ButtonComponent>
+              }></ButtonComponent>
           </NavLink>
           <NavLink to={"/transaction"}>
             <ButtonComponent
@@ -93,8 +98,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
               imgUrlStart={Icon3Transactions}
               imgClassName={
                 isExpanded ? "btn-sidebar-icon" : "btn-sidebar-icon-NX"
-              }
-            ></ButtonComponent>
+              }></ButtonComponent>
           </NavLink>
 
           <h1 className={isExpanded ? "menu-item" : "menu-item menu-item-NX"}>
@@ -109,8 +113,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
               imgUrlStart={Icon4Membership}
               imgClassName={
                 isExpanded ? "btn-sidebar-icon" : "btn-sidebar-icon-NX"
-              }
-            ></ButtonComponent>
+              }></ButtonComponent>
           </NavLink>
           <div className={isClassDropdown ? "dropdown-sidebar" : ""}>
             <ButtonComponent
@@ -139,8 +142,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                   ? Icon12Expandmore
                   : null
               }
-              onClick={handleClassDropdown}
-            ></ButtonComponent>
+              onClick={handleClassDropdown}></ButtonComponent>
             {isExpanded && isClassDropdown ? (
               <div className="dropdown-sidebar-menu-one">
                 <li className="menu-item sidebar-drop-menu-option">
@@ -167,15 +169,13 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                   isExpanded
                     ? "dropdown-sidebar-menu-one"
                     : "dropdown-sidebar-menu-one-NX"
-                }
-              >
+                }>
                 <li
                   className={
                     isExpanded
                       ? "menu-item sidebar-drop-menu-option"
                       : "sidebar-drop-menu-option-NX"
-                  }
-                >
+                  }>
                   <NavLink to={"/booking"}>
                     <ButtonComponent
                       type={"button"}
@@ -232,8 +232,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                   ? Icon12Expandmore
                   : null
               }
-              onClick={handleItemDropdown}
-            ></ButtonComponent>
+              onClick={handleItemDropdown}></ButtonComponent>
             {isExpanded && isItemDropdown ? (
               <div className="dropdown-sidebar-menu-two">
                 <li className="menu-item sidebar-drop-menu-option">
@@ -260,15 +259,13 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                   isExpanded
                     ? "dropdown-sidebar-menu-one"
                     : "dropdown-sidebar-menu-one-NX"
-                }
-              >
+                }>
                 <li
                   className={
                     isExpanded
                       ? "menu-item sidebar-drop-menu-option"
                       : "sidebar-drop-menu-option-NX"
-                  }
-                >
+                  }>
                   <NavLink to={"/articles"}>
                     <ButtonComponent
                       type={"button"}
@@ -305,8 +302,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
               imgUrlStart={Icon7Users}
               imgClassName={
                 isExpanded ? "btn-sidebar-icon" : "btn-sidebar-icon-NX"
-              }
-            ></ButtonComponent>
+              }></ButtonComponent>
           </NavLink>
 
           <h1 className={isExpanded ? "menu-item" : "menu-item menu-item-NX"}>
@@ -320,8 +316,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
               imgUrlStart={Icon8Admin}
               imgClassName={
                 isExpanded ? "btn-sidebar-icon" : "btn-sidebar-icon-NX"
-              }
-            ></ButtonComponent>
+              }></ButtonComponent>
           </NavLink>
           <NavLink to={"/managesfeedback"}>
             <ButtonComponent
@@ -331,10 +326,9 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
               imgUrlStart={Icon9Feedback}
               imgClassName={
                 isExpanded ? "btn-sidebar-icon" : "btn-sidebar-icon-NX"
-              }
-            ></ButtonComponent>
+              }></ButtonComponent>
           </NavLink>
-          <NavLink to={"/landingpage"}>
+          <NavLink to={"https://develop--vocal-wisp-91820f.netlify.app/"}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-sidebar" : "btn-sidebar-NX"}
@@ -342,14 +336,13 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
               imgUrlStart={Icon10LandingPages}
               imgClassName={
                 isExpanded ? "btn-sidebar-icon" : "btn-sidebar-icon-NX"
-              }
-            ></ButtonComponent>
+              }></ButtonComponent>
           </NavLink>
 
           <h1 className={isExpanded ? "menu-item" : "menu-item menu-item-NX"}>
             Auth
           </h1>
-          <NavLink to={"/"}>
+          <NavLink to={"/"} onClick={handleLogout}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-logout" : "btn-sidebar-NX"}
@@ -357,8 +350,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
               imgUrlStart={Icon11Logout}
               imgClassName={
                 isExpanded ? "btn-sidebar-icon" : "btn-sidebar-icon-NX"
-              }
-            ></ButtonComponent>
+              }></ButtonComponent>
           </NavLink>
         </div>
       </div>

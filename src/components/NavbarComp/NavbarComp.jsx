@@ -95,7 +95,7 @@ const NavbarComp = ({
                 <div className="col-12">
                   <div className="row">
                     <div className="col-6">
-                      <NavLink to={"/"}>
+                      <NavLink to={"/membership"}>
                         <div
                           className="cardHeader rounded-3"
                           style={{ width: "15vw" }}
@@ -122,7 +122,7 @@ const NavbarComp = ({
                       </NavLink>
                     </div>
                     <div className="col-6">
-                      <NavLink to={"/"}>
+                      <NavLink to={"/training"}>
                         <div
                           className="cardHeader rounded-3"
                           style={{ width: "15vw" }}
@@ -151,7 +151,7 @@ const NavbarComp = ({
                 <div className="col-12">
                   <div className="row">
                     <div className="col-6">
-                      <NavLink to={"/"}>
+                      <NavLink to={"/offlineClass"}>
                         <div
                           className="cardHeader rounded-3"
                           style={{ width: "15vw" }}
@@ -176,7 +176,7 @@ const NavbarComp = ({
                       </NavLink>
                     </div>
                     <div className="col-6">
-                      <NavLink to={"/"}>
+                      <NavLink to={"/articles"}>
                         <div
                           className="cardHeader rounded-3"
                           style={{ width: "15vw" }}
@@ -207,7 +207,7 @@ const NavbarComp = ({
                 <div className="col-12">
                   <div className="row">
                     <div className="col-6">
-                      <NavLink to={"/"}>
+                      <NavLink to={"/onlineClass"}>
                         <div
                           className="cardHeader rounded-3"
                           style={{ width: "15vw" }}
@@ -232,7 +232,7 @@ const NavbarComp = ({
                       </NavLink>
                     </div>
                     <div className="col-6">
-                      <NavLink to={"/"}>
+                      <NavLink to={"/booking"}>
                         <div
                           className="cardHeader rounded-3"
                           style={{ width: "15vw" }}

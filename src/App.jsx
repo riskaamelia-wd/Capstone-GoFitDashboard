@@ -29,6 +29,11 @@ import Dashboard from "./pages/Dashboard/DashboardPages";
 import ManageBooking from "./pages/ManagesBooking/ManageBooking";
 import ManagesArticles from "./pages/ManagesArticles/ManagesArticles";
 import ManageTransaction from "./pages/ManageTransaction/ManageTransaction";
+import ManagesOnlineClass from "./pages/ManagesOnlineClass/ManageOnlineClass";
+import ManagesOfflineClass from "./pages/ManageOfflineClass/ManagesOfflineClass";
+import ManagePackagesOnline from "./pages/ManagesOnlineClass/ManagePackagesOnline";
+import ManageClassPackages from "./pages/ManageOfflineClass/ManageClassPackages";
+import ManageLocation from "./pages/ManageOfflineClass/ManageLocation";
 import ManageAdmin from "./pages/ManagesAdminAccount/ManageAdmin";
 
 function App() {
@@ -66,7 +71,11 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/managesfeedback" element={<ManagesFeedback />} />
             <Route path="/articles" element={<ManagesArticles />} />
-            <Route path="onlineClass" element={<OnlineClass />} />
+            <Route path="onlineClass" element={<ManagesOnlineClass />} />
+            <Route path="onlineClass/classPackages" element={<ManagePackagesOnline />} />
+            <Route path="offlineClass" element={<ManagesOfflineClass />} />
+            <Route path="offlineClass/classPackages" element={<ManageClassPackages />} />
+            <Route path="offlineClass/location" element={<ManageLocation />} />
             <Route path="training" element={<ManageTraining />} />
             <Route path="levelDetail/:level" element={<LevelDetail />} />
             <Route path="levelDetail/:level/:id" element={<LevelDetail />} />
