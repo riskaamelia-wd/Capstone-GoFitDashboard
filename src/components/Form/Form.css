@@ -80,6 +80,22 @@
     color: var(--primary-400);
 }
 
+.btn-closebtn{
+  color: var(--primary-500);
+  border: 1px solid var(--primary-500);
+  border-radius:8px;
+  padding-right:34px;
+  padding-left:34px
+}
+
+.btn-createbtn{
+  background-color: var(--primary-500);
+  color: var(--primary-100);
+  border-radius:8px;
+  padding-right:34px;
+  padding-left:34px
+}
+
 input[type="date"]::-webkit-calendar-picker-indicator {
     background: transparent;
     color: transparent;

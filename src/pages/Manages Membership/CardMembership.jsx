@@ -59,7 +59,10 @@ const CardMembership = ({
               }>
               <div className="row">
                 <div className="col-6 text-start">
-                  <button className=" rounded-3" onClick={onClickEdit}>
+                  <button
+                    className=" rounded-3"
+                    id="editButtonMembership"
+                    onClick={onClickEdit}>
                     <img
                       src={edit_membership}
                       alt=""
@@ -68,7 +71,10 @@ const CardMembership = ({
                   </button>
                 </div>
                 <div className="col-6 text-end">
-                  <button className=" rounded-3" onClick={onClickDelete}>
+                  <button
+                    className=" rounded-3"
+                    id="deleteButtonMembership"
+                    onClick={onClickDelete}>
                     <img
                       src={delete_membership}
                       alt=""

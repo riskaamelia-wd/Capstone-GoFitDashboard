@@ -294,7 +294,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
               </div>
             ) : null}
           </div>
-          <NavLink to={"/managecustomer"}>
+          <NavLink to={"/manageCustomers"}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-sidebar" : "btn-sidebar-NX"}

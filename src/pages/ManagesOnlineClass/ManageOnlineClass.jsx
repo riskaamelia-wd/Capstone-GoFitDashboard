@@ -2,9 +2,7 @@
 import Cover from "../../elements/Card/Cover"
 import "react-multi-carousel/lib/styles.css";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
-import { useEffect, useState } from "react";
-import { adminApi } from "../../api/Api";
-import useAxios from "../../api/useAxios";
+import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import Loading from "../../components/Loading";
@@ -16,6 +14,7 @@ import { Col, Row } from "react-bootstrap";
 import InputSearch from "../../elements/InputSearch/InputSearch";
 import { useNavigate } from "react-router-dom";
 import OnlineClass from "../../components/Form/OnlineClass";
+import PaginateButton from "./PaginateButton";
 
 const ManageOnlineClass = () => {
     const navigate = useNavigate()
@@ -24,20 +23,69 @@ const ManageOnlineClass = () => {
     const [id, setId] = useState(null);
     const [data, setData] = useState([]);
     const [inputSearch, setInputSearch] = useState("");
-    const token = useSelector((state) => state.tokenAuth);
+    const token = useSelector((state) => state.tokenAuth.token_jwt);
     const [startDate, setStartDate] = useState(new Date());
     const formatDate = moment(startDate).format("YYYY-MM-DD HH:mm:ss");
+    const [image, setImage] = useState(null)
+    const[isLoading, setIsLoading] = useState(false)
+    const [currentPage, setCurrentPage] = useState(1);
 
-    const { response, isLoading, error, fetchData } = useAxios({
-        api: adminApi,
-        method: "get",
-        url: "/classes",
-        body: JSON.stringify({}),
-        header: JSON.stringify({}),
-    });
+    // const { response, isLoading, error, fetchData } = useAxios({
+    //     api: adminApi,
+    //     method: "get",
+    //     url: "/admin/classes",
+    //     body: JSON.stringify({}),
+    //     header: JSON.stringify({
+    //         Authorization: `Bearer ${token}`,
+    //     }),
+    // });
+    // console.log(response);
+
+    
+    const fetchData = async (currentPage) => {
+        setIsLoading(true);
+        await axios
+          .get(`http://18.141.56.154:8000/admin/classes?page=${currentPage}`, 
+          {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+          .then((response) => {
+            const { data } = response.data;
+            setData(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
+      }
+
+      
+    const handleNextPage = () => {
+        setCurrentPage((prevPage) => prevPage + 1);
+    };
+    const handlePrevPage = () => {
+        setCurrentPage((prevPage) => prevPage - 1);
+    };
+      
+    useEffect(() => {
+        fetchData(currentPage);
+    }, [currentPage]);
+    
+
+    useEffect(() => {
+        if (data.length > 10) {
+          handleNextPage();
+        }
+    }, [data, handleNextPage]);
+
+
     const config = {
         headers: {
-        Authorization: `Bearer ${token.token_jwt}`,
+        Authorization: `Bearer ${token}`,
         },
     };
     const [online, setOnline] = useState({
@@ -48,51 +96,93 @@ const ManageOnlineClass = () => {
         link: "",
         class_type: "online",
     });
+    
+    const generateUniqueID = () => {
+        const randomNum = Math.floor(Math.random() * 100) + 1;
+        const uniqueID = `${randomNum}`;
+        return uniqueID;
+      };
+    const uniqueId = generateUniqueID()
+
     const onSubmitHandle = async (e) => {
         e.preventDefault();
+        
+        const formData = new FormData();
+        formData.append("file", image);
         const body = {
-            image_banner:online.image_banner,
+            // image_banner:online.image_banner,
             name: online.name,
             started_at: formatDate,
             description: online.description,
             link: online.link,
             class_type: "online",
         };
-        await axios
-        .post("http://18.141.56.154:8000/admin/classes", body, config)
-        .then(() => {
-            alert("Plan added successfully");
-            setOnline({
-                name: "",
-                started_at: null,
-                description: "",
-                image_banner: "",
-                link: "",
-                class_type: "online",
-            });
-            handleClose();
-            fetchData();
-        })
-        .catch((err) => {
-            console.log("====================================");
+        try{
+
+            await axios
+            .post("http://18.141.56.154:8000/admin/classes", body, config)
+            // .then(() => {
+                await axios.post(
+                    `http://18.141.56.154:8000/admin/classes/banner/${uniqueId}`,
+                    formData,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }
+                );            
+                alert("Data added successfully");
+                setOnline({
+                    name: "",
+                    started_at: null,
+                    description: "",
+                    image_banner: "",
+                    link: "",
+                    class_type: "online",
+                });
+                if(data.length>=10){
+                    const nextPage = currentPage+1
+                    setCurrentPage(nextPage);
+                    fetchData(nextPage);
+                }else{
+                    setCurrentPage(currentPage)
+                    fetchData(currentPage)
+                }
+                handleClose();
+        }
+        catch(err) {
             console.log(err);
-            console.log("====================================");
-        });
+        };
     };
     const onSubmitEditHandle = async (e) => {
         e.preventDefault();
+        const formData = new FormData();
+        formData.append("file", image);
         const body = {
-            image_banner:online.image_banner,
+            // image_banner:online.image_banner,
             name: online.name,
             started_at: formatDate,
             description: online.description,
             link: online.link,
             class_type: "online",
         };
+        
+        try{
+            
         await axios
         .put(`http://18.141.56.154:8000/admin/classes/${id}`, body, config)
-        .then(() => {
-            alert("Plan edited successfully");
+            await axios.post(
+                `http://18.141.56.154:8000/admin/classes/banner/${id}`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            ); 
+            alert("Data edited successfully");
             setOnline({
                 name: "",
                 started_at: null,
@@ -101,21 +191,29 @@ const ManageOnlineClass = () => {
                 link: "",
                 class_type: "online",
             });
+            
+            setCurrentPage(currentPage)
+            fetchData(currentPage)
             handleClose();
-            fetchData();
-        })
-        .catch((err) => {
-            console.log("====================================");
-            console.log(err);
-            console.log("====================================");
-        });
+            // fetchData();
+        }
+        catch(error_reason) {
+            alert(error_reason);
+        };
     };
     const HandleDelete = async (id) => {
         await axios
         .delete(`http://18.141.56.154:8000/admin/classes/${id}`, config)
         .then(() => {
             alert("Data deleted successfully!");
-            fetchData();
+            if(data.length<=1){
+                const previousPage = currentPage-1
+                setCurrentPage(previousPage);
+                fetchData(previousPage);
+            }else{
+                setCurrentPage(currentPage)
+                fetchData(currentPage)
+            }
         })
         .catch((e) => {
             console.log("==============");
@@ -135,6 +233,27 @@ const ManageOnlineClass = () => {
         });
         setId(null);
     };
+
+
+    
+    // useEffect(() => {
+    //     if (response !== null) {
+    //         // const onlineData = response.data.filter(
+    //         //   (item) => item.class_type === "online"
+    //         // );
+    //         setData(data);
+    //       } else {
+    //     console.log(error);
+    //     }
+    // }, [error, response]);
+
+    
+    // const filteredData = data?.filter(item => item.class_type == 'online');
+    
+    const filteredData = data?.filter(item => {
+        return item.class_type === 'online' && item.name.toLowerCase().includes(inputSearch.toLowerCase());
+    });
+
     const generalView = () => {
         return (
         <>
@@ -142,19 +261,18 @@ const ManageOnlineClass = () => {
             
             <Loading />
             : 
-            data?.length > 0 ? (
-                data?.map((item, id) => {
+            filteredData?.length > 0 ? (
+                filteredData?.sort((a,b) => b.id - a.id)?.map((item, id) => {
                 return (
                     <div key={id} className="mb-3 p-0">
                     <DetailProduct
                         key={item.id}
                         text={item.name}
-                        img={item.image_banner}
+                        img={`http://18.141.56.154:8000/${item.image_banner}`}
                         date={item.started_at}
                         timeSession={item.link}
                         category={item.description}
                         onClickDelete={() => HandleDelete(item.id)}
-                        // onClickEdit={() => handleEdit(item.id)}
                         onClickEdit={() => {
                             setShowEdit(true);
                             setId(item.id);
@@ -178,6 +296,7 @@ const ManageOnlineClass = () => {
             }
 
             <OnlineClass
+            disabled={true}
             modaltitle={"Add Class"}
             show={show}
             handleClose={handleClose}
@@ -208,10 +327,12 @@ const ManageOnlineClass = () => {
             linkClassValue={online?.link}
             imageFile={(e) => {
                 const file = e.target.files[0];
+                setImage(file);
                 setOnline((prevData) => ({
                 ...prevData,
                 image_banner: URL.createObjectURL(file),
                 }));
+                console.log(image, ' image', online, ' onl');
             }}
             imageFileValue={online?.image_banner}
             onSubmitHandle={onSubmitHandle}
@@ -248,6 +369,7 @@ const ManageOnlineClass = () => {
             linkClassValue={online?.link}
             imageFile={(e) => {
                 const file = e.target.files[0];
+                setImage(file);
                 setOnline((prevData) => ({
                 ...prevData,
                 image_banner: URL.createObjectURL(file),
@@ -259,16 +381,7 @@ const ManageOnlineClass = () => {
         </>
         );
     };
-    useEffect(() => {
-        if (response !== null) {
-            const onlineData = response.data.filter(
-              (item) => item.class_type === "online"
-            );
-            setData(onlineData);
-          } else {
-        console.log(error);
-        }
-    }, [error, response]);
+
     return (
             <div className="container mt-5" id="container">
                 <div className="mb-5">
@@ -336,7 +449,13 @@ const ManageOnlineClass = () => {
                         </Col>
                         </Row>
                     
-                    <div className="mt-5">
+                    <div className="mt-3">
+                        <PaginateButton
+                            handleNextPage={handleNextPage}
+                            handlePrevPage={handlePrevPage}
+                            disabledNext={data?.length < 10}
+                            disabledPrevious={currentPage == 1}
+                        />
                         {isLoading ? (
                         <Loading/>)
                         : 

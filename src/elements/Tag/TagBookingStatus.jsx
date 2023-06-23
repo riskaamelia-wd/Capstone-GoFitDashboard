@@ -1,4 +1,3 @@
-import { PropTypes } from 'prop-types';
 import './Tag.css'
 
 const TagBookingStatus = ({status}) => {
@@ -15,7 +14,3 @@ const TagBookingStatus = ({status}) => {
 }
 
 export default TagBookingStatus
-
-TagBookingStatus.propTypes = {
-    status: PropTypes.string.isRequired
-}

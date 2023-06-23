@@ -201,7 +201,7 @@ const Admin = ({onClick,classNameImg,style, className, btnModalText, btnModalImg
                 aria-labelledby="exampleModalLabel" 
                 aria-hidden="true"
             >
-            <div  className="modal-dialog modal-lg">
+            <div className="modal-dialog modal-lg">
                 <div 
                 style={{width:'fit-content'}} className="modal-content">
                 <div className="modal-body">
@@ -210,8 +210,8 @@ const Admin = ({onClick,classNameImg,style, className, btnModalText, btnModalImg
                     {/* <form onSubmit={formik.handleSubmit}> */}
                     <div className="shadow p-3" style={{width:'606px'}}>
                         <div className="row">
-                            <div className="col-12">Change your profile picture from here</div>
-                            <div className="col-12 d-flex flex-row">
+                            <div className="col-12 text-center">Change your profile picture from here</div>
+                            <div className="col-12 d-flex flex-row justify-content-center">
                                 <div 
                                 className="me-4"
                                 style={{width:"83px", height:"83px"}}>

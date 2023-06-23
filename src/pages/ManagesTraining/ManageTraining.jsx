@@ -33,8 +33,6 @@ const ManageTraining = () => {
         if(res !== null){
             setClassData(res)
         }
-        console.log(res, ' ter');
-        console.log(response, ' rere');
     })
 
     const calculatePercentage = (category) => {
