@@ -51,7 +51,7 @@ const ManageAdmin = () => {
     }
 
     const handleResetPassword = (id) => {
-        alert(id)
+        // alert(id)
     }
 
     const handleDelete = (id) => {
@@ -106,7 +106,7 @@ const ManageAdmin = () => {
                                 name={'inputSearch'}
                                 id={'inputSearch'}
                                 placeholder={'Search your name'}                
-                                className = "search w-100 py-2"
+                                className = "search py-2"
                                 value={search}
                                 onChange={handleSearch}
                             />
