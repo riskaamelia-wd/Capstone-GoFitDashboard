@@ -4,11 +4,11 @@ import { Card } from "react-bootstrap"
 import TagBookingStatus  from '../../elements/Tag/TagBookingStatus'
 import { useNavigate } from "react-router"
 
-const CardCustomerBooking = ({name, date, status, image, id}) => {
+const CardCustomerBooking = ({name, date, status, image, id, onClick}) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate(`/booking/detail/${id}`)
+        navigate(onClick == ''? onClick : `/booking/detail/${id}`)
     }
 
     return (

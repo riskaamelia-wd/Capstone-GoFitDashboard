@@ -26,42 +26,23 @@ import LevelDetail from "./pages/ManagesTraining/LevelDetail";
 import WorkoutDetail from "./pages/ManagesTraining/WorkoutDetail";
 import Invoices from "./pages/Invoices/Invoices";
 import Dashboard from "./pages/Dashboard/DashboardPages";
-import ManageBooking from "./pages/ManagesBooking/ManageBooking";
+import ManageCustomers from "./pages/ManagesCustomers/ManageCustomers";
 import ManagesArticles from "./pages/ManagesArticles/ManagesArticles";
-import ManageTransaction from "./pages/ManageTransaction/ManageTransaction";
 import ManagesOnlineClass from "./pages/ManagesOnlineClass/ManageOnlineClass";
 import ManagesOfflineClass from "./pages/ManageOfflineClass/ManagesOfflineClass";
-import ManagePackagesOnline from "./pages/ManagesOnlineClass/ManagePackagesOnline";
 import ManageClassPackages from "./pages/ManageOfflineClass/ManageClassPackages";
+import ManagePackagesOnline from "./pages/ManagesOnlineClass/ManagePackagesOnline";
 import ManageLocation from "./pages/ManageOfflineClass/ManageLocation";
+import ManageTransaction from "./pages/ManageTransaction/ManageTransaction";
+import ManageBooking from "./pages/ManagesBooking/ManageBooking";
 import ManageAdmin from "./pages/ManagesAdminAccount/ManageAdmin";
+
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
-      {/* <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p> */}
-
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
@@ -77,6 +58,7 @@ function App() {
             <Route path="offlineClass/classPackages" element={<ManageClassPackages />} />
             <Route path="offlineClass/location" element={<ManageLocation />} />
             <Route path="training" element={<ManageTraining />} />
+            <Route path="/manageCustomers" element={<ManageCustomers />} />
             <Route path="levelDetail/:level" element={<LevelDetail />} />
             <Route path="levelDetail/:level/:id" element={<LevelDetail />} />
             <Route

@@ -46,3 +46,17 @@
 .bgColor{
     background-color: var(--Neutral-White-100) !important;
 }
+
+.btn-page{
+    background-color: var(--primary-300) !important;
+    color: var(--primary-500);
+}
+
+.btn-page:hover{
+    background-color: var(--primary-500) !important;
+    color: var(--primary-300);
+}
+
+.btn-dnone{
+    display: none;
+}

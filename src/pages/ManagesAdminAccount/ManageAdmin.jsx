@@ -18,7 +18,7 @@ import IconArrowNext from '../../assets/icons/arrow_right.svg'
 const ManageAdmin = () => {
     const token = useSelector((state) => state.tokenAuth.token_jwt)
     const [datas, setDatas] = useState([]);
-    const [search, setSearch] = useState('')
+    const [searchData, setSearchData] = useState('')
     const [fetchStatus, setFetchStatus] = useState(true)
     const [pagination, setPagination] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
@@ -78,11 +78,11 @@ const ManageAdmin = () => {
     }
 
     const handleSearch = (e) => {
-        setSearch(e.target.value);
+        setSearchData(e.target.value);
     }
 
     const filteredByName = datas.filter(data => {
-        return data.name.toLowerCase().includes(search.toLowerCase());
+        return data.name.toLowerCase().includes(searchData.toLowerCase());
     });
 
     return (
@@ -103,11 +103,11 @@ const ManageAdmin = () => {
                         <div className="search-container">
                             <img src={SearchIcon} className='icon-search'/>
                             <input 
-                                name={'inputSearch'}
-                                id={'inputSearch'}
+                                name={'inputSearchData'}
+                                id={'inputSearchData'}
                                 placeholder={'Search your name'}                
                                 className = "search py-2"
-                                value={search}
+                                value={searchData}
                                 onChange={handleSearch}
                             />
                         </div>

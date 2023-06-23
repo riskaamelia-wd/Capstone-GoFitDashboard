@@ -17,4 +17,8 @@ const classApi = axios.create({
   baseURL: "https://642feb34c26d69edc886a350.mockapi.io",
 });
 
-export { adminApi, membershipApi, classApi, trainingApi };
+const feedbackApi = axios.create({
+  baseURL: "https://64866e02beba6297278ec839.mockapi.io",
+});
+
+export { adminApi, membershipApi, classApi, trainingApi,feedbackApi };
