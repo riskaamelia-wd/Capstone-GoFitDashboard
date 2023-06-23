@@ -58,8 +58,11 @@ const CardMembership = ({
                 isVisible ? "d-block z-3 position-absolute col-5" : "d-none"
               }>
               <div className="row">
-                <div className="col-6 text-start" id="editButtonMembership">
-                  <button className=" rounded-3" onClick={onClickEdit}>
+                <div className="col-6 text-start">
+                  <button
+                    className=" rounded-3"
+                    id="editButtonMembership"
+                    onClick={onClickEdit}>
                     <img
                       src={edit_membership}
                       alt=""
@@ -67,8 +70,11 @@ const CardMembership = ({
                     />
                   </button>
                 </div>
-                <div className="col-6 text-end" id="deleteButtonMembership">
-                  <button className=" rounded-3" onClick={onClickDelete}>
+                <div className="col-6 text-end">
+                  <button
+                    className=" rounded-3"
+                    id="deleteButtonMembership"
+                    onClick={onClickDelete}>
                     <img
                       src={delete_membership}
                       alt=""
