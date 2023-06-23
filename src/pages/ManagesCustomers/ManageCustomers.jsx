@@ -13,11 +13,11 @@ const ManageCustomers = () => {
     const token = useSelector((state) => state.tokenAuth);
     const [isVisible, setIsVisible] = useState(false);
     const [data, setData] = useState([]);
-    const [DetailData, setDetailData] = useState([]);
+    //const [DetailData, setDetailData] = useState([]);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
-
+    const [searchValue, setSearchValue] = useState("");
 
     const getData = useCallback(async () => {
         await axios
@@ -61,6 +61,14 @@ const ManageCustomers = () => {
     };
     console.log(totalPages);
 
+    const handleSearch = (event) => {
+        setSearchValue(event.target.value);
+    };
+
+    const filteredData = data.filter((customer) => {
+        return customer.user?.name.toLowerCase().includes(searchValue.toLowerCase());
+    });
+
     return (
         <>
             <div className="container manage-customer" id="manageCustomers">
@@ -72,13 +80,18 @@ const ManageCustomers = () => {
                             <h2 className="text-customers">Customers</h2>
                         </div>
                         <div className="col-12 py-3">
-                            <InputSearch id="search-customers" placeholder="Search customers" />
+                            <InputSearch
+                             id="search-customers"
+                             placeholder="Search customers" 
+                             value={searchValue}
+                             onChange={handleSearch}
+                            />
                         </div>
 
                         <div className="col-12">
-                            {data.length > 0 ? (
+                            {filteredData.length> 0 ? (
                                 <>
-                                    {data.map((customer, index) => {
+                                    {filteredData.map((customer, index) => {
                                         return (
                                             <CardCustomers
                                                 onClick={(e) => {

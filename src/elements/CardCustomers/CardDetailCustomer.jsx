@@ -21,19 +21,19 @@ const CardDetailCustomers = ({ customer, setData }) => {
     const getData = useCallback(
         async () => {
             await axios
-            .get("http://18.141.56.154:8000/admin/classes/tickets", {
-                headers: {
-                    Authorization: `Bearer ${token.token_jwt}`,
-                },
-            })
-            .then((response) => {
-                console.log(response.data.data);
-                setData(response.data.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-            
+                .get("http://18.141.56.154:8000/admin/classes/tickets", {
+                    headers: {
+                        Authorization: `Bearer ${token.token_jwt}`,
+                    },
+                })
+                .then((response) => {
+                    console.log(response.data.data);
+                    setData(response.data.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
         }, []
     )
 
@@ -42,6 +42,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
     const [hovered, setHovered] = useState(false);
 
     const [id, setId] = useState();
+    const [imageReset, setImageReset] = useState(false);
 
     const [EditData, setEditData] = useState({
         name: "",
@@ -129,7 +130,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                         "Content-Type": "multipart/form-data",
                     },
                 }
-            );            
+            );
 
             console.log("File uploaded successfully");
         } catch (error) {
@@ -137,6 +138,25 @@ const CardDetailCustomers = ({ customer, setData }) => {
             console.error("Error uploading file:", error);
         }
     };
+
+    const handleImageReset = async () => {
+        try {
+            const userId = parseInt(customer.user.id, 10);
+            await axios.delete(
+                `http://18.141.56.154:8000/users/profile/${userId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token.token_jwt}`,
+                    },
+                }
+            );
+            setImageReset(true);
+            console.log("Image reset successfully");
+        } catch (error) {
+            console.error("Error resetting image:", error);
+        }
+    };
+
 
     // function formatDate(dateString) {
     //     const date = new Date(dateString);
@@ -233,7 +253,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                         <h5 className="textChangeProfile">
                             Change Profile
                         </h5>
-                        <div className="modal-content-customer">
+                        <div className="modal-content modal-content-customer">
                             <div className="modal-body">
                                 <form>
                                     <p style={{ textAlign: "center", fontWeight: "600", fontSize: "16px" }}>Change your profile picture from here</p>
@@ -261,6 +281,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                                                     type={"button"}
                                                     className={"btnResetImgCustomer"}
                                                     buttonName={"Reset"}
+                                                    onClick={handleImageReset}
                                                 />
                                             </div>
                                             <p style={{ fontSize: "10px", fontWeight: "400", color: "#6D6D6D", paddingTop: "3%" }}>Allowed JPG, GIF or PNG. Max size of 800K</p>
@@ -422,7 +443,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                                     />
                                 </form>
                             </div>
-                            <div style={{ display: "flex", marginTop: "13%" }}>
+                            <div style={{ display: "flex", marginTop: "18%" }}>
                                 <div style={{ marginLeft: "52%", marginRight: "5%" }}>
                                     <button
                                         className="btnSaveCustomer"
@@ -467,20 +488,21 @@ const CardDetailCustomers = ({ customer, setData }) => {
 
                             <div style={{ display: "flex", marginBottom: "7%", marginLeft: "13%" }}>
                                 <div style={{ marginRight: "7%" }}>
-                                    <ButtonComponent
-                                        type={"button"}
-                                        className={"btnNoReset"}
-                                        buttonName={"No"}
-                                        dataBsDismiss={"modal"}
-                                    />
-
+                                    <button
+                                        type="button"
+                                        className="btnNoReset"
+                                        data-bs-dismiss="modal"
+                                    >
+                                        No
+                                    </button>
                                 </div>
-                                <ButtonComponent
+                                <button
+                                    type="button"
+                                    className="btnYesReset"
                                     data-bs-dismiss="modal"
-                                    type={"button"}
-                                    className={"btnYesReset"}
-                                    buttonName={"Yes"}
-                                />
+                                >
+                                    Yes
+                                </button>
                             </div>
                         </div>
                     </div>
