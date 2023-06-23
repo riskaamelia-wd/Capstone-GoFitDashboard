@@ -8,24 +8,23 @@ import ForgotPassword from "../pages/Login/Forgot Password/ForgotPassword";
 import ResetPassword from "../pages/Login/Reset Password/ResetPassword";
 import Login from "../pages/Login/Login";
 import Dashboard from "../pages/Dashboard/DashboardPages";
-import ManageMembership from "../pages/Manages Membership/ManageMembership";
+import ManageCustomers from "../pages/ManagesCustomers/ManageCustomers";
 
 export const routes = [
-  { path: "/dashboard", element: Dashboard },
-  { path: "/feedback", element: ManagesFeedback },
-  { path: "/onlineClass", element: OnlineClass },
-  { path: "/training", element: ManageTraining },
-  { path: "/membership", element: ManageMembership },
-  { path: "levelDetail/:level", element: LevelDetail },
-  { path: "levelDetail/:level/:id", element: LevelDetail },
-  { path: "levelDetail/:level/:id/workoutDetail", element: WorkoutDetail },
-  {
-    path: "levelDetail/:level/:id/workoutDetail/:idWorkout",
-    element: WorkoutDetail,
-  },
-  { path: "/invoices", element: Invoices },
-  { path: "/managesFeedback", element: ManagesFeedback },
-  { path: "/forgotPassword", element: ForgotPassword },
-  { path: "/resetPassword", element: ResetPassword },
-  { path: "/", element: Login },
-];
+
+    {path : '/dashboard', element : Dashboard},
+    {path : '/feedback', element : ManagesFeedback},
+    {path : '/onlineClass', element : OnlineClass},
+    {path : '/training', element : ManageTraining},
+    {path : 'levelDetail/:level', element : LevelDetail},
+    {path : 'levelDetail/:level/:id', element : LevelDetail},
+    {path : 'levelDetail/:level/:id/workoutDetail', element :WorkoutDetail},
+    {path : 'levelDetail/:level/:id/workoutDetail/:idWorkout', element :WorkoutDetail},
+    {path : '/invoices', element : Invoices},
+    {path : '/managesFeedback', element : ManagesFeedback},
+    {path : '/forgotPassword', element : ForgotPassword},
+    {path : '/resetPassword', element : ResetPassword},
+    {path : '/', element : Login},
+    {path : '/manageCustomers', element : ManageCustomers},
+]
+

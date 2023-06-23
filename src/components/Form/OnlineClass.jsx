@@ -20,6 +20,7 @@ const OnlineClass = ({
   descriptionValue,
   onSubmitHandle,
   modaltitle,
+  disabled
 }) => {
   return (
     <>
@@ -34,9 +35,11 @@ const OnlineClass = ({
                 className='label-color'
                 htmlFor="imageFile">Upload Photo</label>
                 <label
-                className="d-flex textfield-bg borderInput form-control justify-content-between flex-row"
+                        disabled={disabled}
+                    className="d-flex textfield-bg borderInput form-control justify-content-between flex-row"
                 >                  
                     <input 
+                        disabled={disabled}
                         style={{width:'100%', display:'none'}}
                         name={'imageFile'}
                         id={'imageFile'}
@@ -48,6 +51,7 @@ const OnlineClass = ({
                         <img src={add} style={{width:'100%'}} alt="" />
                     </div>
                 </label>
+                {disabled && <small className="text-danger">You can add photo after submit this data</small>}
           </div>
 
           <div className="col-12 ">
@@ -109,8 +113,9 @@ const OnlineClass = ({
           <div className="col-12 text-center mt-4 mb-2">
             {nameValue !== "" &&
             linkClassValue !== "" &&
-            descriptionValue !== "" &&
-            imageFileValue !== ''
+            descriptionValue !== ""
+            &&
+            imageFileValue !== null
             ? (
               <ButtonComponent
                 type={"submit"}
