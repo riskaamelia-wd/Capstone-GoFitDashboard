@@ -24,6 +24,7 @@ const ManageAdmin = () => {
     const [totalPages, setTotalPages] = useState(1)
     const [totalData, setTotalData] = useState(1)
     const [itemPerPage, setItemPerPage] = useState(10)
+    const [idResetPassword, setIdResetPassword] = useState('')
 
     useEffect(() => {
         if(fetchStatus){
@@ -33,7 +34,6 @@ const ManageAdmin = () => {
                 }
             })
             .then((response) => {
-                console.log(response.data.data);
                 setDatas(response.data.data);
                 setTotalPages(Math.ceil(response.data.pagination.total_data / itemPerPage))
                 setTotalData(response.data.pagination.total_data)
@@ -51,7 +51,7 @@ const ManageAdmin = () => {
     }
 
     const handleResetPassword = (id) => {
-        // alert(id)
+        setIdResetPassword(id)
     }
 
     const handleDelete = (id) => {
@@ -61,7 +61,7 @@ const ManageAdmin = () => {
             }
         })
         .then((response) => {
-            console.log('user deleted');
+            alert('user deleted');
             setFetchStatus(true);
         })
         .catch((error) => {
@@ -144,9 +144,9 @@ const ManageAdmin = () => {
                     </thead>
                     <tbody>
                         {filteredByName.length > 0 ? (
-                        filteredByName.map((data) => {
+                        filteredByName.map((data, index) => {
                             return (
-                            <tr key={data.id}>
+                            <tr key={index}>
                                 <td style={{ width: '40px' }}>
                                     <div
                                     style={{
@@ -177,8 +177,8 @@ const ManageAdmin = () => {
                                 <td>
                                     <div className="d-flex gap-3 justify-content-end">
                                         <ResetPasswordAdmin
-                                            // id={data.id}
-                                            onClick={handleResetPassword(data.id)}
+                                            onClick={() => handleResetPassword(data.id)}
+                                            id={idResetPassword}
                                             btnModalText={'Reset Password'}
                                             btnModalImg={ResetPasswordIcon}
                                         />

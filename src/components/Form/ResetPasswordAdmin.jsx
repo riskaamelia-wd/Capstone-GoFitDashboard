@@ -1,9 +1,13 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import {useState} from "react";
 import TextFieldPassword from "../../elements/TextField/TextFieldPassword";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
-const ResetPasswordAdmin = ({onClick,classNameImg,style, className, btnModalText, btnModalImg}) => {
+const ResetPasswordAdmin = ({id, onClick,classNameImg,style, className, btnModalText, btnModalImg}) => {
     const [error, setError] = useState('')
+    const token = useSelector((state) => state.tokenAuth.token_jwt)
 
     const [data, setData] = useState({
         currentPass:'',
@@ -17,9 +21,45 @@ const ResetPasswordAdmin = ({onClick,classNameImg,style, className, btnModalText
             [e.target.name]: e.target.value,
         }));
     };
+
+    const cekPassword = (currentPass) => {
+        axios.get(`http://18.141.56.154:8000/users/${id}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then((response) => {
+            if (response.data.data.password === currentPass) {
+                setNewPassword(data.newPass)
+            } else {
+                setError('Your current password is wrong, please try again')
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
+
+    const setNewPassword = (newPassword) => {
+        console.log(newPassword);
+        axios.put(`http://18.141.56.154:8000/users/${id}`, {
+            "password": newPassword
+        },{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then((response) => {
+            setError('')
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
     
     const handleSubmit = (e) => {
         e.preventDefault()
+        cekPassword(data.currentPass)
     }
     
     return(
@@ -62,6 +102,7 @@ const ResetPasswordAdmin = ({onClick,classNameImg,style, className, btnModalText
                             onChange={handleInput}
                             classNameLabel={"mb-2 text-secondary"}
                         />
+                        <p className="text-danger m-0">{error}</p>
                         <TextFieldPassword
                             placeholder={"******"}
                             label="New Password"
@@ -71,7 +112,6 @@ const ResetPasswordAdmin = ({onClick,classNameImg,style, className, btnModalText
                             onChange={handleInput}
                             classNameLabel={"mb-2 mt-2 text-secondary"}
                         />
-                        <p className="text-danger m-0">{error}</p>
                         <TextFieldPassword
                             placeholder={"******"}
                             label="Confirm Password"
@@ -95,9 +135,7 @@ const ResetPasswordAdmin = ({onClick,classNameImg,style, className, btnModalText
                                 type={"submit"}
                                 className={" btn btn-save mt-4 me-4 pe-4 ps-4"}
                                 disabled={
-                                    !data.newPass ||
-                                    !data.confirmPass ||
-                                    !data.currentPass
+                                    !data.currentPass || (data.newPass !== data.confirmPass) || !data.newPass
                                 }
                             >
                                 save
