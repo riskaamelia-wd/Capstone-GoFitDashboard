@@ -125,15 +125,14 @@ const Income = () => {
     return (
         <div className="IncomeDashboard" id="IncomeDashboard">
             <div style={{ display: "flex" }} className="">
-                <span style={{ fontWeight: "600", fontSize: "14px" }}>Income</span>
-                <div className="detailIncome" style={{ marginLeft: "50%" }}>
+                <span style={{ fontWeight: "600", fontSize: "4vh" }}>Income</span>
+                <div className="detailIncome" style={{ marginLeft: "55%" }}>
                     <img src={income} alt="income" />
-                    <span style={{ fontWeight: "500", fontSize: "10px" }}>+Rp 2.000.000</span>
+                    <span style={{ fontWeight: "500", fontSize: "60%" }}>+Rp 2.000.000</span>
                 </div>
             </div>
             <div style={{ display: "flex", alignItems: "center" }}>
-                <span style={{ fontWeight: "600", fontSize: "12px" }}>Rp.</span>
-                <span style={{ marginLeft: "5px", fontWeight: "600", fontSize: "20px" }}>{totalAmount}</span>
+                <span style={{ marginLeft: "5px", fontWeight: "600", fontSize: "3vh" }}>{totalAmount.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</span>
             </div>
 
             <Chart
@@ -142,7 +141,7 @@ const Income = () => {
                 type="area"
                 height={"100%"}
                 width={"100%"}
-                className="area-chart-income"
+                className="area-chart-income mt-1"
                 style={{ marginTop: "-20px" }}
             />
         </div>

@@ -9,42 +9,62 @@ const OrderChart = () => {
     const [onlineClass, setOnlineClass] = useState(0);
     const [offlineClass, setOfflineClass] = useState(0);
     const [selectedOption, setSelectedOption] = useState("Weekly");
- 
+
     useEffect(() => {
-        axios
-            .get("http://18.141.56.154:8000/admin/classes/tickets", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-            .then((response) => {
-                console.log(response.data.data);
-                setOrder(response.data.data);
-            })
-            .catch((error) => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("http://18.141.56.154:8000/admin/classes/tickets", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                const { data_shown, total_data } = response.data.pagination;
+
+                const pageSize = data_shown;
+                const totalPages = Math.ceil(total_data / pageSize);
+                let allData = [];
+
+                for (let page = 1; page <= totalPages; page++) {
+                    const pageResponse = await axios.get(
+                        `http://18.141.56.154:8000/admin/classes/tickets?page=${page}&data_shown=${data_shown}`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    const responseData = pageResponse.data.data;
+                    allData = allData.concat(responseData);
+                }
+                setOrder(allData);
+            } catch (error) {
                 console.log(error);
-            });
+            }
+        };
+
+        fetchData();
     }, [token]);
+
 
     useEffect(() => {
         calculatedPercentage();
     }, [order, selectedOption]);
-
+    console.log(order);
     const calculatedPercentage = () => {
         let filteredOrder = order;
 
         if (selectedOption === "Weekly") {
             // Filter order data based on weekly option
             filteredOrder = filteredOrder.filter(
-                (item) => item.class_package.period === "weekly"
+                (item) => item?.class_package?.period === "weekly"
             );
         } else if (selectedOption === "Monthly") {
             // Filter order data based on monthly option
             filteredOrder = filteredOrder.filter(
-                (item) => item.class_package.period === "monthly"
+                (item) => item?.class_package?.period === "monthly"
             );
         }
-
+        console.log(filteredOrder);
         const onlineClasses = filteredOrder.filter(
             (item) => item.class_package.class.class_type === "online"
         );
@@ -117,13 +137,13 @@ const OrderChart = () => {
                         </div>
                     </div>
                 </div>
-                <div className="row">
+                <div className="row"  style={{paddingLeft:"10%"}}>
                     <div id="chartOfflineOnline">
                         <ReactApexChart
                             options={options}
                             series={series}
                             type="pie"
-                            width={"70%"}
+                            width={"90%"}
                         />
                     </div>
                 </div>
