@@ -74,6 +74,22 @@ const TableTransaction = ({ invoices }) => {
         navigate(`/detail-transaction/${id}`)
     }
 
+    //untuk convert date dari bentuk dd/mm/yyyy ke mount date
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const options = { month: 'long', day: 'numeric', year: 'numeric'};
+        const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+        return formattedDate;
+    }
+
+    //untuk convert waktu dari 24 jam ke AM/PM
+    function formatTime(dateString) {
+        const date = new Date(dateString);
+        const options = { hour: 'numeric', minute: 'numeric'};
+        const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+        return formattedTime;
+    }
+
     return (
         <>
         <Table hover className="rounded-3 bg-white">
@@ -81,21 +97,24 @@ const TableTransaction = ({ invoices }) => {
                 <tr>
                     <th onClick={() => sortTable('id')}>ID Invoice</th>
                     <th onClick={() => sortTable('date')}>Date</th>
-                    <th onClick={() => sortTable('recipient')}>Recipient</th>
+                    {/* <th onClick={() => sortTable('recipient')}>Recipient</th> */}
+                    <th onClick={() => sortTable('product')}>Product</th>
                     <th onClick={() => sortTable('amount')}>Amount</th>
-                    <th onClick={() => sortTable('type')}>Type</th>
-                    <th onClick={() => sortTable('location')}>Location</th>
+                    {/* <th onClick={() => sortTable('type')}>Type</th>
+                    <th onClick={() => sortTable('location')}>Location</th> */}
+                    <th onClick={() => sortTable('payment_method')}>Payment Method</th>
                     <th onClick={() => sortTable('status')}>Status</th>
                 </tr>
             </thead>
             <tbody>
                 {currentInvoices.map((invoice) => (
                     <tr key={invoice.id} onClick={() => handleClick(invoice.id)}>
-                        <td>{invoice.id}</td>
-                        <td>{invoice.date}</td>
-                        <td>{invoice.recipient}</td>
-                        <td>{invoice.amount}</td>
-                        {
+                        <td>{invoice.transaction_code}</td>
+                        <td>{formatDate(invoice.metadata.updated_at)}, {formatTime(invoice.metadata.updated_at)}</td>
+                        <td>{invoice.product}</td>
+                        <td>{invoice.amount.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</td>
+                        <td>{invoice.payment_method.name}</td>
+                        {/* {
                             invoice.type == 'Income' ? 
                             <td>
                                 <img src={Income} alt="" className='mx-2 p-1' style={{ border: '2px solid var(--success-500)', borderRadius: '50%' }} />
@@ -106,10 +125,10 @@ const TableTransaction = ({ invoices }) => {
                             {invoice.type}
                         </td>
                         }
-                        <td>{invoice.location}</td>
+                        <td>{invoice.location}</td> */}
                         <td>
                             {/* <TagStatus status={invoice.status}/> */}
-                            <Status status={invoice.status} /> 
+                            <Status status={invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)} />
                         </td>
                     </tr>
                 ))}

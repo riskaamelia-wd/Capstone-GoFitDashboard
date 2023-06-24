@@ -3,156 +3,26 @@
 import { useEffect, useState } from 'react';
 import TableTransaction from '../../components/TabelTransaction/TableTransaction';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const ManageTransaction = () => {
-    const [invoices, setInvoices] = useState([
-        {
-            id: 1,
-            date: '2023-06-01',
-            recipient: 'John Doe',
-            amount: 1000,
-            type: 'Income',
-            location: 'New York',
-            status: 'Completed'
-        },
-        {
-            id: 2,
-            date: '2023-06-02',
-            recipient: 'Jane Smith',
-            amount: 1500,
-            type: 'Income',
-            location: 'London',
-            status: 'Pending'
-        },
-        {
-            id: 3,
-            date: '2023-06-03',
-            recipient: 'Bob Johnson',
-            amount: 800,
-            type: 'Outcome',
-            location: 'San Francisco',
-            status: 'Canceled'
-        },
-        {
-            id: 4,
-            date: '2023-06-01',
-            recipient: 'John Doe',
-            amount: 1000,
-            type: 'Outcome',
-            location: 'New York',
-            status: 'Completed'
-        },
-        {
-            id: 5,
-            date: '2023-06-02',
-            recipient: 'Jane Smith',
-            amount: 1500,
-            type: 'Income',
-            location: 'London',
-            status: 'Pending'
-        },
-        {
-            id: 6,
-            date: '2023-06-03',
-            recipient: 'Bob Johnson',
-            amount: 800,
-            type: 'Income',
-            location: 'San Francisco',
-            status: 'Canceled'
-        },
-        {
-            id: 7,
-            date: '2023-06-01',
-            recipient: 'John Doe',
-            amount: 1000,
-            type: 'Outcome',
-            location: 'New York',
-            status: 'Completed'
-        },
-        {
-            id: 8,
-            date: '2023-06-02',
-            recipient: 'Jane Smith',
-            amount: 1500,
-            type: 'Outcome',
-            location: 'London',
-            status: 'Pending'
-        },
-        {
-            id: 9,
-            date: '2023-06-03',
-            recipient: 'Bob Johnson',
-            amount: 800,
-            type: 'Income',
-            location: 'San Francisco',
-            status: 'Canceled'
-        },
-        {
-            id: 10,
-            date: '2023-06-01',
-            recipient: 'John Doe',
-            amount: 1000,
-            type: 'Income',
-            location: 'New York',
-            status: 'Completed'
-        },
-        {
-            id: 11,
-            date: '2023-06-02',
-            recipient: 'Jane Smith',
-            amount: 1500,
-            type: 'Outcome',
-            location: 'London',
-            status: 'Pending'
-        },
-        {
-            id: 12,
-            date: '2023-06-03',
-            recipient: 'Bob Johnson',
-            amount: 800,
-            type: 'Outcome',
-            location: 'San Francisco',
-            status: 'Canceled'
-        },
-        {
-            id: 13,
-            date: '2023-06-01',
-            recipient: 'John Doe',
-            amount: 1000,
-            type: 'Income',
-            location: 'New York',
-            status: 'Completed'
-        },
-        {
-            id: 14,
-            date: '2023-06-02',
-            recipient: 'Jane Smith',
-            amount: 1500,
-            type: 'Income',
-            location: 'London',
-            status: 'Pending'
-        },
-        {
-            id: 15,
-            date: '2023-06-03',
-            recipient: 'Bob Johnson',
-            amount: 800,
-            type: 'Outcome',
-            location: 'San Francisco',
-            status: 'Canceled'
-        },
-    ]);
+    const [invoices, setInvoices] = useState([]);
+    const token = useSelector((state) => state.tokenAuth.token_jwt)
 
-    // useEffect(() => {
-    //     axios.get('API/transaction')
-    //     .then((response) => {
-    //         console.log(response);
-    //         setInvoices(response.data)
-    //     })
-    //     .catch((err) => {
-    //         console.log(err);
-    //     })
-    // })
+    useEffect(() => {
+        axios.get('http://18.141.56.154:8000/admin/transactions',{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then((response) => {
+            console.log(response);
+            setInvoices(response.data.data)
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    },[token])
 
     return (
         <div className='p-5' style={{backgroundColor: 'var(--Neutral-White-100)'}}>
