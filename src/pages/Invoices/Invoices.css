@@ -1,14 +1,14 @@
-.status-Pending{
+.status-pending{
     border-color: var(--Danger-500) !important;
     color: var(--Danger-500) !important;
 }
 
-.status-Canceled{
+.status-canceled{
     border-color: var(--Neutral-White-800) !important;
     color: var(--Neutral-White-800) !important;
 }
 
-.status-Completed{
+.status-completed{
     border-color: var(--success-500) !important;
     color: var(--success-500) !important;
 }
@@ -28,4 +28,16 @@
 
 .btn-sort:hover path{
     fill: var(--Neutral-Black-900);
+}
+
+.btn-dis-invoices{
+    border-color: var(--Neutral-Black-200) !important;
+    color: var(--Neutral-Black-200) !important;
+    background-color: white !important;
+}
+
+.btn-invoices{
+    border-color: var(--primary-500) !important;
+    color: var(--primary-500) !important;
+    background-color: white !important;
 }
