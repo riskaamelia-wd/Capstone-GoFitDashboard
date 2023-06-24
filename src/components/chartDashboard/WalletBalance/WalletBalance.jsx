@@ -1,6 +1,6 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
-import "../../chartDashboard/ChartDashboard.css"
+import '../ChartDashboard.css'
 import ikon from "../../../assets/img/ikon_walletBalance.svg"
 
 const WalletBalance = () => {

@@ -52,13 +52,17 @@ const CardTraining = ({img, text,className, classNameText, navigate, onDelete, o
                         width:'100%', backgroundColor:'var(--Neutral-White-100)'
                     }}
                 >
-                    <div onClick={onEdit}>
+                    {/* <div onClick={onEdit}>
                         <Training
                             text={'Edit'}
                             title={'Edit Folder'}
                             className={'btn btn-link pe-5 text-decoration-none text-black fw-semibold'}
                         />
-                    </div>
+                    </div> */}
+                    <p 
+                        className='ps-3 p-2 mb-1 cursor fw-semibold' 
+                        onClick={onEdit}
+                    > Edit</p>
                     <p className=" ps-3 p-2 mb-1 cursor fw-semibold" style={{color:'red'}} onClick={onDelete}>Delete</p>
                 </div>
                 )

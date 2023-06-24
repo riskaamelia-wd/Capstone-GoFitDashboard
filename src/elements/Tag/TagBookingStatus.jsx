@@ -1,13 +1,12 @@
-import { PropTypes } from 'prop-types';
 import './Tag.css'
 
 const TagBookingStatus = ({status}) => {
     
     return (
         <> 
-            <div className={`tag tag-${status == 'booked'? 'booked': 'booking-canceled'}`}>
+            <div className={`tag tag-${status}`}>
                 <span>
-                    {status == 'booked'? 'Booked' : 'Booking canceled'}
+                    {status}
                 </span>
             </div>        
         </>
@@ -15,7 +14,3 @@ const TagBookingStatus = ({status}) => {
 }
 
 export default TagBookingStatus
-
-TagBookingStatus.propTypes = {
-    status: PropTypes.string.isRequired
-}

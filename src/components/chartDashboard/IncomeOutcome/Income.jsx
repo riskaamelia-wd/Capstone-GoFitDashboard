@@ -1,4 +1,4 @@
-import "../../ChartDashboard/ChartDashboard.css";
+import '../ChartDashboard.css'
 import React from 'react';
 import Chart from 'react-apexcharts';
 import income from "../../../assets/img/ikon_income.svg"

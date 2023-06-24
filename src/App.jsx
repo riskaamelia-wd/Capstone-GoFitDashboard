@@ -18,8 +18,6 @@ import PrivateRoute from "./util/PrivateRoute";
 import Login from "./pages/Login/Login";
 import ForgotPassword from "./pages/Login/Forgot Password/ForgotPassword";
 import ResetPassword from "./pages/Login/Reset Password/ResetPassword";
-import ManageTransaction from "./pages/ManageTransaction/ManageTransaction";
-import DetailTransaction from "./pages/ManageTransaction/DetailTransaction";
 
 
 function App() {
@@ -27,39 +25,17 @@ function App() {
 
   return (
     <>
-      {/* <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p> */}
-
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Login />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/resetpassword/:id_user" element={<ResetPassword />} />
-          <Route path="/" element={<ManageTransaction />} />
-          <Route path="/detail-transaction/:id" element={<DetailTransaction />} />
+          <Route path="/" element={<Login />} />
           {/* <Route element={<PrivateRoute />}>
  
           </Route> */}
         </Routes>
       </BrowserRouter>
-
     </>
   );
 }

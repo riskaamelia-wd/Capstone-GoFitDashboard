@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = []
 
 export const trainingSlice = createSlice({
-    name: 'onlineClass',
+    name: 'training',
     initialState,
     reducers:{
         addTraining:(state, action) => {
@@ -13,7 +13,7 @@ export const trainingSlice = createSlice({
             return  state = action.payload
         },
         deleteTraining: (state, action) => {
-            return state.filter((data) => data.onlineClassId !== action.payload)
+            return state.filter((data) => data.trainingId !== action.payload)
         }
     }
 })
