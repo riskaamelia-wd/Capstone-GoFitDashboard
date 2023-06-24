@@ -9,34 +9,61 @@ const Income = () => {
 
     const token = useSelector((state) => state.tokenAuth.token_jwt);
     const [incomeData, setIncomeData] = useState([]);
-    const [JanFeb, setJanFeb] = useState();
-    const [MarApr, setMarApr] = useState();
-    const [MeiJun, setMeiJun] = useState();
-    const [JulAug, setJulAug] = useState();
-    const [SepOct, setSepOct] = useState();
-    const [NovDec, setNovDec] = useState();
+    const [monthlyAmount, setMonthlyAmount] = useState([]);
+    const [totalAmount, setTotalAmount] = useState(0);
 
     useEffect(() => {
-        axios
-            .get("http://18.141.56.154:8000/admin/classes/tickets", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-            .then((response) => {
-                console.log(response.data);
-                setIncomeData(response.data);
-            })
-            .catch((error) => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("http://18.141.56.154:8000/admin/transactions", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                const { data_shown, total_data } = response.data.pagination;
+
+                const pageSize = data_shown;
+                const totalPages = Math.ceil(total_data / pageSize);
+                let allData = [];
+
+                for (let page = 1; page <= totalPages; page++) {
+                    const pageResponse = await axios.get(
+                        `http://18.141.56.154:8000/admin/transactions?page=${page}&data_shown=${data_shown}`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    const responseData = pageResponse.data.data;
+                    allData = allData.concat(responseData);
+                }
+                setIncomeData(allData);
+            } catch (error) {
                 console.log(error);
-            });
+            }
+        };
+
+        fetchData();
     }, [token]);
 
-    const CalculateData = () => {
-        
-    }
+    useEffect(() => {
+        const calculateMonthlyAmount = () => {
+            const monthlyAmountData = Array(12).fill(0);
 
+            incomeData.forEach(item => {
+                const updatedAt = new Date(item.metadata.updated_at);
+                const month = updatedAt.getMonth();
+                monthlyAmountData[month] += item.amount;
+            });
+            setMonthlyAmount(monthlyAmountData);
+            // Menghitung nilai total
+            const total = monthlyAmountData.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            setTotalAmount(total);
+        };
 
+        calculateMonthlyAmount();
+    }, [incomeData]);
 
     const options = {
         chart: {
@@ -58,7 +85,7 @@ const Income = () => {
             }
         },
         xaxis: {
-            categories: ['1/2', '3/4', '5/6', '7/8', '9/10', '11/12'],
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Oct', 'Nov', 'Dec'],
             axisBorder: {
                 show: false
             },
@@ -85,37 +112,36 @@ const Income = () => {
         fill: {
             colors: ['#0D6A50']
         },
-
     };
 
     const series = [
         {
-            name: 'Series 1',
-            data: [2000, 800, 1500, 1300, 500, 900],
+            name: 'Rp',
+            data: monthlyAmount,
             strokeColor: '#0D6A50'
         }
     ];
 
     return (
         <div className="IncomeDashboard" id="IncomeDashboard">
-            <div style={{ display: "flex"}} className="">
+            <div style={{ display: "flex" }} className="">
                 <span style={{ fontWeight: "600", fontSize: "14px" }}>Income</span>
-                <div className="detailIncome" style={{marginLeft:"45%"}}>
+                <div className="detailIncome" style={{ marginLeft: "50%" }}>
                     <img src={income} alt="income" />
-                    <span style={{ fontWeight: "500", fontSize: "10px"}}>+Rp 50.000.000</span>
+                    <span style={{ fontWeight: "500", fontSize: "10px" }}>+Rp 2.000.000</span>
                 </div>
             </div>
             <div style={{ display: "flex", alignItems: "center" }}>
                 <span style={{ fontWeight: "600", fontSize: "12px" }}>Rp.</span>
-                <span style={{ marginLeft: "5px", fontWeight: "600", fontSize: "20px" }}>500.000.000</span>
+                <span style={{ marginLeft: "5px", fontWeight: "600", fontSize: "20px" }}>{totalAmount}</span>
             </div>
 
             <Chart
                 options={options}
                 series={series}
                 type="area"
-                height={"70%"}
-                width={"70%"}
+                height={"100%"}
+                width={"100%"}
                 className="area-chart-income"
                 style={{ marginTop: "-20px" }}
             />

@@ -68,7 +68,7 @@ const Dashboard = () => {
                                     text4={" Gym Places"}
                                     img1={img}
                                     text6={`+ ${dataGymLength}`}
-                                    text7={" Since last month (In Java Island)"}
+                                    text7={" In all area"}
                                     img2={dashboard3}
                                 />
                             </div>
