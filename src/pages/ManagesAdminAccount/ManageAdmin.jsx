@@ -179,6 +179,7 @@ const ManageAdmin = () => {
                                         <ResetPasswordAdmin
                                             onClick={() => handleResetPassword(data.id)}
                                             id={idResetPassword}
+                                            currentPass={data.password}
                                             btnModalText={'Reset Password'}
                                             btnModalImg={ResetPasswordIcon}
                                         />
