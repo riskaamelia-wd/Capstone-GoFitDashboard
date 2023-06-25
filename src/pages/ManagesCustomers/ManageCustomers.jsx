@@ -5,8 +5,8 @@ import "../ManagesCustomers/ManageCustomers.css"
 import Cover from "../../elements/Card/Cover";
 import imgCover from "../../assets/icons/Appreciation 1.svg";
 import InputSearch from "../../elements/InputSearch/InputSearch";
-import CardCustomers from "../../elements/CardCustomers/CardCustomers";
-import CardDetailCustomers from "../../elements/CardCustomers/CardDetailCustomer";
+import CardCustomers from "../../elements/Card/CardCustomers";
+import CardDetailCustomers from "../../elements/Card/CardDetailCustomer";
 import CardCustomerBooking from "../../components/CardCustomerBooking/CardCustomerBooking";
 
 const ManageCustomers = () => {

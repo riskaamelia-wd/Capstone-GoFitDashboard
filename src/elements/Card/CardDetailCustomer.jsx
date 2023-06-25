@@ -6,7 +6,7 @@ import training_level_img from "../../assets/icons/elevation.svg";
 import block from "../../assets/img/block.svg";
 import edit from "../../assets/img/edit_square.svg";
 import warning from "../../assets/img/warning.svg";
-import "../CardCustomers/CardCustomer.css";
+import "../Card/CardCustomer.css"
 import TextFieldPassword from "../TextField/TextFieldPassword";
 import TextField from "../TextField/TextField";
 import ButtonComponent from "../Buttons/ButtonComponent";
