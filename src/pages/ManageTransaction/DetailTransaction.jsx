@@ -1,111 +1,128 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react'
-import IconBack from '../../assets/icons/arrow_back.svg'
-import IconDownload from '../../assets/icons/download.svg'
-import { Table } from 'react-bootstrap'
-import { useNavigate, useParams } from 'react-router'
-import axios from 'axios'
-import { useSelector } from 'react-redux'
-import { Document, PDFDownloadLink, PDFViewer, Page, Text, View } from '@react-pdf/renderer'
+import React, { useEffect, useState } from 'react';
+import { saveAs } from 'file-saver';
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import IconBack from '../../assets/icons/arrow_back.svg';
+import IconDownload from '../../assets/icons/download.svg';
+import { Table } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import jsPDF from 'jspdf';
+
+const styles = StyleSheet.create({
+    page: {
+      flexDirection: 'row',
+      backgroundColor: '#E4E4E4'
+    },
+    section: {
+      margin: 10,
+      padding: 10,
+      flexGrow: 1
+    }
+  });
 
 const DetailTransaction = () => {
-
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const { id } = useParams();
-    const token = useSelector((state) => state.tokenAuth.token_jwt)
-    const [transaction, setTransaction] = useState()
-    const [fetchStatus, setFetchStatus] = useState(true)
-    const [product, setProduct] = useState({})
+    const token = useSelector((state) => state.tokenAuth.token_jwt);
+    const [transaction, setTransaction] = useState();
+    const [fetchStatus, setFetchStatus] = useState(true);
+    const [product, setProduct] = useState({});
 
     useEffect(() => {
-        axios.get(`http://18.141.56.154:8000/admin/transactions/${id}`,{
+        axios
+        .get(`http://18.141.56.154:8000/admin/transactions/${id}`, {
             headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            Authorization: `Bearer ${token}`,
+            },
         })
         .then((response) => {
-            // console.log(response.data);
-            const res = response.data.data
-            setTransaction(res)
-            if(res.product === 'class'){
-                fetchClasses(res.product_id)
-            }else{
-                fetchMembership(res.product_id)
+            const res = response.data.data;
+            setTransaction(res);
+            if (res.product === 'class') {
+            fetchClasses(res.product_id);
+            } else {
+            fetchMembership(res.product_id);
             }
-            setFetchStatus(false)
+            setFetchStatus(false);
         })
         .catch((err) => {
             console.log(err);
-        })
+        });
     }, [fetchStatus, setFetchStatus]);
 
     const fetchMembership = (id) => {
-        axios.get(`http://18.141.56.154:8000/admin/memberships/${id}`,{
+        axios
+        .get(`http://18.141.56.154:8000/admin/memberships/${id}`, {
             headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            Authorization: `Bearer ${token}`,
+            },
         })
         .then((response) => {
-            setProduct(response.data.data)
+            setProduct(response.data.data);
         })
         .catch((err) => {
             console.log(err);
-        })
-    }
+        });
+    };
 
     const fetchClasses = (id) => {
-        axios.get(`http://18.141.56.154:8000/admin/classes/tickets/${id}`,{
+        axios
+        .get(`http://18.141.56.154:8000/admin/classes/tickets/${id}`, {
             headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            Authorization: `Bearer ${token}`,
+            },
         })
         .then((response) => {
-            setProduct(response.data.data)
+            setProduct(response.data.data);
         })
         .catch((err) => {
             console.log(err);
-        })
-    }
+        });
+    };
 
     const handleBack = () => {
-        navigate('/transaction')
-    }
+        navigate('/transaction');
+    };
 
-    //untuk convert date dari bentuk dd/mm/yyyy ke mount date
     function formatDate(dateString) {
         const date = new Date(dateString);
-        const options = { month: 'long', day: 'numeric', year: 'numeric'};
+        const options = { month: 'long', day: 'numeric', year: 'numeric' };
         const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
         return formattedDate;
     }
 
-    //untuk convert waktu dari 24 jam ke AM/PM
     function formatTime(dateString) {
         const date = new Date(dateString);
-        const options = { hour: 'numeric', minute: 'numeric'};
+        const options = { hour: 'numeric', minute: 'numeric' };
         const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
         return formattedTime;
     }
 
     const generatePdf = () => {
-        const MyDocument = () => (
-            <Document>
-                <Page size="A4">
-                <View>
-                    <Text>Section #1</Text>
-                </View>
-                <View>
-                    <Text>Section #2</Text>
-                </View>
-                </Page>
-            </Document>
-        );
-        
-        return (
-            <PDFViewer>
-                <MyDocument />
-            </PDFViewer>
-        );
+        const doc = new jsPDF();
+
+        doc.setFontSize(18);
+        doc.text('Transaction Detail', 105, 20, { align: 'center' });
+
+        doc.setFontSize(12);
+        doc.text(`ID Payment`, 20, 40, { align: 'left' });
+        doc.text(`: ${transaction.transaction_code}`, 80, 40, { align: 'left' });
+        doc.text(`Date`, 20, 50, { align: 'left' });
+        doc.text(`: ${transaction.metadata.updated_at}`, 80, 50, { align: 'left' });
+        doc.text(`Amount`, 20, 60, { align: 'left' });
+        doc.text(`: ${transaction.amount}`, 80, 60, { align: 'left' });
+        doc.text(`Payment method`, 20, 70, { align: 'left' });
+        doc.text(`: ${transaction.payment_method.name}`, 80, 70, { align: 'left' });
+        doc.text(`Status`, 20, 80, { align: 'left' });
+        doc.text(`: ${transaction.status}`, 80, 80, { align: 'left' });
+        doc.text(`Product`, 20, 90, { align: 'left' });
+        doc.text(`: ${transaction.product}`, 80, 90, { align: 'left' });
+        doc.text(`Customer`, 20, 100, { align: 'left' });
+        doc.text(`: ${product.user.name}`, 80, 100, { align: 'left' });
+
+        doc.save(`transaction_report_${transaction.transaction_code}.pdf`);
     };
 
     return (
