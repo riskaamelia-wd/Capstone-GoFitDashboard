@@ -17,7 +17,7 @@ const CardDashboard = ({text1, text2, text3, text4, text5, text6, text7, img1, i
                     <span className='text6'>{text6}</span>
                     <span className='text7'>{text7}</span>
                 </div>
-                <div className="col-2" style={{alignItems:"end"}}>
+                <div className="col-2" style={{alignItems:"end", paddingLeft:"10%"}}>
                     <img src={img2} alt="ikon"/>
                 </div>
             </div>
