@@ -121,41 +121,13 @@ const TableTransaction = ({ invoices, page, setPage, totalPages }) => {
                         <td>{invoice.product}</td>
                         <td>{invoice.amount.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</td>
                         <td>{invoice.payment_method.name}</td>
-                        {/* {
-                            invoice.type == 'Income' ? 
-                            <td>
-                                <img src={Income} alt="" className='mx-2 p-1' style={{ border: '2px solid var(--success-500)', borderRadius: '50%' }} />
-                                {invoice.type}
-                            </td>:
-                            <td>
-                            <img src={Outcome} alt="" className='mx-2 py-2 px-1' style={{ border: '2px solid var(--Danger-500)', borderRadius: '50%' }}/>
-                            {invoice.type}
-                        </td>
-                        }
-                        <td>{invoice.location}</td> */}
                         <td>
-                            <Status status={invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)} />
+                            <Status status={invoice.status} />
                         </td>
                     </tr>
                 ))}
             </tbody>
         </Table>
-        {/* <Pagination className="d-flex justify-content-between">
-            <p>showing {showingFrom} to {showingTo} of {sortedInvoices.length} entries</p>
-            <div className="d-flex flex-row">
-                <Pagination.Prev onClick={handlePrevPage} disabled={currentPage === 1} className='me-2 rounded-3'>Previous</Pagination.Prev>
-                {pageNumbers.map((number) => (
-                    <Pagination.Item
-                        key={number}
-                        active={number === currentPage}
-                        onClick={() => handlePageChange(number)}
-                    >
-                        {number}
-                    </Pagination.Item>
-                ))}
-                <Pagination.Next onClick={handleNextPage} disabled={currentPage === Math.ceil(sortedInvoices.length / itemsPerPage)} className='ms-2' c>Next</Pagination.Next>
-            </div>
-        </Pagination> */}
         <div className='d-flex justify-content-between'>
             <div>
                 showing 1 to 10 from {totalPages} entries
@@ -197,7 +169,6 @@ const TableTransaction = ({ invoices, page, setPage, totalPages }) => {
                     )
                 }
                 <Button onClick={() => handlePaginations(1)} variant='outline' style={{color: 'var(--primary-500)' ,border: '1px solid var(--primary-500)'}}>
-                    {/* <img src={IconArrowNext} alt="" /> */}
                     Next
                 </Button>
             </div>
