@@ -8,7 +8,7 @@ import Status from '../../pages/Invoices/Status';
 import { useNavigate } from 'react-router';
 
 // eslint-disable-next-line react/prop-types
-const TableTransaction = ({ invoices, page, setPage, totalPages }) => {
+const TableTransaction = ({ invoices, page, setPage, totalPages, totalData }) => {
 
     const navigate = useNavigate()
 
@@ -104,11 +104,8 @@ const TableTransaction = ({ invoices, page, setPage, totalPages }) => {
                 <tr>
                     <th onClick={() => sortTable('id')}>ID Invoice</th>
                     <th onClick={() => sortTable('date')}>Date</th>
-                    {/* <th onClick={() => sortTable('recipient')}>Recipient</th> */}
                     <th onClick={() => sortTable('product')}>Product</th>
                     <th onClick={() => sortTable('amount')}>Amount</th>
-                    {/* <th onClick={() => sortTable('type')}>Type</th>
-                    <th onClick={() => sortTable('location')}>Location</th> */}
                     <th onClick={() => sortTable('payment_method')}>Payment Method</th>
                     <th onClick={() => sortTable('status')}>Status</th>
                 </tr>
@@ -130,11 +127,10 @@ const TableTransaction = ({ invoices, page, setPage, totalPages }) => {
         </Table>
         <div className='d-flex justify-content-between'>
             <div>
-                showing 1 to 10 from {totalPages} entries
+                showing {page * 10 - 9} to {page === totalPages? totalData: page * 10} from {totalData} entries
             </div>
             <div className="d-flex gap-2 align-items-center">
                 <Button onClick={() => handlePaginations(-1)} variant='outline' style={{color: 'var(--primary-500)' ,border: '1px solid var(--primary-500)'}}>
-                    {/* <img src={IconArrowBack} alt="" /> */}
                     Prev
                 </Button>
                 {
