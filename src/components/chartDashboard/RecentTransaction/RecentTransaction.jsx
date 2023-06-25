@@ -11,6 +11,7 @@ const RecentTransaction = () => {
     const [transaction, setTransaction] = useState([]);
 
     useEffect(() => {
+        //get data untuk data transaction
         axios.get('http://18.141.56.154:8000/admin/transactions', {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -37,8 +38,6 @@ const RecentTransaction = () => {
                         <span className="ViewAll">View all</span>
                         <img src={ikon_right} alt="View All" style={{ paddingLeft: "10px" }} />
                     </Link>
-                    {/* <div className="AllTransaction">
-                    </div> */}
                 </div>
             </div>
             <div className="row">

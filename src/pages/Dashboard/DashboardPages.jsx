@@ -18,13 +18,13 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                //endpoint get jumlah tempat gym
+                //get data untuk jumlah tempat gym
                 const endpoint1 = axios.get("http://18.141.56.154:8000/locations", {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                //endpoint get jumlah membership
+                //get data untuk jumlah membership
                 const endpoint2 = axios.get("http://18.141.56.154:8000/admin/memberships", {
                     headers: {
                         Authorization: `Bearer ${token}`,

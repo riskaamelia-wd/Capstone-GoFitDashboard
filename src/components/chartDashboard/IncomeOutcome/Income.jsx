@@ -15,6 +15,7 @@ const Income = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                //get data untuk menghitung jumlah income
                 const response = await axios.get("http://18.141.56.154:8000/admin/transactions", {
                     headers: {
                         Authorization: `Bearer ${token}`,

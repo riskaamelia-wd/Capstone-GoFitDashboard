@@ -13,6 +13,7 @@ const OrderChart = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                //get data untuk persentase order chart
                 const response = await axios.get("http://18.141.56.154:8000/admin/classes/tickets", {
                     headers: {
                         Authorization: `Bearer ${token}`,
