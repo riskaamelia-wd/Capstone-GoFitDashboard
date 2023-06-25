@@ -8,7 +8,7 @@ import Status from '../../pages/Invoices/Status';
 import { useNavigate } from 'react-router';
 
 // eslint-disable-next-line react/prop-types
-const TableTransaction = ({ invoices, page, setPage, totalPages }) => {
+const TableTransaction = ({ invoices, page, setPage, totalPages, totalData }) => {
 
     const navigate = useNavigate()
 
@@ -104,11 +104,8 @@ const TableTransaction = ({ invoices, page, setPage, totalPages }) => {
                 <tr>
                     <th onClick={() => sortTable('id')}>ID Invoice</th>
                     <th onClick={() => sortTable('date')}>Date</th>
-                    {/* <th onClick={() => sortTable('recipient')}>Recipient</th> */}
                     <th onClick={() => sortTable('product')}>Product</th>
                     <th onClick={() => sortTable('amount')}>Amount</th>
-                    {/* <th onClick={() => sortTable('type')}>Type</th>
-                    <th onClick={() => sortTable('location')}>Location</th> */}
                     <th onClick={() => sortTable('payment_method')}>Payment Method</th>
                     <th onClick={() => sortTable('status')}>Status</th>
                 </tr>
@@ -121,48 +118,19 @@ const TableTransaction = ({ invoices, page, setPage, totalPages }) => {
                         <td>{invoice.product}</td>
                         <td>{invoice.amount.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</td>
                         <td>{invoice.payment_method.name}</td>
-                        {/* {
-                            invoice.type == 'Income' ? 
-                            <td>
-                                <img src={Income} alt="" className='mx-2 p-1' style={{ border: '2px solid var(--success-500)', borderRadius: '50%' }} />
-                                {invoice.type}
-                            </td>:
-                            <td>
-                            <img src={Outcome} alt="" className='mx-2 py-2 px-1' style={{ border: '2px solid var(--Danger-500)', borderRadius: '50%' }}/>
-                            {invoice.type}
-                        </td>
-                        }
-                        <td>{invoice.location}</td> */}
                         <td>
-                            <Status status={invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)} />
+                            <Status status={invoice.status} />
                         </td>
                     </tr>
                 ))}
             </tbody>
         </Table>
-        {/* <Pagination className="d-flex justify-content-between">
-            <p>showing {showingFrom} to {showingTo} of {sortedInvoices.length} entries</p>
-            <div className="d-flex flex-row">
-                <Pagination.Prev onClick={handlePrevPage} disabled={currentPage === 1} className='me-2 rounded-3'>Previous</Pagination.Prev>
-                {pageNumbers.map((number) => (
-                    <Pagination.Item
-                        key={number}
-                        active={number === currentPage}
-                        onClick={() => handlePageChange(number)}
-                    >
-                        {number}
-                    </Pagination.Item>
-                ))}
-                <Pagination.Next onClick={handleNextPage} disabled={currentPage === Math.ceil(sortedInvoices.length / itemsPerPage)} className='ms-2' c>Next</Pagination.Next>
-            </div>
-        </Pagination> */}
         <div className='d-flex justify-content-between'>
             <div>
-                showing 1 to 10 from {totalPages} entries
+                showing {page * 10 - 9} to {page === totalPages? totalData: page * 10} from {totalData} entries
             </div>
             <div className="d-flex gap-2 align-items-center">
                 <Button onClick={() => handlePaginations(-1)} variant='outline' style={{color: 'var(--primary-500)' ,border: '1px solid var(--primary-500)'}}>
-                    {/* <img src={IconArrowBack} alt="" /> */}
                     Prev
                 </Button>
                 {
@@ -197,7 +165,6 @@ const TableTransaction = ({ invoices, page, setPage, totalPages }) => {
                     )
                 }
                 <Button onClick={() => handlePaginations(1)} variant='outline' style={{color: 'var(--primary-500)' ,border: '1px solid var(--primary-500)'}}>
-                    {/* <img src={IconArrowNext} alt="" /> */}
                     Next
                 </Button>
             </div>

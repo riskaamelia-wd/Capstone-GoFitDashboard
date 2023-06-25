@@ -37,6 +37,7 @@ const ManageTransaction = () => {
                 page={page}
                 setPage={setPage}
                 totalPages={totalPages}
+                totalData={totalData}
             />
         </div>
     )
