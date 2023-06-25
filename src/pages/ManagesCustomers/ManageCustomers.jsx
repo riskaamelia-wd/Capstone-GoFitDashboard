@@ -13,8 +13,6 @@ const ManageCustomers = () => {
     const token = useSelector((state) => state.tokenAuth);
     const [isVisible, setIsVisible] = useState(false);
     const [data, setData] = useState([]);
-    //const [DetailData, setDetailData] = useState([]);
-
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [searchValue, setSearchValue] = useState("");
@@ -37,15 +35,12 @@ const ManageCustomers = () => {
         fetchData();
     }, [currentPage, token.token_jwt]);
 
-
-    console.log(data);
     const handlePageChange = useCallback(
         (page) => {
             setCurrentPage(page);
         },
         [setCurrentPage]
     );
-
 
     const [selectedCustomerId, setSelectedCustomerId] = useState(null);
     const [customerActivities, setCustomerActivities] = useState();
@@ -69,7 +64,6 @@ const ManageCustomers = () => {
             console.log(error);
         }
     };
-    console.log(customerActivities);
 
     const handleSearch = (event) => {
         setSearchValue(event.target.value);
@@ -120,7 +114,7 @@ const ManageCustomers = () => {
                                     })}
                                 </>
                             ) : (
-                                <div>Data Kosong</div>
+                                <div></div>
                             )}
                         </div>
                     </div>
@@ -175,7 +169,7 @@ const ManageCustomers = () => {
                                     <p className="page-text">{currentPage}</p>
                                 )}
 
-                                {currentPage < totalPages && (
+                                {currentPage < totalPages && filteredData.length > 0 && (
                                     <button
                                         className="nextCustomer"
                                         onClick={() => handlePageChange(currentPage + 1)}
