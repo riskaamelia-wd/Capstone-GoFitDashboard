@@ -14,6 +14,10 @@ import OfflineClass from "../../components/Form/OfflineClass";
 import moment from "moment";
 import Loading from "../../components/Loading";
 import axios from "axios";
+
+
+/* eslint-disable react/prop-types */
+// import "react-multi-carousel/lib/styles.css";
 import "react-multi-carousel/lib/styles.css";
 import PaginateButton from "../ManagesOnlineClass/PaginateButton";
 

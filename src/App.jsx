@@ -35,6 +35,7 @@ import ManagePackagesOnline from "./pages/ManagesOnlineClass/ManagePackagesOnlin
 import ManageLocation from "./pages/ManageOfflineClass/ManageLocation";
 import ManageTransaction from "./pages/ManageTransaction/ManageTransaction";
 import ManageBooking from "./pages/ManagesBooking/ManageBooking";
+import ArticlesDetail from "./pages/ManagesArticles/ArticlesDetail";
 import ManageAdmin from "./pages/ManagesAdminAccount/ManageAdmin";
 import DetailTransaction from "./pages/ManageTransaction/DetailTransaction";
 
@@ -53,6 +54,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/managesfeedback" element={<ManagesFeedback />} />
             <Route path="/articles" element={<ManagesArticles />} />
+            <Route path="/articles/Detail/:id" element={<ArticlesDetail/>}/>
             <Route path="onlineClass" element={<ManagesOnlineClass />} />
             <Route path="onlineClass/classPackages" element={<ManagePackagesOnline />} />
             <Route path="offlineClass" element={<ManagesOfflineClass />} />
@@ -73,7 +75,7 @@ function App() {
             <Route path="/invoices" element={<Invoices />} />
             <Route path="/membership" element={<ManageMembership />} />
             <Route path="/transaction" element={<ManageTransaction/>} />
-            <Route path="/detail-transaction/:id" element={<DetailTransaction />} />
+            <Route path="/transaction/:id" element={<DetailTransaction/>} />
             <Route path="/booking" element={<ManageBooking />} />
             <Route path="/booking/detail/:id" element={<ManageBookingDetail />} />
             <Route path='/manageadmin' element={<ManageAdmin />} />

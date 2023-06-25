@@ -9,6 +9,7 @@ import tokenSlice from "./Slice/tokenSlice";
 import adminSlice from "./Slice/adminSlice";
 import offlineClassSlice from "./Slice/offlineClassSlice";
 import classOnlineSlice from "./Slice/classOnlineSlice";
+import articlesSlice from "./Slice/articlesSlice";
 
 const persistConfig = {
   key: "root",
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   users: usersSlice,
   paymentMethod: paymentMethodsSlice,
   training: trainingSlice,
+  article: articlesSlice,
   onlineClass : classOnlineSlice,
   offlineClass : offlineClassSlice,
   recomended: recomendedSlice,

@@ -71,7 +71,7 @@ const TableTransaction = ({ invoices, page, setPage, totalPages }) => {
     }
 
     const handleClick = (id) => {
-        navigate(`/detail-transaction/${id}`)
+        navigate(`/transaction/${id}`)
     }
 
     //untuk convert date dari bentuk dd/mm/yyyy ke mount date

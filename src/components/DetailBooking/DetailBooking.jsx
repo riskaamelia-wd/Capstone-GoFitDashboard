@@ -8,7 +8,7 @@ import TimeIcon from '../../assets/icons/bx-stopwatch.svg'
 import CodeIcon from '../../assets/icons/bx-receipt.svg'
 import { Col, Row } from "react-bootstrap"
 
-const DetailBooking = ({bookingType, periode, session, zoomCode, classType, descClass, status, image, location}) => {
+const DetailBooking = ({bookingType, periode, session, zoomCode, classType, descClass, status, image, location, city}) => {
     return (
         <>
             <CardCustomerBooking 
@@ -70,7 +70,7 @@ const DetailBooking = ({bookingType, periode, session, zoomCode, classType, desc
                         <p>{session}</p>
                         {
                             location !== '' ?
-                            (<p>{location}</p>):
+                            (<p>{location}, {city}</p>):
                             (<p>{zoomCode}</p>)
                         }
                     </Col>
