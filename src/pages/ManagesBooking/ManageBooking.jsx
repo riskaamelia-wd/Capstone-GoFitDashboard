@@ -34,7 +34,6 @@ const ManageBooking = () => {
                             'Authorization': `Bearer ${token}`
                         }
                     });
-
                     const { data, pagination } = response.data;
                     allData = [...allData, ...data];
                     page = pagination.page + 1;
@@ -165,14 +164,14 @@ const ManageBooking = () => {
                                     ></div>
                                 </td>
                                 <th>{data.user.name}</th>
+                                <td>{data.class_package.class.name}</td>
+                                <td>{formatDate(data.class_package.class.started_at)}, {formatTime(data.class_package.class.started_at)}</td>
+                                <td>{data.class_package.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}/{data.class_package.period}</td>
                                 {
                                     data.class_package.class.class_type === 'online' ? 
                                     <td>Via zoom</td>:
-                                    <td>{data.class_package.class.name}</td>
+                                    <td>{data.class_package.class.location.address}, {data.class_package?.class.location.city}</td>
                                 }
-                                <td>{formatDate(data.class_package.class.started_at)}, {formatTime(data.class_package.class.started_at)}</td>
-                                <td>{data.class_package.price}/{data.class_package.period}</td>
-                                <td>{data.class_package.class.location.address}</td>
                                 <td className="d-flex">
                                     <ButtonComponent
                                         onClick={() => handleClick(data.id)}
@@ -193,7 +192,7 @@ const ManageBooking = () => {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="7" className="text-center">Tidak ada data booking</td>
+                            <td colSpan="7" className="text-center">Loading...</td>
                         </tr>
                     )}
                 </tbody>
