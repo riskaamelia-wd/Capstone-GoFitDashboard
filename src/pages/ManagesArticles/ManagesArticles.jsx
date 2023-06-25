@@ -14,7 +14,7 @@ import Loading from "../../components/Loading";
 import Article from "../../components/Form/Article";
 import { storage } from "../../Config/FirebaseConfig";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-// import { Pagination } from "react-bootstrap";
+import { Pagination } from "react-bootstrap";
 
 const ManagesArticles = () => {
   // const [popUpArticleAdd, setpopUpArticleAdd] = useState(false);
@@ -132,6 +132,73 @@ const ManagesArticles = () => {
   };
 
 
+
+  // PAGINATION
+  const [isSortArticle, setsortArticle] = useState({
+    key: null,
+    direction: "ascending",
+  });
+  const [iscurrentpageArticle, setcurrentpageArticle] = useState(1);
+  const ArticleinPage = 4;
+
+  const sortedArticle = [...data].sort((a, b) => {
+    if (isSortArticle.key) {
+      if (a[isSortArticle.key] < b[isSortArticle.key]) {
+        return isSortArticle.direction === `ascending` ? -1 : 1;
+      }
+      if (a[isSortArticle.key] > b[isSortArticle.key]) {
+        return isSortArticle.direction === `ascending` ? 1 : -1;
+      }
+    }
+    return 0;
+  });
+
+  //reverse sorted id
+  const reversedSortedArticle = [...sortedArticle].reverse();
+
+  //calculate pagenation
+  const indexOfLastItem = iscurrentpageArticle * ArticleinPage;
+  const indexOfFirstItem = indexOfLastItem - ArticleinPage;
+  const currentdata = reversedSortedArticle.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+  const showingFrom = indexOfFirstItem + 1;
+  const showingTo = Math.min(indexOfLastItem, reversedSortedArticle.length);
+
+    // Change page
+    const handlePageChange = (pageNumber) => {
+      setcurrentpageArticle(pageNumber);
+    };
+  
+    const handlePrevPage = () => {
+      if (iscurrentpageArticle > 1) {
+        setcurrentpageArticle(iscurrentpageArticle - 1);
+      }
+    };
+  
+    const handleNextPage = () => {
+      if (
+        iscurrentpageArticle <
+        Math.ceil(reversedSortedArticle.length / ArticleinPage)
+      ) {
+        setcurrentpageArticle(iscurrentpageArticle + 1);
+      }
+    };
+  
+    // Generate page numbers
+    const pageNumbers = [];
+    for (
+      let i = 1;
+      i <= Math.ceil(reversedSortedArticle.length / ArticleinPage);
+      i++
+    ) {
+      pageNumbers.push(i);
+    }
+
+
+
+
   const generalView = () => {
     return (
       <>
@@ -139,21 +206,21 @@ const ManagesArticles = () => {
           <Loading />
         ) : (
           <div className="row mt-0 p-0 m-0 mb-5">
-            {data?.length > 0 ? (
-              data?.map((item, id) => {
+            {currentdata.length > 0 ? (
+              currentdata.map((item, id) => {
                 return (
                   <div
                     key={id}
                     className="col-xl-6 col-lg-7 col-md-9 col-12 mb-4"
                   >
                     <CardArticles
-                      navigate={() =>
-                        navigate(`/articles/Detail/${item.id}`, {
-                          state: {
-                            articledetail: data.title,
-                          },
-                        })
-                      }
+                      // navigate={() =>
+                      //   navigate(`/articles/Detail/${item.id}`, {
+                      //     state: {
+                      //       articledetail: data.title,
+                      //     },
+                      //   })
+                      // }
                       img={item.imgFile}
                       title={item.title}
                       date={item.time}
@@ -279,6 +346,52 @@ const ManagesArticles = () => {
             </div>
           </div> */}
         </div>
+
+
+        
+    <div className="Pagination-article">
+          
+          {data.length > 0 && (
+                  <div>
+                    <Pagination className="d-flex justify-content-between">
+                      <p>
+                        showing {showingFrom} to {showingTo} of{" "}
+                        {sortedArticle.length} entries
+                      </p>
+                      <div className="d-flex flex-row">
+                        <Pagination.Prev
+                          onClick={handlePrevPage}
+                          disabled={iscurrentpageArticle === 1}
+                          className="me-2 rounded-3"
+                        >
+                          Previous
+                        </Pagination.Prev>
+      
+                        {pageNumbers.map((number) => (
+                          <Pagination.Item
+                            key={number}
+                            active={number === currentdata}
+                            onClick={() => handlePageChange(number)}
+                          >
+                            {number}
+                          </Pagination.Item>
+                        ))}
+      
+                        <Pagination.Next
+                          onClick={handleNextPage}
+                          disabled={
+                            iscurrentpageArticle ===
+                            Math.ceil(sortedArticle.length / ArticleinPage)
+                          }
+                          className="ms-2"
+                        >
+                          Next
+                        </Pagination.Next>
+                      </div>
+                    </Pagination>
+                  </div>
+                )}
+          </div>
 
       </div>
     </>
