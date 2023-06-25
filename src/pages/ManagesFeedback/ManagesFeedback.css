@@ -453,6 +453,7 @@
 
 .feedback-history-split {
   display: flex;
+  flex-direction: column;
 }
 
 .feedback-history-body-2 {
