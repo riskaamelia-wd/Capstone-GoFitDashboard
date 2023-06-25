@@ -3,7 +3,7 @@ import height_img from "../../assets/icons/height.svg";
 import weight_img from "../../assets/icons/monitor_weight.svg";
 import goal_weight_img from "../../assets/icons/workspace_premium.svg";
 import training_level_img from "../../assets/icons/elevation.svg";
-import "../CardCustomers/CardCustomer.css";
+import "../Card/CardCustomer.css";
 
 const CardCustomers = ({ image, name, height, weight, goal_weight, training_level, onClick }) => {
        

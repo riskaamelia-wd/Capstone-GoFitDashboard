@@ -5,61 +5,73 @@ import "../ManagesCustomers/ManageCustomers.css"
 import Cover from "../../elements/Card/Cover";
 import imgCover from "../../assets/icons/Appreciation 1.svg";
 import InputSearch from "../../elements/InputSearch/InputSearch";
-import CardCustomers from "../../elements/CardCustomers/CardCustomers";
-import CardDetailCustomers from "../../elements/CardCustomers/CardDetailCustomer";
+import CardCustomers from "../../elements/Card/CardCustomers";
+import CardDetailCustomers from "../../elements/Card/CardDetailCustomer";
 import CardCustomerBooking from "../../components/CardCustomerBooking/CardCustomerBooking";
 
 const ManageCustomers = () => {
     const token = useSelector((state) => state.tokenAuth);
     const [isVisible, setIsVisible] = useState(false);
     const [data, setData] = useState([]);
-    const [DetailData, setDetailData] = useState([]);
-
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [searchValue, setSearchValue] = useState("");
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`http://18.141.56.154:8000/users?page=${currentPage}`, {
+                    headers: {
+                        Authorization: `Bearer ${token.token_jwt}`,
+                    },
+                });
+                setData(response.data.data);
+                setTotalPages(Math.ceil(response.data.pagination.total_data / response.data.pagination.data_shown));
+            } catch (error) {
+                console.log(error);
+            }
+        };
 
-    const getData = useCallback(async () => {
-        await axios
-            .get(`http://18.141.56.154:8000/admin/classes/tickets?page=${currentPage}`, {
+        fetchData();
+    }, [currentPage, token.token_jwt]);
+
+    const handlePageChange = useCallback(
+        (page) => {
+            setCurrentPage(page);
+        },
+        [setCurrentPage]
+    );
+
+    const [selectedCustomerId, setSelectedCustomerId] = useState(null);
+    const [customerActivities, setCustomerActivities] = useState();
+
+    const getSelectedCustomer = () => {
+        return data.find((customer) => customer.id === selectedCustomerId);
+    };
+
+    const handleCustomerClick = async (customerId) => {
+        setSelectedCustomerId(customerId);
+        setIsVisible(true);
+
+        try {
+            const response = await axios.get(`http://18.141.56.154:8000/admin/classes/tickets/${customerId}`, {
                 headers: {
                     Authorization: `Bearer ${token.token_jwt}`,
                 },
-            })
-            .then((response) => {
-                console.log(response.data);
-                setData(response.data.data);
-                setTotalPages(Math.ceil(response.data.pagination.total_data / response.data.pagination.data_shown));
-            })
-            .catch((error) => {
-                console.log(error);
             });
-    }, [currentPage, token.token_jwt]);
-
-
-    useEffect(() => {
-        getData();
-    }, [currentPage, getData]);
-
-    const handlePageChange = (page) => {
-        console.log('Page changed:', page);
-        setCurrentPage(page);
-        console.log('Current page:', page);
+            setCustomerActivities(response.data);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
-    const [selectedCustomerId, setSelectedCustomerId] = useState(null);
-
-    /// Mendapatkan data customer berdasarkan id
-    const getSelectedCustomer = () => {
-        return data.find((customer) => customer.user?.id === selectedCustomerId);
+    const handleSearch = (event) => {
+        setSearchValue(event.target.value);
     };
 
-    // Mendapatkan kelas yang dimiliki oleh pengguna tertentu
-    const getUserClasses = (user) => {
-        const userClasses = data.filter((booking) => booking.user?.id === user?.user?.id);
-        return userClasses;
-    };
-    console.log(totalPages);
+    const filteredData = data.filter((customer) => {
+        return customer.name.toLowerCase().includes(searchValue.toLowerCase());
+    });
 
     return (
         <>
@@ -72,32 +84,37 @@ const ManageCustomers = () => {
                             <h2 className="text-customers">Customers</h2>
                         </div>
                         <div className="col-12 py-3">
-                            <InputSearch id="search-customers" placeholder="Search customers" />
+                            <InputSearch
+                                id="search-customers"
+                                placeholder="Search customers"
+                                value={searchValue}
+                                onChange={handleSearch}
+                            />
                         </div>
 
                         <div className="col-12">
-                            {data.length > 0 ? (
+                            {filteredData.length > 0 ? (
                                 <>
-                                    {data.map((customer, index) => {
+                                    {filteredData.map((customer, index) => {
                                         return (
                                             <CardCustomers
                                                 onClick={(e) => {
-                                                    setSelectedCustomerId(customer.user?.id);
+                                                    handleCustomerClick(customer.id);
                                                     setIsVisible(true);
                                                 }}
                                                 key={index}
-                                                image={`http://18.141.56.154:8000/${customer.user.profile_picture}`}
-                                                name={customer.user?.name}
-                                                height={customer.user?.height}
-                                                weight={customer.user?.weight}
-                                                goal_weight={customer.user?.goal_weight}
-                                                training_level={customer.user?.training_level}
+                                                image={`http://18.141.56.154:8000/${customer.profile_picture}`}
+                                                name={customer.name}
+                                                height={customer.height}
+                                                weight={customer.weight}
+                                                goal_weight={customer.goal_weight}
+                                                training_level={customer.training_level}
                                             />
                                         );
                                     })}
                                 </>
                             ) : (
-                                <div>Data Kosong</div>
+                                <div></div>
                             )}
                         </div>
                     </div>
@@ -110,22 +127,21 @@ const ManageCustomers = () => {
                             {getSelectedCustomer() && (
                                 <>
                                     <h3 className="mt-2" style={{ fontWeight: "600", fontSize: "24px", color: "#606060" }}>Activities</h3>
-                                    {getUserClasses(getSelectedCustomer()).map((booking) => (
+                                    {customerActivities && (
                                         <CardCustomerBooking
-                                            key={booking.id}
-                                            image={booking.user?.profile_picture}
-                                            name={booking.class_package?.class.class_type + " class"}
-                                            date={booking.class_package?.class.class_type === 'online' ? 'Private zoom with mentor' : 'offline class with trainer'}
-                                            status={booking.status}
+                                            key={customerActivities.data?.id}
+                                            image={customerActivities.data?.class_package?.class.image_banner}
+                                            name={customerActivities.data?.class_package?.class.class_type + " class"}
+                                            date={customerActivities.data?.class_package?.class.class_type === 'online' ? 'Private zoom with mentor' : 'offline class with trainer'}
+                                            status={customerActivities.data?.status}
                                             onClick={''}
                                             data-bs-toggle="modal"
                                             data-bs-target="#detailClassCustomer"
                                         />
-                                    ))}
+                                    )}
+
                                 </>
                             )}
-
-
                         </div>
                     )}
 
@@ -153,7 +169,7 @@ const ManageCustomers = () => {
                                     <p className="page-text">{currentPage}</p>
                                 )}
 
-                                {currentPage < totalPages && (
+                                {currentPage < totalPages && filteredData.length > 0 && (
                                     <button
                                         className="nextCustomer"
                                         onClick={() => handlePageChange(currentPage + 1)}
