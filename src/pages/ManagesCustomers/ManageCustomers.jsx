@@ -19,54 +19,64 @@ const ManageCustomers = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [searchValue, setSearchValue] = useState("");
 
-    const getData = useCallback(async () => {
-        await axios
-            .get(`http://18.141.56.154:8000/admin/classes/tickets?page=${currentPage}`, {
-                headers: {
-                    Authorization: `Bearer ${token.token_jwt}`,
-                },
-            })
-            .then((response) => {
-                console.log(response.data);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`http://18.141.56.154:8000/users?page=${currentPage}`, {
+                    headers: {
+                        Authorization: `Bearer ${token.token_jwt}`,
+                    },
+                });
                 setData(response.data.data);
                 setTotalPages(Math.ceil(response.data.pagination.total_data / response.data.pagination.data_shown));
-            })
-            .catch((error) => {
+            } catch (error) {
                 console.log(error);
-            });
+            }
+        };
+
+        fetchData();
     }, [currentPage, token.token_jwt]);
 
 
-    useEffect(() => {
-        getData();
-    }, [currentPage, getData]);
+    console.log(data);
+    const handlePageChange = useCallback(
+        (page) => {
+            setCurrentPage(page);
+        },
+        [setCurrentPage]
+    );
 
-    const handlePageChange = (page) => {
-        console.log('Page changed:', page);
-        setCurrentPage(page);
-        console.log('Current page:', page);
-    };
 
     const [selectedCustomerId, setSelectedCustomerId] = useState(null);
+    const [customerActivities, setCustomerActivities] = useState();
 
-    /// Mendapatkan data customer berdasarkan id
     const getSelectedCustomer = () => {
-        return data.find((customer) => customer.user?.id === selectedCustomerId);
+        return data.find((customer) => customer.id === selectedCustomerId);
     };
 
-    // Mendapatkan kelas yang dimiliki oleh pengguna tertentu
-    const getUserClasses = (user) => {
-        const userClasses = data.filter((booking) => booking.user?.id === user?.user?.id);
-        return userClasses;
+    const handleCustomerClick = async (customerId) => {
+        setSelectedCustomerId(customerId);
+        setIsVisible(true);
+
+        try {
+            const response = await axios.get(`http://18.141.56.154:8000/admin/classes/tickets/${customerId}`, {
+                headers: {
+                    Authorization: `Bearer ${token.token_jwt}`,
+                },
+            });
+            setCustomerActivities(response.data);
+        } catch (error) {
+            console.log(error);
+        }
     };
-    console.log(totalPages);
+    console.log(customerActivities);
 
     const handleSearch = (event) => {
         setSearchValue(event.target.value);
     };
 
     const filteredData = data.filter((customer) => {
-        return customer.user?.name.toLowerCase().includes(searchValue.toLowerCase());
+        return customer.name.toLowerCase().includes(searchValue.toLowerCase());
     });
 
     return (
@@ -81,30 +91,30 @@ const ManageCustomers = () => {
                         </div>
                         <div className="col-12 py-3">
                             <InputSearch
-                             id="search-customers"
-                             placeholder="Search customers" 
-                             value={searchValue}
-                             onChange={handleSearch}
+                                id="search-customers"
+                                placeholder="Search customers"
+                                value={searchValue}
+                                onChange={handleSearch}
                             />
                         </div>
 
                         <div className="col-12">
-                            {filteredData.length> 0 ? (
+                            {filteredData.length > 0 ? (
                                 <>
                                     {filteredData.map((customer, index) => {
                                         return (
                                             <CardCustomers
                                                 onClick={(e) => {
-                                                    setSelectedCustomerId(customer.user?.id);
+                                                    handleCustomerClick(customer.id);
                                                     setIsVisible(true);
                                                 }}
                                                 key={index}
-                                                image={`http://18.141.56.154:8000/${customer.user.profile_picture}`}
-                                                name={customer.user?.name}
-                                                height={customer.user?.height}
-                                                weight={customer.user?.weight}
-                                                goal_weight={customer.user?.goal_weight}
-                                                training_level={customer.user?.training_level}
+                                                image={`http://18.141.56.154:8000/${customer.profile_picture}`}
+                                                name={customer.name}
+                                                height={customer.height}
+                                                weight={customer.weight}
+                                                goal_weight={customer.goal_weight}
+                                                training_level={customer.training_level}
                                             />
                                         );
                                     })}
@@ -123,22 +133,21 @@ const ManageCustomers = () => {
                             {getSelectedCustomer() && (
                                 <>
                                     <h3 className="mt-2" style={{ fontWeight: "600", fontSize: "24px", color: "#606060" }}>Activities</h3>
-                                    {getUserClasses(getSelectedCustomer()).map((booking) => (
+                                    {customerActivities && (
                                         <CardCustomerBooking
-                                            key={booking.id}
-                                            image={booking.user?.profile_picture}
-                                            name={booking.class_package?.class.class_type + " class"}
-                                            date={booking.class_package?.class.class_type === 'online' ? 'Private zoom with mentor' : 'offline class with trainer'}
-                                            status={booking.status}
+                                            key={customerActivities.data?.id}
+                                            image={customerActivities.data?.class_package?.class.image_banner}
+                                            name={customerActivities.data?.class_package?.class.class_type + " class"}
+                                            date={customerActivities.data?.class_package?.class.class_type === 'online' ? 'Private zoom with mentor' : 'offline class with trainer'}
+                                            status={customerActivities.data?.status}
                                             onClick={''}
                                             data-bs-toggle="modal"
                                             data-bs-target="#detailClassCustomer"
                                         />
-                                    ))}
+                                    )}
+
                                 </>
                             )}
-
-
                         </div>
                     )}
 

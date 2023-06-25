@@ -21,7 +21,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
     const getData = useCallback(
         async () => {
             await axios
-                .get("http://18.141.56.154:8000/admin/classes/tickets", {
+                .get("http://18.141.56.154:8000/users", {
                     headers: {
                         Authorization: `Bearer ${token.token_jwt}`,
                     },
@@ -37,12 +37,11 @@ const CardDetailCustomers = ({ customer, setData }) => {
         }, []
     )
 
-    console.log(customer.user);
+    console.log(customer);
     const token = useSelector((state) => state.tokenAuth);
     const [hovered, setHovered] = useState(false);
 
     const [id, setId] = useState();
-    const [imageReset, setImageReset] = useState(false);
 
     const [EditData, setEditData] = useState({
         name: "",
@@ -57,13 +56,13 @@ const CardDetailCustomers = ({ customer, setData }) => {
     // Function edit data customer
     const HandleEdit = (id) => {
         setEditData({
-            name: customer.user.name,
-            email: customer.user.email,
-            gender: customer.user.gender,
-            weight: customer.user.weight,
-            height: customer.user.height,
-            goal_weight: customer.user.goal_weight,
-            training_level: customer.user.training_level,
+            name: customer.name,
+            email: customer.email,
+            gender: customer.gender,
+            weight: customer.weight,
+            height: customer.height,
+            goal_weight: customer.goal_weight,
+            training_level: customer.training_level,
         });
         setId(id);
     }
@@ -77,8 +76,8 @@ const CardDetailCustomers = ({ customer, setData }) => {
                     name: EditData.name,
                     gender: EditData.gender,
                     weight: parseFloat(EditData.weight),
-                    goal_weight: EditData.goal_weight,
-                    height: EditData.height,
+                    goal_weight: parseFloat(EditData.goal_weight),
+                    height: parseFloat(EditData.height),
                     training_level: EditData.training_level
                 },
                 {
@@ -87,7 +86,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                     },
                 }
             );
-            alert("Data updated successfully");
+            console.log("Update Data Succesfuly");
             getData();
             setEditData(null);
         } catch (error) {
@@ -99,7 +98,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
     const HandleDelete = async (id) => {
         if (window.confirm("Are you sure you want to delete this data?")) {
             await axios
-                .delete(`http://18.141.56.154:8000/admin/classes/tickets/${id}`, {
+                .delete(`http://18.141.56.154:8000/users/${id}`, {
                     headers: {
                         Authorization: `Bearer ${token.token_jwt}`,
                     },
@@ -122,7 +121,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
 
         try {
             axios.post(
-                `http://18.141.56.154:8000/users/profile/${customer.user.id}`,
+                `http://18.141.56.154:8000/users/profile/${customer.id}`,
                 formData,
                 {
                     headers: {
@@ -141,39 +140,51 @@ const CardDetailCustomers = ({ customer, setData }) => {
 
     const handleImageReset = async () => {
         try {
-            const userId = parseInt(customer.user.id, 10);
-            await axios.delete(
-                `http://18.141.56.154:8000/users/profile/${userId}`,
+            const userId = parseInt(customer.id, 10);
+            const updatedUser = {
+                profile_picture: "null"
+            };
+
+            const response = await axios.put(
+                `http://18.141.56.154:8000/users/${userId}`,
+                updatedUser,
                 {
                     headers: {
                         Authorization: `Bearer ${token.token_jwt}`,
                     },
                 }
             );
-            setImageReset(true);
-            console.log("Image reset successfully");
+
+            console.log("Profile picture reset successfully");
         } catch (error) {
-            console.error("Error resetting image:", error);
+            console.error("Error resetting profile picture:", error);
         }
     };
 
+    const handleResetPassword = async () => {
+        try {
+            const userId = parseInt(customer.id, 10);
+            const newPassword = {
+                password: "akun123"
+            };
 
-    // function formatDate(dateString) {
-    //     const date = new Date(dateString);
-    //     const options = { month: 'long', day: 'numeric' };
-    //     const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
-    //     return formattedDate;
-    // }
-
-    // function formatTime(dateString) {
-    //     const date = new Date(dateString);
-    //     const options = { hour: 'numeric', minute: 'numeric'};
-    //     const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
-    //     return formattedTime;
-    // }
+            const response = await axios.put(
+                `http://18.141.56.154:8000/users/${userId}`,
+                newPassword,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token.token_jwt}`,
+                    },
+                }
+            );
+            console.log("Password reset successfully");
+        } catch (error) {
+            console.log("gagal");
+            console.error("Error resetting password:", error);
+        }
+    };
 
     return (
-
         <>
             {customer && (
                 <Card
@@ -184,28 +195,28 @@ const CardDetailCustomers = ({ customer, setData }) => {
                 >
                     <div className="row">
                         <div className="col-lg-1 mt-2">
-                            <img src={`http://18.141.56.154:8000/${customer.user.profile_picture}`} alt="Person" className="rounded-circle" />
+                            <img src={`http://18.141.56.154:8000/${customer.profile_picture}`} alt="Person" className="rounded-circle" />
                         </div>
                         <div className="col-lg-8 mt-3">
                             <div className="row">
-                                <h4 className="name-customers">{customer.user.name}</h4>
+                                <h4 className="name-customers">{customer.name}</h4>
                             </div>
                             <div className="row grid-inner-row">
                                 <div className="col-3 tight-col">
                                     <img src={height_img} alt="height" />
-                                    <span className="text-customer"> {customer.user.height}cm</span>
+                                    <span className="text-customer"> {customer.height}cm</span>
                                 </div>
                                 <div className="col-3 tight-col">
                                     <img src={weight_img} alt="weight" />
-                                    <span className="text-customer"> {customer.user.weight}kg</span>
+                                    <span className="text-customer"> {customer.weight}kg</span>
                                 </div>
                                 <div className="col-3 tight-col">
                                     <img src={goal_weight_img} alt="goal_weight" />
-                                    <span className="text-customer"> {customer.user.goal_weight}kg</span>
+                                    <span className="text-customer"> {customer.goal_weight}kg</span>
                                 </div>
                                 <div className="col-4 tight-col">
                                     <img src={training_level_img} alt="training_level" />
-                                    <span className="text-customer"> {customer.user.training_level}</span>
+                                    <span className="text-customer"> {customer.training_level}</span>
                                 </div>
                             </div>
                         </div>
@@ -224,7 +235,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                                         <div className="editCustomer">
                                             <img
                                                 src={edit}
-                                                onClick={() => HandleEdit(customer.user.id)}
+                                                onClick={() => HandleEdit(customer.id)}
                                                 alt="edit"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#ModalEditCustomer"
@@ -259,7 +270,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                                     <p style={{ textAlign: "center", fontWeight: "600", fontSize: "16px" }}>Change your profile picture from here</p>
                                     <div className="row" style={{ justifyContent: "right" }}>
                                         <div className="col-2">
-                                            <img src={`http://18.141.56.154:8000/${customer.user.profile_picture}`} alt="Person" className="rounded-circle" />
+                                            <img src={`http://18.141.56.154:8000/${customer.profile_picture}`} alt="Person" className="rounded-circle" />
                                         </div>
                                         <div className="col-8">
                                             <div style={{ display: "flex" }}>
@@ -289,7 +300,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                                     </div>
                                     <p style={{ fontSize: "16px", fontWeight: "400", color: "#030303", paddingTop: "10px" }}>To change your password please confirm here</p>
                                     <TextFieldPassword
-                                        value={customer.user.password}
+                                        value={customer.password}
                                         label='Current Password'
                                         name='password'
                                         id='password_customer'
@@ -480,13 +491,13 @@ const CardDetailCustomers = ({ customer, setData }) => {
                     aria-hidden="true"
                 >
                     <div className="modal-dialog reset-password">
-                        <div className="modal-content-customer">
+                        <div className="modal-content modal-content-customer">
                             <div className="content-reset">
                                 <img src={warning} alt="Warning" />
                                 <p style={{ fontWeight: "400", fontSize: "16px", color: "#000000", paddingTop: "4%" }}>Are you sure you want to reset password?</p>
                             </div>
 
-                            <div style={{ display: "flex", marginBottom: "7%", marginLeft: "13%" }}>
+                            <div style={{ display: "flex", marginBottom: "7%", marginLeft: "8%" }}>
                                 <div style={{ marginRight: "7%" }}>
                                     <button
                                         type="button"
@@ -500,6 +511,7 @@ const CardDetailCustomers = ({ customer, setData }) => {
                                     type="button"
                                     className="btnYesReset"
                                     data-bs-dismiss="modal"
+                                    onClick={handleResetPassword}
                                 >
                                     Yes
                                 </button>
