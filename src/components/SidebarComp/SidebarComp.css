@@ -15,6 +15,8 @@
     /* overflow-y: scroll; */
 
     transition: 0.4s;
+    /* display: flex;
+    flex-wrap: nowrap; */
     /* background-color: var(--Neutral-Black-100); */
 }
 
@@ -23,11 +25,14 @@
     color: var(--Neutral-Black-900);
     isolation: isolate;
     position: absolute;
+    /* display: flex;
+    flex-wrap: nowrap; */
     /* left: 10px; */
     /* overflow-y: scroll; */
     /* width: 150px; */
     /* height: 1000px; */
     /* background-color: var(--Neutral-Black-100); */
+    transition: 0.4s;
 }
 
 .nav-upper,
