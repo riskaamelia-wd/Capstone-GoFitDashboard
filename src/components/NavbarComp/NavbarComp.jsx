@@ -70,8 +70,7 @@ const NavbarComp = ({
         <button
           className="buttonHeader fw-semibold"
           type="button"
-          data-bs-toggle="dropdown"
-          onClick={handleAppsClick}>
+          data-bs-toggle="dropdown">
           Apps
           <img
             className="ms-3"
@@ -92,7 +91,9 @@ const NavbarComp = ({
                 <div className="col-12">
                   <div className="row">
                     <div className="col-6">
-                      <NavLink to={"/membership"}>
+                      <NavLink
+                        to={"/membership"}
+                        className={"text-decoration-none"}>
                         <div
                           className="cardHeader rounded-3"
                           style={{ width: "15vw" }}>
@@ -118,7 +119,9 @@ const NavbarComp = ({
                       </NavLink>
                     </div>
                     <div className="col-6">
-                      <NavLink to={"/training"}>
+                      <NavLink
+                        to={"/training"}
+                        className={"text-decoration-none"}>
                         <div
                           className="cardHeader rounded-3"
                           style={{ width: "15vw" }}>
@@ -146,7 +149,9 @@ const NavbarComp = ({
                 <div className="col-12">
                   <div className="row">
                     <div className="col-6">
-                      <NavLink to={"/offlineClass"}>
+                      <NavLink
+                        to={"/offlineClass"}
+                        className={"text-decoration-none"}>
                         <div
                           className="cardHeader rounded-3"
                           style={{ width: "15vw" }}>
@@ -170,7 +175,9 @@ const NavbarComp = ({
                       </NavLink>
                     </div>
                     <div className="col-6">
-                      <NavLink to={"/articles"}>
+                      <NavLink
+                        to={"/articles"}
+                        className={"text-decoration-none"}>
                         <div
                           className="cardHeader rounded-3"
                           style={{ width: "15vw" }}>
@@ -200,7 +207,9 @@ const NavbarComp = ({
                 <div className="col-12">
                   <div className="row">
                     <div className="col-6">
-                      <NavLink to={"/onlineClass"}>
+                      <NavLink
+                        to={"/onlineClass"}
+                        className={"text-decoration-none"}>
                         <div
                           className="cardHeader rounded-3"
                           style={{ width: "15vw" }}>
@@ -224,7 +233,9 @@ const NavbarComp = ({
                       </NavLink>
                     </div>
                     <div className="col-6">
-                      <NavLink to={"/booking"}>
+                      <NavLink
+                        to={"/booking"}
+                        className={"text-decoration-none"}>
                         <div
                           className="cardHeader rounded-3"
                           style={{ width: "15vw" }}>
