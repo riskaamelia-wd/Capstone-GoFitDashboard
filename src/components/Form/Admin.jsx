@@ -141,6 +141,15 @@ const Admin = ({
 
     fetchStatus(true);
     alert("User created");
+    setData({
+      imgFile: "",
+      name: "",
+      email: "",
+      role: "",
+      password: "",
+      confirmPassword: "",
+    });
+    setPrevImg("https://placeholder.com/40x40");
   };
 
   return (
