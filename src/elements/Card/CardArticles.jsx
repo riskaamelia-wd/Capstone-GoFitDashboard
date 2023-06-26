@@ -29,7 +29,7 @@ const CardArticles = ({
           <p className={"card-articles-body-Date"}>{date}</p>
           <p className={"card-articles-body-Title"}>{title}</p>
         </div>
-        <div>
+        {/* <div>
           <Circlebutton
             type={"button"}
             className={"btn-circle"}
@@ -37,7 +37,7 @@ const CardArticles = ({
             imgUrl={addicon1}
             imgClassName={"btn-circle-icon"}
           />
-        </div>
+        </div> */}
       </div>
 
       <div className={!show ? "article-setting" : "article-setting-show show-active"}>

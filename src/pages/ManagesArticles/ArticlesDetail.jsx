@@ -10,6 +10,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../Config/FirebaseConfig";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import axios from "axios";
+import Article from "../../components/Form/Article";
 
 const ArticlesDetail = () => {
   const param = useParams();
@@ -21,7 +22,7 @@ const ArticlesDetail = () => {
   const [error, setError] = useState("");
   const [maxData, setMaxData] = useState(0);
   const [fill, setFill] = useState(true);
-  const [uploadingVideo, setUploadingVideo] = useState("");
+  const [uploadingImg, setUploadingImg] = useState("");
 
   const { response, isLoading, fetchData } = useFetch({
     api: articleApi,
@@ -186,6 +187,34 @@ const ArticlesDetail = () => {
             <p>No Data</p>
           </div>
         )}
+
+        {/* <Article
+        show={show}
+        uploadingImg={uploadingImg}
+        handleClose={handleClose}
+        imgFileValue={isArticleDetail?.img}
+        introductionValue={isArticleDetail?.introduction}
+        introduction={(e) => {
+          setArticleDetail((filledState) => ({
+            ...filledState,
+            introduction: e.target.value,
+          }));
+        }}
+        title={(e) => {
+          setArticleDetail((filledState) => ({
+            ...filledState,
+            title: e.target.value,
+          }))
+        }}
+        titleValue={isArticleDetail?.title}
+        imgFileChange={(e) => {
+          let imgFile = e.target.files[0];
+          if(imgFile && imgFile.type.match())
+        }}
+        >
+
+        </Article> */}
+
       </>
     );
   };
