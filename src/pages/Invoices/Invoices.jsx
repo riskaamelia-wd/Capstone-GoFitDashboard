@@ -271,7 +271,7 @@ const Invoices = () => {
                                         {/* <td>johnsmith123@gmail.com</td> */}
                                         <td>{item.product}</td>
                                         <td><Status status={item.status}/></td>
-                                        <td><i class="bi bi-three-dots-vertical"></i></td>
+                                        <td><i className="bi bi-three-dots-vertical"></i></td>
                                     </tr>
                                 </tbody>
                             )
