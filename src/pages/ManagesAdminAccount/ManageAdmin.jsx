@@ -115,6 +115,7 @@ const ManageAdmin = () => {
                             onClick={handleAddAdmin}
                             btnModalText={'Add Admin'}
                             btnModalImg={AddIcon}
+                            fetchStatus={setFetchStatus}
                         />
                     </div>
                 </div>
@@ -179,6 +180,7 @@ const ManageAdmin = () => {
                                         <ResetPasswordAdmin
                                             onClick={() => handleResetPassword(data.id)}
                                             id={idResetPassword}
+                                            currentPass={data.password}
                                             btnModalText={'Reset Password'}
                                             btnModalImg={ResetPasswordIcon}
                                         />
