@@ -115,6 +115,7 @@ const ManageAdmin = () => {
                             onClick={handleAddAdmin}
                             btnModalText={'Add Admin'}
                             btnModalImg={AddIcon}
+                            fetchStatus={setFetchStatus}
                         />
                     </div>
                 </div>
