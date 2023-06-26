@@ -20,7 +20,7 @@ import Icon14Dotblack from "../../assets/icons/Offline_dot.svg";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import { useDispatch } from "react-redux";
 import { addToken } from "../../redux/Slice/tokenSlice";
-import { addUser } from "../../redux/Slice/usersSlice";
+import { addRemember, addUser } from "../../redux/Slice/usersSlice";
 
 const SidebarComp = ({ isExpanded, setExpandState }) => {
   const [isClassDropdown, setClassDropdown] = useState(false);
@@ -43,7 +43,8 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
   };
   const handleLogout = () => {
     dispatch(addToken(""));
-    dispatch(addUser(""));
+    dispatch(addRemember(""));
+    dispatch(addUser(null));
   };
   return (
     <div
@@ -58,19 +59,20 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
       <div className="nav-upper">
         <div className="nav-heading">
           {isExpanded ? (
-            <div className="nav-brand">GoFit</div>
+            <NavLink to={"/dashboard"} className={"text-decoration-none"}>
+              <div className="nav-brand">GoFit</div>
+            </NavLink>
           ) : (
-            <div className="nav-brand-NX">
-              GoFit
-              {/* <img alt="brand logo" src="" className="rounded-circle" />{" "} */}
-            </div>
+            <NavLink to={"/dashboard"} className={"text-decoration-none"}>
+              <div className="nav-brand">GoFit</div>
+            </NavLink>
           )}
         </div>
         <div className="nav-menu">
           <h1 className={isExpanded ? "menu-item" : "menu-item menu-item-NX"}>
             HOME
           </h1>
-          <NavLink to={"/dashboard"}>
+          <NavLink to={"/dashboard"} className={"text-decoration-none"}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-sidebar" : "btn-sidebar-NX"}
@@ -80,7 +82,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                 isExpanded ? "btn-sidebar-icon" : "btn-sidebar-icon-NX"
               }></ButtonComponent>
           </NavLink>
-          <NavLink to={"/invoices"}>
+          <NavLink to={"/invoices"} className={"text-decoration-none"}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-sidebar" : "btn-sidebar-NX"}
@@ -90,7 +92,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                 isExpanded ? "btn-sidebar-icon" : "btn-sidebar-icon-NX"
               }></ButtonComponent>
           </NavLink>
-          <NavLink to={"/transaction"}>
+          <NavLink to={"/transaction"} className={"text-decoration-none"}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-sidebar" : "btn-sidebar-NX"}
@@ -105,7 +107,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
             Apps
           </h1>
 
-          <NavLink to={"/membership"}>
+          <NavLink to={"/membership"} className={"text-decoration-none"}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-sidebar" : "btn-sidebar-NX"}
@@ -146,14 +148,16 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
             {isExpanded && isClassDropdown ? (
               <div className="dropdown-sidebar-menu-one">
                 <li className="menu-item sidebar-drop-menu-option">
-                  <NavLink to={"/booking"}>
+                  <NavLink to={"/booking"} className={"text-decoration-none"}>
                     <ButtonComponent
                       type={"button"}
                       className={"btn-sidebar-drop-menu"}
                       buttonName={"Manage Booking"}
                     />
                   </NavLink>
-                  <NavLink to={"onlineClass"}>
+                  <NavLink
+                    to={"onlineClass"}
+                    className={"text-decoration-none"}>
                     <ButtonComponent
                       type={"button"}
                       className={"btn-sidebar-drop-menu"}
@@ -176,7 +180,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                       ? "menu-item sidebar-drop-menu-option"
                       : "sidebar-drop-menu-option-NX"
                   }>
-                  <NavLink to={"/booking"}>
+                  <NavLink to={"/booking"} className={"text-decoration-none"}>
                     <ButtonComponent
                       type={"button"}
                       className={
@@ -188,7 +192,9 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                       imgUrlStart={isExpanded ? "" : Icon14Dotblack}
                     />
                   </NavLink>
-                  <NavLink to={"onlineClass"}>
+                  <NavLink
+                    to={"onlineClass"}
+                    className={"text-decoration-none"}>
                     <ButtonComponent
                       type={"button"}
                       className={
@@ -236,14 +242,14 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
             {isExpanded && isItemDropdown ? (
               <div className="dropdown-sidebar-menu-two">
                 <li className="menu-item sidebar-drop-menu-option">
-                  <NavLink to={"/articles"}>
+                  <NavLink to={"/articles"} className={"text-decoration-none"}>
                     <ButtonComponent
                       type={"button"}
                       className={"btn-sidebar-drop-menu"}
                       buttonName={"Articles"}
                     />
                   </NavLink>
-                  <NavLink to={"/training"}>
+                  <NavLink to={"/training"} className={"text-decoration-none"}>
                     <ButtonComponent
                       type={"button"}
                       className={"btn-sidebar-drop-menu"}
@@ -266,7 +272,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                       ? "menu-item sidebar-drop-menu-option"
                       : "sidebar-drop-menu-option-NX"
                   }>
-                  <NavLink to={"/articles"}>
+                  <NavLink to={"/articles"} className={"text-decoration-none"}>
                     <ButtonComponent
                       type={"button"}
                       className={
@@ -278,7 +284,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                       imgUrlStart={isExpanded ? "" : Icon14Dotblack}
                     />
                   </NavLink>
-                  <NavLink to={"/training"}>
+                  <NavLink to={"/training"} className={"text-decoration-none"}>
                     <ButtonComponent
                       type={"button"}
                       className={
@@ -294,7 +300,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
               </div>
             ) : null}
           </div>
-          <NavLink to={"/manageCustomers"}>
+          <NavLink to={"/manageCustomers"} className={"text-decoration-none"}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-sidebar" : "btn-sidebar-NX"}
@@ -308,7 +314,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
           <h1 className={isExpanded ? "menu-item" : "menu-item menu-item-NX"}>
             Pages
           </h1>
-          <NavLink to={"/manageadmin"}>
+          <NavLink to={"/manageadmin"} className={"text-decoration-none"}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-sidebar" : "btn-sidebar-NX"}
@@ -318,7 +324,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                 isExpanded ? "btn-sidebar-icon" : "btn-sidebar-icon-NX"
               }></ButtonComponent>
           </NavLink>
-          <NavLink to={"/managesfeedback"}>
+          <NavLink to={"/managesfeedback"} className={"text-decoration-none"}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-sidebar" : "btn-sidebar-NX"}
@@ -328,7 +334,9 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                 isExpanded ? "btn-sidebar-icon" : "btn-sidebar-icon-NX"
               }></ButtonComponent>
           </NavLink>
-          <NavLink to={"https://develop--vocal-wisp-91820f.netlify.app/"}>
+          <NavLink
+            to={"https://develop--vocal-wisp-91820f.netlify.app/"}
+            className={"text-decoration-none"}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-sidebar" : "btn-sidebar-NX"}
@@ -342,7 +350,10 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
           <h1 className={isExpanded ? "menu-item" : "menu-item menu-item-NX"}>
             Auth
           </h1>
-          <NavLink to={"/"} onClick={handleLogout}>
+          <NavLink
+            to={"/"}
+            onClick={handleLogout}
+            className={"text-decoration-none"}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-logout" : "btn-sidebar-NX"}

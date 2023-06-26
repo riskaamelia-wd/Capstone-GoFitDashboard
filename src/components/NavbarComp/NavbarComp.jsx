@@ -31,7 +31,6 @@ const NavbarComp = ({
     // setExpandApps(!isApps);
   };
   const users = useSelector((state) => state.users.data_user);
-  console.log(users);
   return (
     <div className="top-nav-container">
       <div className="top-nav-heading col-3">
@@ -269,7 +268,7 @@ const NavbarComp = ({
           onClick={() => setExpandApps(!isApps)}
           imgUrlStart={Icon4Notification}
           imgClassName={"btn-navbar-flag-icon"}></ButtonComponent>
-        <NavLink to={"/"}>
+        <NavLink to={"/detailuser"}>
           <ButtonComponent
             type={"button"}
             className={"btn-navbar-flag"}
