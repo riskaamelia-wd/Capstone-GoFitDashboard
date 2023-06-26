@@ -192,7 +192,7 @@ const Invoices = () => {
     }, [data, handleNextInvoices]);
     return(
         <div>
-            <p className='fw-bold fs-2'>Invoices</p>
+            <p className='fw-bold fs-2 mt-3 ms-3'>Invoices</p>
             <Row>
                 <Col md={4} lg={3}>
                     <Card
@@ -220,7 +220,7 @@ const Invoices = () => {
             </Row>
             <p className='p-0 mt-4 fs-5'>Payment History</p>
             <Table>
-                <thead className='border-bottom border-1 border-dark'>
+                <thead className='border-bottom border-bottom-1 border-dark'>
                     <tr >
                         <th ><SortSvg 
                             text={'ID Invoice'}
@@ -240,8 +240,8 @@ const Invoices = () => {
                             sortedAsc={()=>handleSort('date')}
                             sortedDesc={()=>handleSort('date')}
                         /></th>
-                        <th><SortSvg text={'Recipient'}/></th>
-                        <th><SortSvg text={'Email'}/></th>
+                        {/* <th><SortSvg text={'Recipient'}/></th> */}
+                        {/* <th><SortSvg text={'Email'}/></th> */}
                         <th><SortSvg text={'Service Type'}/></th>
                         <th><SortSvg text={'Status'}/></th>
                         <th></th>
@@ -255,10 +255,10 @@ const Invoices = () => {
                         sortedData?.map((item) => {
                             return(
                                 <tbody>
-                                    <tr key={item.id} className='border border-bottom border-1'>
+                                    <tr key={item.id} className='border-bottom border-bottom-1'>
                                         <td>#{String(item.id).padStart(10, '0')}</td>
                                         <td>{moment (item.metadata.updated_at).format('MMMM DD, YYYY')} <br />{ moment(item.metadata.updated_at).format('hh:mm A')}</td>
-                                        <td>
+                                        {/* <td>
                                             <img 
                                                 width={'40px'}  
                                                 height={'40px'} 
@@ -267,8 +267,8 @@ const Invoices = () => {
                                                 alt="" 
                                             /> 
                                             John Smith    
-                                        </td>
-                                        <td>johnsmith123@gmail.com</td>
+                                        </td> */}
+                                        {/* <td>johnsmith123@gmail.com</td> */}
                                         <td>{item.product}</td>
                                         <td><Status status={item.status}/></td>
                                         <td><i class="bi bi-three-dots-vertical"></i></td>
