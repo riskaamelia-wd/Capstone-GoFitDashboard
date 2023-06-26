@@ -31,6 +31,7 @@ const ManageMembership = () => {
       Authorization: `Bearer ${token.token_jwt}`,
     },
   };
+  console.log(data);
   const getData = async (page) => {
     setIsLoading(true);
     await axios
@@ -40,12 +41,10 @@ const ManageMembership = () => {
         if (page === 1) {
           setData(responseData);
         }
-
         if (page > 1) {
           console.log(responseData);
           setData([...data, ...responseData]);
         }
-
         if (responseData.length % 10 === 0) {
           setShouldRenderLoadMore(true);
         } else {

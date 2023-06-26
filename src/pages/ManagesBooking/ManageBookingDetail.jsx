@@ -145,8 +145,9 @@ const ManageBookingDetail = () => {
                             bookingType={booking.class_package?.period}
                             periode={booking.class_package?.class.started_at ? formatDate(booking.class_package.class.started_at, 'id-ID') : ''}
                             session={booking.class_package?.class.started_at ? formatTime(booking.class_package.class.started_at) : ''}
-                            zoomCode={generateZoomCode().toUpperCase()}
+                            zoomCode={booking.class_package?.class.link}
                             location={booking.class_package?.class.location.address}
+                            city={booking.class_package?.class.location.city}
                             classType={booking.class_package?.class.class_type + " class"}
                             descClass={
                                 booking.class_package?.class.class_type === 'online'? 'Private zoom with mentor': booking.class_package?.class.name

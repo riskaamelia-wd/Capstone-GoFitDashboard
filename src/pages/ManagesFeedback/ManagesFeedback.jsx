@@ -160,16 +160,16 @@ const ManagesFeedback = () => {
 
   // feedback close delete detail
   const handleclosedeletefeedback = (id) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete this feedback id:(${id})?`
-      )
-    ) {
+    // if (
+    //   window.confirm(
+    //     `Are you sure you want to delete this feedback id:(${id})?`
+    //   )
+    // ) {
       setfeedback((prevFeedbacks) =>
         prevFeedbacks.filter((feedback) => feedback.id !== selectedfeedback)
       );
       setopenfeedback(false);
-    }
+    // }
   };
 
   // const handleclosedeletefeedback = async (id) => {
