@@ -20,7 +20,7 @@ import Icon14Dotblack from "../../assets/icons/Offline_dot.svg";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import { useDispatch } from "react-redux";
 import { addToken } from "../../redux/Slice/tokenSlice";
-import { addUser } from "../../redux/Slice/usersSlice";
+import { addRemember, addUser } from "../../redux/Slice/usersSlice";
 
 const SidebarComp = ({ isExpanded, setExpandState }) => {
   const [isClassDropdown, setClassDropdown] = useState(false);
@@ -43,7 +43,8 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
   };
   const handleLogout = () => {
     dispatch(addToken(""));
-    dispatch(addUser(""));
+    dispatch(addRemember(""));
+    dispatch(addUser(null));
   };
   return (
     <div
@@ -58,12 +59,13 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
       <div className="nav-upper">
         <div className="nav-heading">
           {isExpanded ? (
-            <div className="nav-brand">GoFit</div>
+            <NavLink to={"/dashboard"} className={"text-decoration-none"}>
+              <div className="nav-brand">GoFit</div>
+            </NavLink>
           ) : (
-            <div className="nav-brand-NX">
-              GoFit
-              {/* <img alt="brand logo" src="" className="rounded-circle" />{" "} */}
-            </div>
+            <NavLink to={"/dashboard"} className={"text-decoration-none"}>
+              <div className="nav-brand">GoFit</div>
+            </NavLink>
           )}
         </div>
         <div className="nav-menu">
