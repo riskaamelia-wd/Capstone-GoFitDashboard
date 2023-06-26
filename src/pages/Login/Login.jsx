@@ -91,7 +91,7 @@ const Login = () => {
           <div className="col-6 d-none d-md-block">
             <img
               src={
-                "https://firebasestorage.googleapis.com/v0/b/capstone-45030.appspot.com/o/Login.gif?alt=media&token=47c4190e-284a-4971-866c-8d4be44f6242"
+                "https://firebasestorage.googleapis.com/v0/b/graphql-marketplace.appspot.com/o/Login.gif?alt=media&token=6f3a128e-2e50-494f-874a-828cd42e10b8"
               }
               alt=""
               style={{ height: "100vh", width: "55vw" }}
