@@ -26,6 +26,7 @@ const ManageAdmin = () => {
     const [totalData, setTotalData] = useState(1)
     const [itemPerPage, setItemPerPage] = useState(10)
     const [idResetPassword, setIdResetPassword] = useState('')
+    const [prevImg, setPrevImg] = useState("https://placeholder.com/40x40");    
 
     useEffect(() => {
         if(fetchStatus){
@@ -82,6 +83,118 @@ const ManageAdmin = () => {
         setSearchData(e.target.value);
     }
 
+    
+    const [data, setData] = useState({
+        imgFile: "",
+        name: "",
+        email: "",
+        role: "",
+        password: "",
+        confirmPassword: "",
+    });
+
+  
+    const handleInput = (e) => {
+        const { name, value, files } = e.target;
+        if (name === "imgFile" && files.length > 0) {
+        const file = files[0];
+        const imageUrl = URL.createObjectURL(file);
+        setData((prevData) => ({
+            ...prevData,
+            [name]: file,
+        }));
+        setPrevImg(imageUrl);
+        } else {
+        setData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+        }
+    };
+
+    const handleCloseAddAdmin=()=>{
+        setData({
+            imgFile : '',
+            name : '',
+            email : '',
+            role:'',
+            password:'',
+            confirmPassword:''
+        })
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        axios
+            .post(`http://18.141.56.154:8000/register`, {
+            name: data.name,
+            email: data.email,
+            password: data.password,
+            gender: "pria",
+            height: 168,
+            weight: 60,
+            training_level: "beginner",
+            })
+            .then((response) => {
+            postProfilePicture(response.data.data.id);
+            setData({
+                imgFile : '',
+                name : '',
+                email : '',
+                role:'',
+                password:'',
+                confirmPassword:''
+            })
+            if(data.length>=10){
+                let nextPage = totalPages+1
+                setPagination(nextPage);
+                setFetchStatus(true);
+            }else{
+                setPagination(totalPages)
+                setFetchStatus(true);
+            }
+            handleCloseAddAdmin()
+            })
+            .catch((error) => {
+            console.log(error);
+            });
+    };
+
+    const deleteImg = () => {
+        setPrevImg("https://placeholder.com/40x40");
+    };
+
+    const postProfilePicture = (id) => {
+        const formData = new FormData();
+        formData.append("file", data.imgFile);
+
+        axios
+        .post(`http://18.141.56.154:8000/users/profile/${id}`, formData, {
+            headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+            },
+        })
+        .then((response) => {
+            alert("Profile picture uploaded successfully");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+        setFetchStatus(true);
+        alert("User created");
+        setData({
+        imgFile: "",
+        name: "",
+        email: "",
+        role: "",
+        password: "",
+        confirmPassword: "",
+        });
+        setPrevImg("https://placeholder.com/40x40");
+    };
+
     const filteredByName = datas.filter(data => {
         return data.name.toLowerCase().includes(searchData.toLowerCase());
     });
@@ -97,8 +210,8 @@ const ManageAdmin = () => {
                 <div className="d-flex justify-content-between align-items-center">
                     <div className="d-flex align-items-center gap-3">
                         <h1 className="border-end pe-3">All Admin</h1>
-                        <p>30 Total</p>
-                        <p>2 Inactive</p>
+                        <p>{totalData} Total</p>
+                        <p>0 Inactive</p>
                     </div>
                     <div className="d-flex align-items-center gap-3">
                         <div className="search-container">
@@ -117,7 +230,17 @@ const ManageAdmin = () => {
                             btnModalText={'Add Admin'}
                             btnModalImg={AddIcon}
                             fetchStatus={setFetchStatus}
+                            handleSubmit={handleSubmit}
+                            handleInput={handleInput}
+                            deleteImg={deleteImg}
+                            nameValue={data?.name}
+                            emailValue={data?.email}
+                            passwordValue={data?.password}
+                            confirmPasswordValue={data?.confirmPassword}
+                            handleClose={handleCloseAddAdmin}
+                            prevImg={prevImg}
                         />
+                        {console.log(data)}
                     </div>
                 </div>
                 <table className="table table-borderless">
