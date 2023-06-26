@@ -148,8 +148,7 @@ const ResetPasswordAdmin = ({id, onClick, classNameImg, style, className, btnMod
                             </button>
                             <button 
                                 data-bs-dismiss="modal" 
-                                onClick={onclick} 
-                                type={"submit"}
+                                type="button"
                                 className={" btn btn-cancel mt-4 ps-4 pe-4"}
                             >
                                 Cancel
