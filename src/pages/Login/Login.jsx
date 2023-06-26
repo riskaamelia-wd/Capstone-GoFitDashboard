@@ -10,7 +10,7 @@ import { adminApi } from "../../api/Api";
 import jwtDecode from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../../redux/Slice/tokenSlice";
-import { addUser } from "../../redux/Slice/usersSlice";
+import { addRemember, addUser } from "../../redux/Slice/usersSlice";
 import useAxios from "../../api/useAxios";
 const Login = () => {
   const users = useSelector((state) => state.users);
@@ -64,8 +64,9 @@ const Login = () => {
     rememberUser();
     if (response !== null) {
       dispatch(addToken(response.token));
+      dispatch(addUser(response.data));
       if (rememberMe === true) {
-        dispatch(addUser(response.token));
+        dispatch(addRemember(response.token));
       }
       let adminAuth = jwtDecode(response.token);
       adminAuth.isAdmin
