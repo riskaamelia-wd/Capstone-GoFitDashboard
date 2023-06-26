@@ -25,45 +25,42 @@ const ManagePackagesOnline = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
      
+    
     const fetchData = async (currentPage) => {
-        setIsLoading(true);
-        await axios
-          .get(`http://18.141.56.154:8000/admin/classes/packages?page=${currentPage}`, 
-          {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-          .then((response) => {
-            
-            const { data } = response.data;
-            setData(data);
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-          .finally(() => {
-            setIsLoading(false);
-          });
-    }
+        try {
+            const response = await axios.get(`http://18.141.56.154:8000/admin/classes/packages?page=${currentPage}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            const { data_shown, total_data } = response.data.pagination;
 
-      
-    const handleNextPage = () => {
-        setCurrentPage((prevPage) => prevPage + 1);
+            const pageSize = data_shown;
+            const totalPages = Math.ceil(total_data / pageSize);
+            let allData = [];
+
+            for (let page = 1; page <= totalPages; page++) {
+                const pageResponse = await axios.get(
+                    `http://18.141.56.154:8000/admin/classes/packages?page=${page}&data_shown=${data_shown}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                const responseData = pageResponse.data.data;
+                allData = allData.concat(responseData);
+            }
+            setData(allData);
+        } catch (error) {
+            console.log(error);
+        }
     };
-    const handlePrevPage = () => {
-        setCurrentPage((prevPage) => prevPage - 1);
-    }; 
 
     useEffect(() => {
         fetchData(currentPage);
-    }, [currentPage]);
-    
-    useEffect(() => {
-        if (data.length > 10) {
-          handleNextPage();
-        }
-    }, [data, handleNextPage]);
+    }, [token]);
+  
 
     const config = {
         headers: {
@@ -295,12 +292,6 @@ const ManagePackagesOnline = () => {
                         </Col>
                     
                     <div className="mt-3">
-                        <PaginateButton
-                            handleNextPage={handleNextPage}
-                            handlePrevPage={handlePrevPage}
-                            disabledNext={data?.length < 10}
-                            disabledPrevious={currentPage == 1}
-                        />
                         {isLoading ? (
                         <Loading/>)
                         : 

@@ -4,15 +4,19 @@ import weight_img from "../../assets/icons/monitor_weight.svg";
 import goal_weight_img from "../../assets/icons/workspace_premium.svg";
 import training_level_img from "../../assets/icons/elevation.svg";
 import "../Card/CardCustomer.css";
-
+import imgDef from '../../assets/img/default_image.jpg'
 const CardCustomers = ({ image, name, height, weight, goal_weight, training_level, onClick }) => {
-       
+       console.log(image);
     return (
         <>
             <Card className="card-customers w-100" id="card-customer" onClick={onClick}>
                 <div className="row">
                     <div className="col-lg-2 col-sm-2">
-                        <img src={image} alt="Person" className="rounded-circle" />
+                        {
+                            image === "http://18.141.56.154:8000/" ?
+                            <img src={imgDef} alt="Person" className="rounded-circle" /> :
+                            <img src={image} alt="Person" className="rounded-circle" /> 
+                        }
                     </div>
                     <div className="col-lg-10 col-sm-8 mt-2">
                         <div className="row">
