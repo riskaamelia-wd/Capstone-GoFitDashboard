@@ -38,7 +38,7 @@ function Layout() {
                 </div>
             )
              : (
-              <div className="main-sidebar-margin-NX" 
+              <div className="main-sidebar-margin-NX bg" 
             //   style={{marginLeft: "80px"}}
               >
                 <NavbarComp isExpanded={isExpanded} setExpandState={setExpandState} isVisible={isVisible} setIsVisible={setIsVisible}/>
