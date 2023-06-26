@@ -52,10 +52,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
         isExpanded
           ? "side-nav-container"
           : "side-nav-container side-nav-container-NX"
-      }
-      // onMouseEnter={handleMouseEnter}
-      // onMouseLeave={handleMouseLeave}
-    >
+      }>
       <div className="nav-upper">
         <div className="nav-heading">
           {isExpanded ? (
