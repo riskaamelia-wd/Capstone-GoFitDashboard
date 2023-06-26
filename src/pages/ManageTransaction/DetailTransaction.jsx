@@ -120,7 +120,7 @@ const DetailTransaction = () => {
         doc.text(`Product`, 20, 90, { align: 'left' });
         doc.text(`: ${transaction.product}`, 80, 90, { align: 'left' });
         doc.text(`Customer`, 20, 100, { align: 'left' });
-        doc.text(`: ${product.user.name}`, 80, 100, { align: 'left' });
+        doc.text(`: ${product.user?.name}`, 80, 100, { align: 'left' });
 
         doc.save(`transaction_report_${transaction.transaction_code}.pdf`);
     };
@@ -186,7 +186,7 @@ const DetailTransaction = () => {
                 <h6>Customers</h6>
                 <div className='d-flex justify-content-start align-items-center gap-3'>
                     {
-                        product.user?.id != undefined &&
+                        product?.user != null &&
                         <>
                             <img src={`http://18.141.56.154:8000/assets/img/profile/user${product.user?.id}.jpg`} alt="avatar" className="rounded-circle" style={{ width: '80px', height: '80px' }}/>
                             <div>

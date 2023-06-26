@@ -7,6 +7,7 @@ import block from "../../assets/img/block.svg";
 import edit from "../../assets/img/edit_square.svg";
 import warning from "../../assets/img/warning.svg";
 import "../Card/CardCustomer.css"
+import img from "../../assets/img/default_image.jpg"
 import TextFieldPassword from "../TextField/TextFieldPassword";
 import TextField from "../TextField/TextField";
 import ButtonComponent from "../Buttons/ButtonComponent";
@@ -195,7 +196,11 @@ const CardDetailCustomers = ({ customer, setData }) => {
                 >
                     <div className="row">
                         <div className="col-lg-1 mt-2">
-                            <img src={`http://18.141.56.154:8000/${customer.profile_picture}`} alt="Person" className="rounded-circle" />
+                            {
+                                customer?.profile_picture !== '' ?
+                                    <img src={`http://18.141.56.154:8000/${customer.profile_picture}`} alt="Person" className="rounded-circle" />
+                                    : <img src={img} alt="Person" className="rounded-circle" />
+                            }
                         </div>
                         <div className="col-lg-8 mt-3">
                             <div className="row">
@@ -270,7 +275,11 @@ const CardDetailCustomers = ({ customer, setData }) => {
                                     <p style={{ textAlign: "center", fontWeight: "600", fontSize: "16px" }}>Change your profile picture from here</p>
                                     <div className="row" style={{ justifyContent: "right" }}>
                                         <div className="col-2">
-                                            <img src={`http://18.141.56.154:8000/${customer.profile_picture}`} alt="Person" className="rounded-circle" />
+                                            {
+                                                customer?.profile_picture !== '' ?
+                                                    <img src={`http://18.141.56.154:8000/${customer.profile_picture}`} alt="Person" className="rounded-circle" />
+                                                    : <img src={img} alt="Person" className="rounded-circle" />
+                                            }
                                         </div>
                                         <div className="col-8">
                                             <div style={{ display: "flex" }}>
@@ -482,7 +491,6 @@ const CardDetailCustomers = ({ customer, setData }) => {
 
             {/* Modal reset password */}
             <>
-                {/* Modal */}
                 <div
                     className="modal fade"
                     id="resetPwCustomer"

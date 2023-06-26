@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import IconArrowBack from '../../assets/icons/arrow_left.svg'
 import IconArrowNext from '../../assets/icons/arrow_right.svg'
+import img from '../../assets/img/default_image.jpg'
 
 const ManageAdmin = () => {
     const token = useSelector((state) => state.tokenAuth.token_jwt)
@@ -115,6 +116,7 @@ const ManageAdmin = () => {
                             onClick={handleAddAdmin}
                             btnModalText={'Add Admin'}
                             btnModalImg={AddIcon}
+                            fetchStatus={setFetchStatus}
                         />
                     </div>
                 </div>
@@ -160,8 +162,25 @@ const ManageAdmin = () => {
                                 </td>
                                 <td>
                                     <div className="d-flex align-items-center">
-                                        <div className="me-3">
-                                            <img src={`http://18.141.56.154:8000/${data.profile_picture}`} alt="Booking" className="rounded-circle" style={{ width: '40px', height: '40px' }} />
+                                        <div className="me-3"> {
+                                                data?.profile_picture !== '' ?
+
+                                                <img
+                                                    src={`http://18.141.56.154:8000/${data?.profile_picture}`}
+                                                    alt="Booking"
+                                                    className="rounded-circle"
+                                                    style={{ width: '40px', height: '40px' }}
+                                                />
+                                                :
+                                                <> 
+                                                <img
+                                                    src={img}
+                                                    alt="Booking"
+                                                    className="rounded-circle"
+                                                    style={{ width: '40px', height: '40px' }}
+                                                />
+                                                </>
+                                            }
                                         </div>
                                         <div className='d-flex flex-column'>
                                             <span style={{fontWeight: 'bold', fontSize: '14px'}}>{data.name}</span>
@@ -179,6 +198,7 @@ const ManageAdmin = () => {
                                         <ResetPasswordAdmin
                                             onClick={() => handleResetPassword(data.id)}
                                             id={idResetPassword}
+                                            currentPass={data.password}
                                             btnModalText={'Reset Password'}
                                             btnModalImg={ResetPasswordIcon}
                                         />

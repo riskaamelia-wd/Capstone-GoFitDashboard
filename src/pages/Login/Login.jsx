@@ -10,7 +10,7 @@ import { adminApi } from "../../api/Api";
 import jwtDecode from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../../redux/Slice/tokenSlice";
-import { addUser } from "../../redux/Slice/usersSlice";
+import { addRemember, addUser } from "../../redux/Slice/usersSlice";
 import useAxios from "../../api/useAxios";
 const Login = () => {
   const users = useSelector((state) => state.users);
@@ -64,8 +64,9 @@ const Login = () => {
     rememberUser();
     if (response !== null) {
       dispatch(addToken(response.token));
+      dispatch(addUser(response.data));
       if (rememberMe === true) {
-        dispatch(addUser(response.token));
+        dispatch(addRemember(response.token));
       }
       let adminAuth = jwtDecode(response.token);
       adminAuth.isAdmin
@@ -90,7 +91,7 @@ const Login = () => {
           <div className="col-6 d-none d-md-block">
             <img
               src={
-                "https://firebasestorage.googleapis.com/v0/b/capstone-45030.appspot.com/o/Login.gif?alt=media&token=47c4190e-284a-4971-866c-8d4be44f6242"
+                "https://firebasestorage.googleapis.com/v0/b/graphql-marketplace.appspot.com/o/Login.gif?alt=media&token=6f3a128e-2e50-494f-874a-828cd42e10b8"
               }
               alt=""
               style={{ height: "100vh", width: "55vw" }}

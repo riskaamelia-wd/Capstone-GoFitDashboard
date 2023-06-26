@@ -23,13 +23,13 @@ const DetailBooking = ({bookingType, periode, session, zoomCode, classType, desc
                     <Col xs={9}>
                         <Row>
                             <Col xs={1}><img src={CartIcon} alt="" height="20"/></Col>
-                            <Col style={{marginLeft: '-40px'}} xs={11}><p>Booking type</p></Col>                            
+                            <Col style={{marginLeft: '-20px'}} xs={11}><p>Booking type</p></Col>                            
                         </Row>
                         <Row className="d-flex align-items-center">
                             <Col xs={1}>
                                 <img src={CalendarIcon} alt="" />
                             </Col>
-                            <Col style={{marginLeft: '-40px'}} xs={11}>
+                            <Col style={{marginLeft: '-20px'}} xs={11}>
                                 <p>Periode of Booking</p>
                             </Col>
                         </Row>
@@ -37,7 +37,7 @@ const DetailBooking = ({bookingType, periode, session, zoomCode, classType, desc
                             <Col xs={1}>
                                 <img src={TimeIcon} alt="" />
                             </Col>
-                            <Col style={{marginLeft: '-40px'}} xs={11}>
+                            <Col style={{marginLeft: '-20px'}} xs={11}>
                                 <p>Time session</p>
                             </Col>
                         </Row>
@@ -47,7 +47,7 @@ const DetailBooking = ({bookingType, periode, session, zoomCode, classType, desc
                                     <Col xs={1}>
                                         <img src={CodeIcon} alt="" />
                                     </Col>
-                                    <Col style={{marginLeft: '-40px'}} xs={11}>
+                                    <Col style={{marginLeft: '-20px'}} xs={11}>
                                         <p>Zoom code</p>
                                     </Col>
                                 </Row>
@@ -57,7 +57,7 @@ const DetailBooking = ({bookingType, periode, session, zoomCode, classType, desc
                                     <Col xs={1}>
                                         <img src={CodeIcon} alt="" />
                                     </Col>
-                                    <Col style={{marginLeft: '-40px'}} xs={11}>
+                                    <Col style={{marginLeft: '-20px'}} xs={11}>
                                         <p>Location</p>
                                     </Col>
                                 </Row>

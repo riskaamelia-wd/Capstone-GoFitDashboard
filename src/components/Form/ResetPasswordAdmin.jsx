@@ -5,12 +5,12 @@ import TextFieldPassword from "../../elements/TextField/TextFieldPassword";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-const ResetPasswordAdmin = ({id, onClick,classNameImg,style, className, btnModalText, btnModalImg}) => {
+const ResetPasswordAdmin = ({id, onClick, classNameImg, style, className, btnModalText, btnModalImg, currentPass}) => {
     const [error, setError] = useState('')
     const token = useSelector((state) => state.tokenAuth.token_jwt)
 
     const [data, setData] = useState({
-        currentPass:'',
+        currentPass: currentPass,
         newPass:'',
         confirmPass:''
     })
@@ -29,10 +29,11 @@ const ResetPasswordAdmin = ({id, onClick,classNameImg,style, className, btnModal
             }
         })
         .then((response) => {
+            // console.log(response.data.data.password);
             if (response.data.data.password === currentPass) {
                 setNewPassword(data.newPass)
             } else {
-                setError('Your current password is wrong, please try again')
+                alert("Invalid current password")
             }
         })
         .catch((err) => {
@@ -41,7 +42,6 @@ const ResetPasswordAdmin = ({id, onClick,classNameImg,style, className, btnModal
     }
 
     const setNewPassword = (newPassword) => {
-        console.log(newPassword);
         axios.put(`http://18.141.56.154:8000/users/${id}`, {
             "password": newPassword
         },{
@@ -50,7 +50,13 @@ const ResetPasswordAdmin = ({id, onClick,classNameImg,style, className, btnModal
             }
         })
         .then((response) => {
+            alert('Password changed successfully')
             setError('')
+            setData({
+                currentPass: currentPass,
+                newPass:'',
+                confirmPass:''
+            })
         })
         .catch((err) => {
             console.log(err);
@@ -142,8 +148,7 @@ const ResetPasswordAdmin = ({id, onClick,classNameImg,style, className, btnModal
                             </button>
                             <button 
                                 data-bs-dismiss="modal" 
-                                onClick={onclick} 
-                                type={"submit"}
+                                type="button"
                                 className={" btn btn-cancel mt-4 ps-4 pe-4"}
                             >
                                 Cancel
