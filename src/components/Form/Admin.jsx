@@ -17,6 +17,16 @@ const Admin = ({
   btnModalText,
   btnModalImg,
   fetchStatus,
+  handleSubmit,
+  handleInput,
+  deleteImg,
+  nameValue,
+  emailValue,
+  passwordValue,
+  confirmPasswordValue,
+  handleClose,
+  prevImg
+
 }) => {
   const token = useSelector((state) => state.tokenAuth.token_jwt);
   const [error, setError] = useState({
@@ -34,123 +44,18 @@ const Admin = ({
     password: "",
     confirmPassword: "",
   });
-  const [prevImg, setPrevImg] = useState("https://placeholder.com/40x40");
-
   const roleList = [
     { value: "----", text: "Choose Your Role" },
     { value: "Admin", text: "Admin" },
     { value: "Super Admin", text: "Super Admin" },
   ];
 
-  const handleInput = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "imgFile" && files.length > 0) {
-      const file = files[0];
-      const imageUrl = URL.createObjectURL(file);
-      setData((prevData) => ({
-        ...prevData,
-        [name]: file,
-      }));
-      setPrevImg(imageUrl);
-    } else {
-      setData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
-  };
+  const [regex, setRegex] = useState({
+    // name :/^[A-Za-z\s]+$/,
+    email : /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    password:/^(?=.*[0-9]*)(?=.[a-zA-Z])[a-zA-Z0-9]{8,}$/
+})
 
-  const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-  const passwordRegex = /^.{8,}$/;
-
-  const validateField = (fieldName) => {
-    let errorMessage = "";
-
-    if (fieldName === "email") {
-      if (!data.email || !emailRegex.test(data.email)) {
-        errorMessage = "Invalid email address";
-      }
-    } else if (fieldName === "password") {
-      if (!data.password || !passwordRegex.test(data.password)) {
-        errorMessage = "Password must be at least 8 characters long";
-      }
-    }
-
-    setError((prevError) => ({
-      ...prevError,
-      [fieldName]: errorMessage,
-    }));
-  };
-
-  const deleteImg = () => {
-    setPrevImg("https://placeholder.com/40x40");
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const validationErrors = {};
-
-    if (!data.email || !emailRegex.test(data.email)) {
-      validationErrors.email = "Invalid email address";
-    }
-
-    if (!data.password || !passwordRegex.test(data.password)) {
-      validationErrors.password = "Password must be at least 8 characters long";
-    }
-
-    setError(validationErrors);
-
-    if (Object.keys(validationErrors).length === 0) {
-      axios
-        .post(`http://18.141.56.154:8000/register`, {
-          name: data.name,
-          email: data.email,
-          password: data.password,
-          gender: "pria",
-          height: 168,
-          weight: 60,
-          training_level: "beginner",
-        })
-        .then((response) => {
-          postProfilePicture(response.data.data.id);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
-
-  const postProfilePicture = (id) => {
-    const formData = new FormData();
-    formData.append("file", data.imgFile);
-
-    axios
-      .post(`http://18.141.56.154:8000/users/profile/${id}`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        alert("Profile picture uploaded successfully");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    fetchStatus(true);
-    alert("User created");
-    setData({
-      imgFile: "",
-      name: "",
-      email: "",
-      role: "",
-      password: "",
-      confirmPassword: "",
-    });
-    setPrevImg("https://placeholder.com/40x40");
-  };
 
   return (
     <>
@@ -229,9 +134,6 @@ const Admin = ({
                         </p>
                       </div>
                     </div>
-                    {uploadingImage > 0 && (
-                      <span>Uploading Image : {uploadingImage}%</span>
-                    )}
                   </div>
                   <div>
                     <TextField
@@ -241,12 +143,9 @@ const Admin = ({
                       id={"name"}
                       type={"text"}
                       onChange={handleInput}
-                      value={data.name}
+                      value={nameValue}
                       classNameLabel={"mt-2   text-secondary"}
                     />
-                    <small className="text-danger text-center">
-                      {error.name}
-                    </small>
                     <Row>
                       <Col>
                         <TextField
@@ -256,15 +155,14 @@ const Admin = ({
                           id={"email"}
                           type={"email"}
                           onChange={handleInput}
-                          value={data.email}
-                          onBlur={() => validateField("email")}
+                          value={emailValue}
                           classNameLabel={"mt-2 text-secondary"}
                         />
-                        {
-                          <small className="text-danger text-center">
-                            {error.email}
-                          </small>
-                        }
+                         {emailValue && (!regex.email.test(emailValue)) ? (
+                            <small className="text-danger">Invalid email address</small>
+                            ) : (
+                            <></>
+                        )}
                       </Col>
                       <Col>
                         <label className="mt-2   text-secondary" htmlFor="role">
@@ -295,15 +193,14 @@ const Admin = ({
                           id={"password"}
                           type={"password"}
                           onChange={handleInput}
-                          value={data.password}
-                          onBlur={() => validateField("password")}
+                          value={passwordValue}
                           classNameLabel={"mt-2 text-secondary"}
                         />
-                        {
-                          <small className="text-danger text-center">
-                            {error.password}
-                          </small>
-                        }
+                        {passwordValue && (!regex.password.test(passwordValue) ) ? (
+                            <small className="text-danger">a password must be eight characters and alphanumeric</small>
+                            ) : (
+                            <></>
+                        )}
                       </Col>
                       <Col>
                         <TextField
@@ -313,14 +210,14 @@ const Admin = ({
                           id={"confirmPassword"}
                           type={"password"}
                           onChange={handleInput}
-                          value={data.confirmPassword}
+                          value={confirmPasswordValue}
                           classNameLabel={"mt-2   text-secondary"}
                         />
-                        {data.confirmPassword &&
-                        data.password !== data.confirmPassword ? (
-                          <span className=" text-danger">
+                        {confirmPasswordValue &&
+                        passwordValue !== confirmPasswordValue ? (
+                          <small className=" text-danger">
                             New password and confirm password does not match
-                          </span>
+                          </small>
                         ) : (
                           <></>
                         )}
@@ -329,6 +226,12 @@ const Admin = ({
                   </div>
                   <div className="d-flex justify-content-end">
                     <button
+                        disabled={
+                            (!passwordValue || !regex.password.test(passwordValue)) ||
+                            (confirmPasswordValue && (passwordValue !== confirmPasswordValue))
+                             ||
+                             (!emailValue || !regex.email.test(emailValue)) 
+                        }
                       data-bs-dismiss="modal"
                       type="submit"
                       className=" btn btn-save mt-4 me-4 pe-4 ps-4"
@@ -336,6 +239,7 @@ const Admin = ({
                       save
                     </button>
                     <button
+                        onClick={handleClose}
                       data-bs-dismiss="modal"
                       type="button"
                       className=" btn btn-cancel mt-4 ps-4 pe-4"
