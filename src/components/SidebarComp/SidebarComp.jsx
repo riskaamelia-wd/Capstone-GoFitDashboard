@@ -69,7 +69,7 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
           <h1 className={isExpanded ? "menu-item" : "menu-item menu-item-NX"}>
             HOME
           </h1>
-          <NavLink  className="text-decoration-none" to={"/dashboard"}>
+          <NavLink className="text-decoration-none" to={"/dashboard"}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-sidebar" : "btn-sidebar-NX"}
@@ -327,7 +327,9 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
                 isExpanded ? "btn-sidebar-icon" : "btn-sidebar-icon-NX"
               }></ButtonComponent>
           </NavLink>
-          <NavLink className="text-decoration-none" to={"https://develop--vocal-wisp-91820f.netlify.app/"}>
+          <NavLink
+            className="text-decoration-none"
+            to={"https://gofitlanding.netlify.app/"}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-sidebar" : "btn-sidebar-NX"}
@@ -341,7 +343,10 @@ const SidebarComp = ({ isExpanded, setExpandState }) => {
           <h1 className={isExpanded ? "menu-item" : "menu-item menu-item-NX"}>
             Auth
           </h1>
-          <NavLink className="text-decoration-none" to={"/"} onClick={handleLogout}>
+          <NavLink
+            className="text-decoration-none"
+            to={"/"}
+            onClick={handleLogout}>
             <ButtonComponent
               type={"button"}
               className={isExpanded ? "btn-logout" : "btn-sidebar-NX"}
