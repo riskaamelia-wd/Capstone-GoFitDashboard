@@ -12,9 +12,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../../redux/Slice/tokenSlice";
 import { addRemember, addUser } from "../../redux/Slice/usersSlice";
 import useAxios from "../../api/useAxios";
+import { Modal } from "react-bootstrap";
 const Login = () => {
   const users = useSelector((state) => state.users);
+  const [show, setShow] = useState(false);
+  const [metadata, setMetadata] = useState({
+    status_code: "",
+    message: "",
+    error_reason: "",
+  });
 
+  const handleClose = () => {
+    setMetadata({
+      status_code: "",
+      message: "",
+      error_reason: "",
+    });
+    setShow(false);
+  };
   const [email, setEmail] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [password, setPassword] = useState("");
@@ -59,35 +74,64 @@ const Login = () => {
       navigate("/dashboard", { replace: true });
     }
   };
+  const handleAdmin = () => {
+    setMetadata({
+      message: "You are not admin",
+      error_reason: "please login using admin account",
+      status_code: "-",
+    });
+    setShow(true);
+    setTimeout(handleClose, 2000);
+  };
 
   useEffect(() => {
     rememberUser();
     if (response !== null) {
       dispatch(addToken(response.token));
       dispatch(addUser(response.data));
+      setMetadata({
+        status_code: response.metadata.status_code,
+        message: response.metadata.message,
+        error_reason: response.metadata.error_reason,
+      });
       if (rememberMe === true) {
         dispatch(addRemember(response.token));
       }
       let adminAuth = jwtDecode(response.token);
       adminAuth.isAdmin
         ? navigate("/dashboard", { replace: true })
-        : alert("You are not admin, please login using admin account");
+        : handleAdmin();
     } else if (error) {
       const metaDataError = error?.response?.data.metadata;
-      console.log("====================================");
-      console.log(error);
-      console.log("====================================");
-      alert(
-        `status code : ${metaDataError?.status_code} \n message : ${metaDataError?.message} \n reason : ${metaDataError?.error_reason}`
-      );
+      setMetadata({
+        status_code: metaDataError?.status_code,
+        message: metaDataError?.message,
+        error_reason: metaDataError?.error_reason,
+      });
+      setShow(true);
+      setTimeout(handleClose, 3000);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, error, navigate, response]);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
 
   return (
     <>
       <div className="overflow-hidden overflow-x-hidden">
-        <div className="row">
+        <Modal
+          show={show}
+          onHide={handleClose}
+          className="position-absolute z-3"
+          centered>
+          <Modal.Header>
+            <Modal.Title>{metadata.message}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>status: {metadata.status_code}</p>
+            <p>reason: {metadata.error_reason}</p>
+          </Modal.Body>
+        </Modal>
+        <div className="row position-relative z-2">
           <div className="col-6 d-none d-md-block">
             <img
               src={
