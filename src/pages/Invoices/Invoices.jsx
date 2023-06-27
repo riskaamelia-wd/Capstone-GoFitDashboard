@@ -206,7 +206,7 @@ const Invoices = () => {
                     <Card
                         number={paid}
                         text={'Paid Invoices'}
-                        img={cancel}
+                        img={task}
                     />
                 </Col>
                 
@@ -214,7 +214,7 @@ const Invoices = () => {
                     <Card
                         number={unpaid}
                         text={'Unpaid Invoices'}
-                        img={task}
+                        img={cancel}
                     />
                 </Col>
             </Row>
