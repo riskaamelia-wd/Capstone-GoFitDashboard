@@ -10,6 +10,7 @@ const ButtonComponent = ({
   imgUrlStart,
   imgUrlEnd,
   buttonName,
+  
 }) => {
   return (
     <div>

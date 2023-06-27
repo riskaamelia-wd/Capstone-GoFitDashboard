@@ -1,12 +1,17 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react';
-import { Table, Pagination } from 'react-bootstrap';
+import { Table, Pagination, Button } from 'react-bootstrap';
 import TagStatus from '../../elements/Tag/TagStatus';
 import Income from '../../assets/icons/income.svg'
 import Outcome from '../../assets/icons/outcome.svg'
+import Status from '../../pages/Invoices/Status';
+import { useNavigate } from 'react-router';
 
 // eslint-disable-next-line react/prop-types
-const TableTransaction = ({ invoices }) => {
+const TableTransaction = ({ invoices, page, setPage, totalPages, totalData }) => {
+
+    const navigate = useNavigate()
+
     const [sortConfig, setSortConfig] = useState({
         key: null,
         direction: 'ascending'
@@ -65,6 +70,33 @@ const TableTransaction = ({ invoices }) => {
         pageNumbers.push(i);
     }
 
+    const handleClick = (id) => {
+        navigate(`/transaction/${id}`)
+    }
+
+    //untuk convert date dari bentuk dd/mm/yyyy ke mount date
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const options = { month: 'long', day: 'numeric', year: 'numeric'};
+        const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+        return formattedDate;
+    }
+
+    //untuk convert waktu dari 24 jam ke AM/PM
+    function formatTime(dateString) {
+        const date = new Date(dateString);
+        const options = { hour: 'numeric', minute: 'numeric'};
+        const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+        return formattedTime;
+    }
+
+    const handlePaginations = (value) => {
+        const newPagination = page + parseInt(value);
+        if (newPagination > 0 && newPagination <= totalPages) {
+            setPage(newPagination);
+        }
+    }
+
     return (
         <>
         <Table hover className="rounded-3 bg-white">
@@ -72,55 +104,71 @@ const TableTransaction = ({ invoices }) => {
                 <tr>
                     <th onClick={() => sortTable('id')}>ID Invoice</th>
                     <th onClick={() => sortTable('date')}>Date</th>
-                    <th onClick={() => sortTable('recipient')}>Recipient</th>
+                    <th onClick={() => sortTable('product')}>Product</th>
                     <th onClick={() => sortTable('amount')}>Amount</th>
-                    <th onClick={() => sortTable('type')}>Type</th>
-                    <th onClick={() => sortTable('location')}>Location</th>
+                    <th onClick={() => sortTable('payment_method')}>Payment Method</th>
                     <th onClick={() => sortTable('status')}>Status</th>
                 </tr>
             </thead>
             <tbody>
                 {currentInvoices.map((invoice) => (
-                    <tr key={invoice.id}>
-                        <td>{invoice.id}</td>
-                        <td>{invoice.date}</td>
-                        <td>{invoice.recipient}</td>
-                        <td>{invoice.amount}</td>
-                        {
-                            invoice.type == 'Income' ? 
-                            <td>
-                                <img src={Income} alt="" className='mx-2 p-1' style={{ border: '2px solid var(--success-500)', borderRadius: '50%' }} />
-                                {invoice.type}
-                            </td>:
-                            <td>
-                            <img src={Outcome} alt="" className='mx-2 py-2 px-1' style={{ border: '2px solid var(--Danger-500)', borderRadius: '50%' }}/>
-                            {invoice.type}
-                        </td>
-                        }
-                        <td>{invoice.location}</td>
+                    <tr key={invoice.id} onClick={() => handleClick(invoice.id)}>
+                        <td>{invoice.transaction_code}</td>
+                        <td>{formatDate(invoice.metadata.updated_at)}, {formatTime(invoice.metadata.updated_at)}</td>
+                        <td>{invoice.product}</td>
+                        <td>{invoice.amount.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</td>
+                        <td>{invoice.payment_method.name}</td>
                         <td>
-                            <TagStatus status={invoice.status}/>
+                            <Status status={invoice.status} />
                         </td>
                     </tr>
                 ))}
             </tbody>
         </Table>
-        <Pagination className="d-flex justify-content-between">
-            <p>showing {showingFrom} to {showingTo} of {sortedInvoices.length} entries</p>
-            <div className="d-flex flex-row">
-                <Pagination.Prev onClick={handlePrevPage} disabled={currentPage === 1} className='me-2 rounded-3'>Previous</Pagination.Prev>
-                {pageNumbers.map((number) => (
-                    <Pagination.Item
-                        key={number}
-                        active={number === currentPage}
-                        onClick={() => handlePageChange(number)}
-                    >
-                        {number}
-                    </Pagination.Item>
-                ))}
-                <Pagination.Next onClick={handleNextPage} disabled={currentPage === Math.ceil(sortedInvoices.length / itemsPerPage)} className='ms-2' c>Next</Pagination.Next>
+        <div className='d-flex justify-content-between'>
+            <div>
+                showing {page * 10 - 9} to {page === totalPages? totalData: page * 10} from {totalData} entries
             </div>
-        </Pagination>
+            <div className="d-flex gap-2 align-items-center">
+                <Button onClick={() => handlePaginations(-1)} variant='outline' style={{color: 'var(--primary-500)' ,border: '1px solid var(--primary-500)'}}>
+                    Prev
+                </Button>
+                {
+                    page <= totalPages && page > 2 && (
+                        <Button variant='outline' onClick={() => setPage(page - 2)} style={{color: 'var(--primary-500)' ,border: '1px solid var(--primary-500)'}}>
+                            {page - 2}
+                        </Button>
+                    )
+                }
+                {
+                    page != 1 && (
+                        <Button variant='outline' onClick={() => setPage(page - 1)} style={{color: 'var(--primary-500)' ,border: '1px solid var(--primary-500)'}}>
+                            {page - 1}
+                        </Button>
+                    )
+                }
+                <Button className="border-0 text-white"  style={{backgroundColor: 'var(--primary-500)'}}>
+                    {page}
+                </Button>
+                {
+                    page <= totalPages - 1 && (
+                        <Button variant='outline' onClick={() => setPage(page + 1)} style={{color: 'var(--primary-500)' ,border: '1px solid var(--primary-500)'}}>
+                            {page + 1}
+                        </Button>
+                    )
+                }
+                {
+                    page <= totalPages - 2 && (
+                        <Button variant='outline' onClick={() => setPage(page + 2)} style={{color: 'var(--primary-500)' ,border: '1px solid var(--primary-500)'}}>
+                            {page + 2}
+                        </Button>
+                    )
+                }
+                <Button onClick={() => handlePaginations(1)} variant='outline' style={{color: 'var(--primary-500)' ,border: '1px solid var(--primary-500)'}}>
+                    Next
+                </Button>
+            </div>
+        </div>
         </>
     );
 };

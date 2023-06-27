@@ -2,6 +2,7 @@
     width: 460px;
     height: 535px;
     background-color: #FFFFFF;
+    position: relative;
     /* margin-top: 20px; */
 
     display: flex;
@@ -56,9 +57,9 @@
     /* padding: 15px; */
     /* gap: 10px; */
     /* right: 150px; */
-
+    position: relative;
     padding: 0px;
-    
+
     margin-left: 330px;
     margin-bottom: 25px;
     background: #D9D9D9;

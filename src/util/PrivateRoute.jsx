@@ -18,9 +18,9 @@ const PrivateRoute = () => {
   } else {
     return (
       <>
-        <div className="d-flex row sidebar-main-pages">
+        <div className="d-flex row sidebar-main-pages w-[18rem] border-r">
           <div
-          className={isExpanded ? "col-lg-3" : "col-lg-1"}
+          className={isExpanded ? "col-lg-3 fixed h-full w-[295px] overflow-y-auto " : "col-lg-1 fixed h-full w-[295px] overflow-y-auto "}
           >
             <SidebarComp
               isExpanded={isExpanded}
@@ -29,7 +29,7 @@ const PrivateRoute = () => {
           </div>
           {isExpanded ? (
             <div
-              className="col-lg-9  main-sidebar-margin"
+              className="col-lg-9  main-sidebar-margin min-h-[100vh] flex-1"
               // className="main-sidebar-margin"
               // style={{marginLeft: "220px"}}
             >
@@ -39,11 +39,13 @@ const PrivateRoute = () => {
                 isVisible={isVisible}
                 setIsVisible={setIsVisible}
               />
+              <div className="main-content-scrollable">
               <Outlet/>
+              </div>
             </div>
           ) : (
             <div
-              className="col-lg-11  main-sidebar-margin-NX"
+              className="col-lg-11  main-sidebar-margin-NX min-h-[100vh] flex-1"
               // className="main-sidebar-margin-NX"
               //   style={{marginLeft: "80px"}}
             >
@@ -53,7 +55,9 @@ const PrivateRoute = () => {
                 isVisible={isVisible}
                 setIsVisible={setIsVisible}
               />
+              <div className="main-content-scrollable">
               <Outlet/>
+              </div>
             </div>
           )}
         </div>

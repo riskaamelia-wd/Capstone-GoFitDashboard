@@ -16,6 +16,7 @@ import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 
 
 const OfflineClass = ({  
+    disabled,
     show,
     handleClose,
     name,
@@ -74,26 +75,30 @@ const OfflineClass = ({
                 <Modal.Title className="fs-3  label-title">{modaltitle}</Modal.Title>
             </Modal.Header>
             <Modal.Body className=" rounded-5">
-            <div className="col-12">
-                <label 
-                    className='label-color'
-                    htmlFor="imageFile">Upload Photo</label>
-                    <label
-                    className="d-flex textfield-bg borderInput form-control justify-content-between flex-row"
-                    >                  
-                        <input 
-                            style={{width:'100%', display:'none'}}
-                            name={'imageFile'}
-                            id={'imageFile'}
-                            type='file'
-                            onChange={imageFile}
-                        />
-                        {imageFileValue ? imageFileValue : 'Choose File'}
-                        <div style={{width:'12px'}}>
-                            <img src={add} style={{width:'100%'}} alt="" />
-                        </div>
-                    </label>
-            </div>
+                <div className="col-12">
+                    <label 
+                        className='label-color'
+                        htmlFor="imageFile" >Upload Photo</label>
+                        <label
+                        disabled={disabled}
+                        className="d-flex textfield-bg borderInput form-control justify-content-between flex-row"
+                        >                  
+                            <input 
+                                disabled={disabled}
+                                style={{width:'100%', display:'none'}}
+                                name={'imageFile'}
+                                id={'imageFile'}
+                                type='file'
+                                onChange={imageFile}
+                            />
+                            {imageFileValue ? imageFileValue : 'Choose File'}
+                            <div style={{width:'12px'}}>
+                                <img src={add} style={{width:'100%'}} alt="" />
+                            </div>
+                        </label>
+                        {disabled && <small className="text-danger">You can add photo after submit this data</small>}
+                </div>
+                
 
             <div className="col-12 ">
                     <TextField
@@ -153,8 +158,9 @@ const OfflineClass = ({
             <div className="col-12 text-center mt-4 mb-2">
                 {nameValue !== "" &&
                 locateValue !== "" &&
-                descriptionValue !== "" &&
-                imageFileValue !== ''
+                descriptionValue !== "" 
+                &&
+                imageFileValue !== null
                 ? (
                 <ButtonComponent
                     type={"submit"}

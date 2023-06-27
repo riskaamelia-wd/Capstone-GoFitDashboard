@@ -324,3 +324,156 @@
   line-height: 22px;
   color: #000000;
 }
+
+@media (max-width: 768px) {
+  
+  .feedback-history {
+    width: 100%;
+    height: 100%;
+    padding: 12%;
+  }
+  
+  .feedback-history-top {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 25px;
+  }
+
+  
+.feedback-history-top-review {
+  margin-right: 35%;
+  font-size: 18px;
+  line-height: 18px;
+}
+
+/*  */
+
+.feedback-history-body-1 {
+  padding: 0px;
+  margin: 0px;
+  flex: 1;
+}
+
+.feedback-history-body-card {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.feedback-history-body-card:hover {
+  background-color: var(--primary-100);
+}
+
+.feedback-history-body-card:active {
+  background-color: var(--primary-400);
+}
+
+/*  */
+
+.listMenuFeedback {
+  width: 90%;
+  flex-direction: row;
+}
+
+.listMenuFeedback img {
+  border-radius: 20px;
+  width: 15px;
+  height: 15px;
+}
+
+.feedback-card-top {
+  display: flex;
+}
+
+.feedback-card-top-title {
+  margin-right: 20%;
+  width: 40%;
+  height: 13px;
+  font-size: 13px;
+  line-height: 13px;
+}
+
+.feedback-card-top-subtitle {
+  margin: 0px;
+  margin-top: 4px;
+  width: 50%;
+  height: 10px;
+  font-size: 10px;
+  line-height: 10px;
+ 
+}
+
+.btn-feedback-body-card-delete {
+  padding: 5px;
+  width: 20%;
+  font-size: 10px;
+  line-height: 10px;
+}
+
+.img-body-card-delete {
+  margin: 0px;
+  margin-right: 5.3px;
+}
+
+/* Not expanded */
+
+.feedback-history-top-review-NX {
+  margin-right: 20%;
+  font-size: 18px;
+  line-height: 18px;
+}
+
+.feedback-history-body-1-NX {
+  width: 100%;
+}
+
+.feedback-history-body-card-NX {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.feedback-history-body-card-NX:hover {
+  background-color: var(--primary-100);
+}
+
+.feedback-history-body-card-NX:active {
+  background-color: var(--primary-400);
+  height: 55px;
+}
+
+
+/* detail */
+
+.middle-line {
+  border: none;
+  border-left: 2px solid black;
+  margin: 0px 40px;
+}
+
+.feedback-history-split {
+  display: flex;
+  flex-direction: column;
+}
+
+.feedback-history-body-2 {
+  /* background-color: brown; */
+  flex: 1;
+  /* margin: 0px; */
+  /* padding: 0px; */
+}
+
+.feedback-history-top-2 {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 25px;
+}
+
+.feedback-history-top-2-detail {
+  margin-bottom: 25px;
+  margin-left: 0px;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+}
