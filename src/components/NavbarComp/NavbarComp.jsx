@@ -5,7 +5,6 @@ import Icon1Expandmore from "../../assets/icons/expand_more.svg";
 import Icon2Expandless from "../../assets/icons/expand_less.svg";
 import Icon3Flags from "../../assets/icons/Flag.svg";
 import Icon4Notification from "../../assets/icons/notifications_active.svg";
-import Icon5Profilepic from "../../assets/icons/Rectangle 113.svg";
 import Icon6Membership from "../../assets/icons/app membership Rectangle 112.svg";
 import Icon7Offlineclass from "../../assets/icons/app Offline class Rectangle 112.svg";
 import Icon8Onlineclass from "../../assets/icons/app Online class Rectangle 112.svg";
@@ -15,6 +14,7 @@ import Icon11Facility from "../../assets/icons/app Facilities Rectangle 112.svg"
 
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import SearchTopBar from "../../elements/InputSearch/SearchTopBar";
+import { useSelector } from "react-redux";
 
 const NavbarComp = ({
   isExpanded,
@@ -24,13 +24,13 @@ const NavbarComp = ({
   onChange,
   value,
   isVisible,
-  setIsVisible
+  setIsVisible,
 }) => {
   // const [isVisible, setIsVisible] = useState(false);
   const handleAppsClick = () => {
     // setExpandApps(!isApps);
   };
-
+  const users = useSelector((state) => state.users.data_user);
   return (
     <div className="top-nav-container">
       <div className="top-nav-heading col-3">
@@ -38,8 +38,7 @@ const NavbarComp = ({
           className={
             isExpanded ? "hamburger hamburger-in" : "hamburger-NX hamburger-out"
           }
-          onClick={() => setExpandState(!isExpanded)}
-        >
+          onClick={() => setExpandState(!isExpanded)}>
           <span></span>
           <span></span>
           <span></span>
@@ -54,12 +53,12 @@ const NavbarComp = ({
           onChange={onChange}
           value={value}
           isVisible={isVisible}
-          setIsVisible={setIsVisible}
-        ></SearchTopBar>
+          setIsVisible={setIsVisible}></SearchTopBar>
       </div>
       <div
-        className={`${isVisible ? "top-nav-mid-NX" : "top-nav-mid"} btn-group col-3`}
-      >
+        className={`${
+          isVisible ? "top-nav-mid-NX" : "top-nav-mid"
+        } btn-group col-3`}>
         {/* <ButtonComponent
             type={"button"}
             className={isApps ? "btn-navbar-apps" : "btn-navbar-apps-NX"}
@@ -71,9 +70,7 @@ const NavbarComp = ({
         <button
           className="buttonHeader fw-semibold"
           type="button"
-          data-bs-toggle="dropdown"
-          onClick={handleAppsClick}
-        >
+          data-bs-toggle="dropdown">
           Apps
           <img
             className="ms-3"
@@ -87,19 +84,19 @@ const NavbarComp = ({
           style={{
             backgroundColor: `var(--Neutral-White-100)`,
             borderRadius: "30px",
-          }}
-        >
+          }}>
           <li style={{ width: "38vw", margin: "8px 28px" }}>
             <div className="">
               <div className="row">
                 <div className="col-12">
                   <div className="row">
                     <div className="col-6">
-                      <NavLink to={"/"}>
+                      <NavLink
+                        to={"/membership"}
+                        className={"text-decoration-none"}>
                         <div
                           className="cardHeader rounded-3"
-                          style={{ width: "15vw" }}
-                        >
+                          style={{ width: "15vw" }}>
                           <div className="row ">
                             <div className="col-3  mt-2">
                               <img
@@ -122,11 +119,12 @@ const NavbarComp = ({
                       </NavLink>
                     </div>
                     <div className="col-6">
-                      <NavLink to={"/"}>
+                      <NavLink
+                        to={"/training"}
+                        className={"text-decoration-none"}>
                         <div
                           className="cardHeader rounded-3"
-                          style={{ width: "15vw" }}
-                        >
+                          style={{ width: "15vw" }}>
                           <div className="row ">
                             <div className="col-3  mt-2">
                               <img
@@ -151,11 +149,12 @@ const NavbarComp = ({
                 <div className="col-12">
                   <div className="row">
                     <div className="col-6">
-                      <NavLink to={"/"}>
+                      <NavLink
+                        to={"/offlineClass"}
+                        className={"text-decoration-none"}>
                         <div
                           className="cardHeader rounded-3"
-                          style={{ width: "15vw" }}
-                        >
+                          style={{ width: "15vw" }}>
                           <div className="row ">
                             <div className="col-3  mt-2">
                               <img
@@ -176,11 +175,12 @@ const NavbarComp = ({
                       </NavLink>
                     </div>
                     <div className="col-6">
-                      <NavLink to={"/"}>
+                      <NavLink
+                        to={"/articles"}
+                        className={"text-decoration-none"}>
                         <div
                           className="cardHeader rounded-3"
-                          style={{ width: "15vw" }}
-                        >
+                          style={{ width: "15vw" }}>
                           <div className="row ">
                             <div className="col-3  mt-2">
                               <img
@@ -207,11 +207,12 @@ const NavbarComp = ({
                 <div className="col-12">
                   <div className="row">
                     <div className="col-6">
-                      <NavLink to={"/"}>
+                      <NavLink
+                        to={"/onlineClass"}
+                        className={"text-decoration-none"}>
                         <div
                           className="cardHeader rounded-3"
-                          style={{ width: "15vw" }}
-                        >
+                          style={{ width: "15vw" }}>
                           <div className="row ">
                             <div className="col-3  mt-2">
                               <img
@@ -232,11 +233,12 @@ const NavbarComp = ({
                       </NavLink>
                     </div>
                     <div className="col-6">
-                      <NavLink to={"/"}>
+                      <NavLink
+                        to={"/booking"}
+                        className={"text-decoration-none"}>
                         <div
                           className="cardHeader rounded-3"
-                          style={{ width: "15vw" }}
-                        >
+                          style={{ width: "15vw" }}>
                           <div className="row ">
                             <div className="col-3  mt-2">
                               <img
@@ -269,24 +271,21 @@ const NavbarComp = ({
           className={"btn-navbar-flag"}
           onClick={() => setExpandApps(!isApps)}
           imgUrlStart={Icon3Flags}
-          imgClassName={"btn-navbar-flag-icon"}
-        ></ButtonComponent>
+          imgClassName={"btn-navbar-flag-icon"}></ButtonComponent>
 
         <ButtonComponent
           type={"button"}
           className={"btn-navbar-flag"}
           onClick={() => setExpandApps(!isApps)}
           imgUrlStart={Icon4Notification}
-          imgClassName={"btn-navbar-flag-icon"}
-        ></ButtonComponent>
-        <NavLink to={"/"}>
+          imgClassName={"btn-navbar-flag-icon"}></ButtonComponent>
+        <NavLink to={"/detailuser"}>
           <ButtonComponent
             type={"button"}
             className={"btn-navbar-flag"}
             onClick={() => setExpandApps(!isApps)}
-            imgUrlStart={Icon5Profilepic}
-            imgClassName={"btn-navbar-flag-icon"}
-          ></ButtonComponent>
+            imgUrlStart={`http://18.141.56.154:8000/${users.profile_picture}`}
+            imgClassName={"btn-navbar-flag-icon"}></ButtonComponent>
         </NavLink>
       </div>
     </div>

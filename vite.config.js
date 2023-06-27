@@ -6,5 +6,9 @@ export default defineConfig({
   plugins: [react()],
   build: {
     chunkSizeWarningLimit: 5000,
+    scripts: {
+      build: "vite build",
+      preview: "vite preview",
+    },
   },
 });

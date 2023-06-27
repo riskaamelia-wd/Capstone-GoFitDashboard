@@ -1,186 +1,367 @@
-import { useSelector } from "react-redux"
-import axios from "axios"
-import { useEffect, useState, useCallback } from "react"
-import DetailProduct from "../../components/DetailProduct.jsx/DetailProduct"
-import Cover from "../../elements/Card/Cover"
-import imgCover from '../../assets/icons/Appreciation 1.svg'
-import {Row,  Col} from 'react-bootstrap'
-import { adminApi } from "../../api/Api"
-import ClassPackages from "../../components/Form/classPackages"
-import addSmall from '../../assets/icons/add_small.svg'
-import Loading from "../../components/Loading"
-import useAxios from "../../api/useAxios"
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { useEffect, useState, useCallback } from "react";
+import DetailProduct from "../../components/DetailProduct.jsx/DetailProduct";
+import Cover from "../../elements/Card/Cover";
+import imgCover from "../../assets/icons/Appreciation 1.svg";
+import { Row, Col } from "react-bootstrap";
+import { adminApi } from "../../api/Api";
+import ClassPackages from "../../components/Form/classPackages";
+import addSmall from "../../assets/icons/add_small.svg";
+import Loading from "../../components/Loading";
+import useAxios from "../../api/useAxios";
+import { useNavigate } from "react-router-dom";
+import InputSearch from "../../elements/InputSearch/InputSearch";
+import moment from 'moment'
+import ButtonComponent from "../../elements/Buttons/ButtonComponent";
+import PaginateButton from "../ManagesOnlineClass/PaginateButton";
+
 
 const ManageClassPackages = () => {
-    const token = useSelector((state) => state.tokenAuth.token_jwt)
-    const [data, setData] = useState([])
-    const [packages, setPackage]= useState({
-        classTitle:'',
-        period:'',
-        price:''
-    })
-    const { response, isLoading, error, fetchData } = useAxios({
-        api: adminApi,
-        method: "get",
-        url: `/admin/classes/packages`,
-        body: JSON.stringify({}),
-        header: JSON.stringify({
-            Authorization: `Bearer ${token}`,
-          }),
-      });
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const getData = useCallback(async () => {
-      await adminApi
-        .get("/admin/classes/packages")
-        .then(async (res) => {
-          const resData = res.data;
-          console.log(resData);
-          setData(resData.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-    }, []);
+    const [show, setShow] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
+    const [id, setId] = useState(null);
+    const [data, setData] = useState([]);
+    const token = useSelector((state) => state.tokenAuth.token_jwt);
+    const[isLoading, setIsLoading] = useState(false)
+    const [currentPage, setCurrentPage] = useState(1);
 
-    useEffect(() => {
-        if (response !== null) {
-            setData(response.data);
-        }
-        {
+    // const { response, isLoading, error, fetchData } = useAxios({
+    //     api: adminApi,
+    //     method: "get",
+    //     url: "/admin/classes/packages",
+    //     body: JSON.stringify({}),
+    //     header: JSON.stringify({
+    //         Authorization: `Bearer ${token}`,
+    //     }),
+    // });
+    // const fetchData = async (currentPage) => {
+    //     setIsLoading(true);
+    //     await axios
+    //       .get(`http://18.141.56.154:8000/admin/classes/packages?page=${currentPage}`, 
+    //       {
+    //         headers: {
+    //             Authorization: `Bearer ${token}`,
+    //         },
+    //     })
+    //       .then((response) => {
+            
+    //         const { data } = response.data;
+    //         setData(data);
+    //       })
+    //       .catch((err) => {
+    //         console.log(err);
+    //       })
+    //       .finally(() => {
+    //         setIsLoading(false);
+    //       });
+    // }
+
+    
+    const fetchData = async (currentPage) => {
+        try {
+            const response = await axios.get(`http://18.141.56.154:8000/admin/classes/packages?page=${currentPage}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            const { data_shown, total_data } = response.data.pagination;
+
+            const pageSize = data_shown;
+            const totalPages = Math.ceil(total_data / pageSize);
+            let allData = [];
+
+            for (let page = 1; page <= totalPages; page++) {
+                const pageResponse = await axios.get(
+                    `http://18.141.56.154:8000/admin/classes/packages?page=${page}&data_shown=${data_shown}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                const responseData = pageResponse.data.data;
+                allData = allData.concat(responseData);
+            }
+            setData(allData);
+        } catch (error) {
             console.log(error);
         }
-    }, [error, getData, response])
+    };
+    useEffect(() => {
 
-    const handleDelete = async (id) => {
-        await adminApi.delete(`/admin/classes/packages/${id}`, null, config).then(() => {
-        fetchData();
-        alert("Data deleted successfully");
+        fetchData(currentPage);
+    }, [token]);
+
+      
+    // const handleNextPage = () => {
+    //     setCurrentPage((prevPage) => prevPage + 1);
+    // };
+    // const handlePrevPage = () => {
+    //     setCurrentPage((prevPage) => prevPage - 1);
+    // }; 
+
+    // useEffect(() => {
+    //     fetchData(currentPage);
+    // }, [currentPage]);
+    
+    // useEffect(() => {
+    //     if (data.length > 10) {
+    //       handleNextPage();
+    //     }
+    // }, [data, handleNextPage]);
+
+
+    const config = {
+        headers: {
+        Authorization: `Bearer ${token}`,
+        },
+    };
+    const [packages, setPackage] = useState({
+        classTitle: "",
+        period: "",
+        price: "",
+    });
+    const onSubmitHandle = async (e) => {
+        e.preventDefault();
+        const body = {
+            class: packages.classTitle,
+            period: packages.period,
+            price: packages.price,
+        };
+        await axios
+        .post("http://18.141.56.154:8000/admin/classes/packages", body, config)
+        .then(() => {
+            alert("Package added successfully");
+            setPackage({
+                classTitle: "",
+                period: "",
+                price: "",
+            });
+            
+            // if(data.length>=10){
+            //     const nextPage = currentPage+1
+            //     setCurrentPage(nextPage);
+            //     fetchData(nextPage);
+            // }else{
+                setCurrentPage(currentPage)
+                fetchData(currentPage)
+            // }
+            handleClose();
+        })
+        .catch((err) => {
+            console.log(err);
         });
     };
-    
-    const handleEdit=async  (id) => {
-        await adminApi.get(`/admin/classes/packages/${id}`, config).then(async (res) => {
-            await fetchData();
-            setPackage(res?.data?.data)
-        })        
-    }
-  
-    const handleSubmit = async (e) => {
+    const onSubmitEditHandle = async (e) => {
         e.preventDefault();
-        const finder = data.find(item => item.id === packages.id)
         const body = {
-        class: packages.classTitle,
-        price: parseInt(packages.price),
-        period: packages.period,
+            class: packages.classTitle,
+            period: packages.period,
+            price: packages.price,
         };
-        
-        if(window.confirm('Are you sure you want to submit?')){
-            if (finder){
-                await adminApi
-                .put(`/admin/classes/packages/${packages.id}`, body, config)
-                .then((res) => {
-                    alert('data edited successfully')
-                    console.log(res);
-                    fetchData();
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-            } else {
-                await adminApi
-                .post("/admin/classes/packages", body, config)
-                .then((res) => {
-                    alert('data added successfully')
-                    console.log(res);
-                    fetchData();
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
+        await axios
+        .put(`http://18.141.56.154:8000/admin/classes/packages/${id}`, body, config)
+        .then(() => {
+            alert("Package edited successfully");
+            setPackage({
+                classTitle: "",
+                period: "",
+                price: "",
+            });
+            
+            setCurrentPage(currentPage)
+            fetchData(currentPage)
+            handleClose();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    };
+    const HandleDelete = async (id) => {
+        await axios
+        .delete(`http://18.141.56.154:8000/admin/classes/packages/${id}`, config)
+        .then(() => {
+            alert("Package deleted successfully!");
+            if(data.length<=1){
+                const previousPage = currentPage-1
+                setCurrentPage(previousPage);
+                fetchData(previousPage);
+            }else{
+                setCurrentPage(currentPage)
+                fetchData(currentPage)
             }
-        }
-    }
-    return(
-        <div className="col-10 ms-5">
-        <Cover
-            text={'Manage Offline Class'}
-            list1={'Class Data'}
-            list2={'Class Packages'}
-            img={imgCover}
-        />
-        <Row>
-            <Col md={12} className="mt-4 mb-2 d-flex flex-row justify-content-between">
-                <p style={{color:'var(--Neutral-Black-100)', fontSize:'28px', fontWeight:'700'}} className="p-0 m-0">Class Packages</p>
-                <div className="d-flex flex-row mb-3">
-                    <ClassPackages
-                        linkClass={'offlineClass'}
-                        btnModalImg={addSmall}
-                        btnModalText={'Add Package'}
-                        className={'btn-google m-0 border-0 border rounded ms-2'}
-                        classValue={packages?.classTitle}
-                        classSelect={(e) => {
-                            const parseValue = parseInt(e.target.value)
-                            const objValue = { "id": parseValue }
-                            setPackage((filledState) => ({
-                              ...filledState,
-                              classTitle: objValue,
-                            }));
-                          }}
-                        periodValue={packages?.period}
-                        periodSelect={(e) => {
-                            setPackage((filledState) => ({
-                              ...filledState,
-                              period: e.target.value,
-                            }));
-                          }}
-                        priceValue={packages?.price}
-                        price={(e) => {
-                            setPackage((filledState) => ({
-                              ...filledState,
-                              price: e.target.value,
-                            }));
-                          }}
-                        onSubmit={handleSubmit}
+        })
+        .catch((e) => {
+            console.log(e);
+        });
+    };
+    const handleClose = () => {
+        setShow(false);
+        setShowEdit(false);
+        setPackage({
+            classTitle: "",
+            period: "",
+            price: "",
+        });
+        setId(null);
+    };
+    
+    const filteredData = data?.filter(item => item.class.class_type == 'offline');
+    const generalView = () => {
+        return (
+        <>
+            {isLoading ?
+            
+            <Loading />
+            : 
+            filteredData?.length > 0 ? (
+                filteredData?.sort((a,b) => b.id - a.id)?.map((item, id) => {
+                return (
+                    <div key={id} className="mb-3 p-0">
+                    <DetailProduct
+                        key={item.id}
+                        text={item.class.name}
+                        category={item.period}
+                        date={item.price}
+                        onClickDelete={() => HandleDelete(item.id)}
+                        // onClickEdit={() => handleEdit(item.id)}
+                        onClickEdit={() => {
+                            setShowEdit(true);
+                            setId(item.id);
+                            console.log(item);
+                            setPackage({
+                                classTitle: item.class,
+                                period: item.period,
+                                price: item.price,
+                            });
+                        }}
                     />
+                    </div>
+                );
+                }))
+            : (
+                <p className="text-center mt-5">No data available</p>
+            )
+            }
+
+            <ClassPackages
+            dataSelect={false}
+            modaltitle={"Add Package"}
+            show={show}
+            handleClose={handleClose}
+            classValue={packages?.classTitle}
+            classSelect={(e) => {
+              const parseValue = parseInt(e.target.value);
+              const objValue = { id: parseValue };
+              setPackage((filledState) => ({
+                ...filledState,
+                classTitle: objValue,
+              }));
+            }}
+            periodValue={packages?.period}
+            periodSelect={(e) => {
+              setPackage((filledState) => ({
+                ...filledState,
+                period: e.target.value,
+              }));
+            }}
+            priceValue={packages?.price}
+            price={(e) => {
+              setPackage((filledState) => ({
+                ...filledState,
+                price: parseFloat(e.target.value),
+              }));
+            }}
+            onSubmitHandle={onSubmitHandle}
+            />
+            {/* edit packages */}
+            <ClassPackages
+            dataSelect={false}
+            modaltitle={"Edit Package"}
+            show={showEdit}
+            handleClose={handleClose}
+            classValue={packages?.classTitle}
+            classSelect={(e) => {
+              const parseValue = parseInt(e.target.value);
+              const objValue = { id: parseValue };
+              setPackage((filledState) => ({
+                ...filledState,
+                classTitle: objValue,
+              }));
+            }}
+            periodValue={packages?.period}
+            periodSelect={(e) => {
+              setPackage((filledState) => ({
+                ...filledState,
+                period: e.target.value,
+              }));
+            }}
+            priceValue={packages?.price}
+            price={(e) => {
+              setPackage((filledState) => ({
+                ...filledState,
+                price: parseFloat(e.target.value),
+              }));
+            }}
+            onSubmitHandle={onSubmitEditHandle}
+            />
+        </>
+        );
+    };
+    return (
+            <div className="container mt-5" id="container">
+                <div className="mb-5">
+                    <Cover 
+                        text={"Manage Offline Class"}
+                        list1={"Class Data"}
+                        list2={"Class Packages"}
+                        img={imgCover} 
+                    />
+                
+                    <Row className=" mt-5 mb-5 ms-4 me-4 d-flex justify-content-center">
+                        <Col md={12} className=" d-flex flex-row justify-content-between">
+                        <p
+                            style={{
+                            color: "var(--Neutral-Black-100)",
+                            fontWeight: "700",
+                            }}
+                            className="p-0 m-0 fs-sm-6 fs-4">
+                            Class Packages
+                        </p>
+                            <div className="d-flex flex-row mb-3">
+                                <ButtonComponent
+                                    className={
+                                        "btn-class pe-3 ms-lg-5 ps-3 m-0 border-0 border rounded ms-2  p-0"
+                                    }
+                                    id={"addPackage"}
+                                    onClick={() => {
+                                    setShow(true);
+                                    }}
+                                    imgClassName={'ps-2'}
+                                    imgUrlEnd={addSmall}
+                                    buttonName={"Add Package"}
+                                />
+                            </div>
+                        </Col>
+                    
+                    <div className="mt-3">
+                        {/* <PaginateButton
+                            handleNextPage={handleNextPage}
+                            handlePrevPage={handlePrevPage}
+                            disabledNext={data?.length < 10}
+                            disabledPrevious={currentPage == 1}
+                        /> */}
+                        {isLoading ? (
+                        <Loading/>)
+                        : 
+                        (
+                        generalView()
+                        )}
+                    </div>
+                    </Row>
                 </div>
-            </Col>
-            <Col>
-                {
-                    isLoading?
-                        <Loading/>
-                    :
-                    data.length > 0 ? (
-                        data?.map((item, id) =>{
-                            return(
-                                <div 
-                                key={id}
-                                className="mb-3">
-                                    <DetailProduct
-                                        key={id}
-                                        text={item.class.name}
-                                        date={item.period}
-                                        timeSession={item.price}
-    
-    
-                                        onClickDelete={()=>handleDelete(item.id)}
-                                        onClickUpdate={() => handleEdit(item.id)}
-                                    />
-                                </div>
-                            )
-                        })
-                    )
-                    :
-                    (
-                        <p className="text-center mt-5">No data available</p>
-                    )
-                }
-            </Col>
-        </Row>
         </div>
-    )
-}
-export default ManageClassPackages
+    );
+};
+export default ManageClassPackages;

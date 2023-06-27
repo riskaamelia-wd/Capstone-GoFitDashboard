@@ -1,18 +1,13 @@
 import TextField from "../../elements/TextField/TextField"
 import './Form.css'
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { useLoadScript } from "@react-google-maps/api";
+import { Modal } from "react-bootstrap";
+import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 
 
 
 const ClassLocation = ({
-    onClick,
-    classNameImg,
-    style, 
-    className, 
-    btnModalText, 
-    btnModalImg,
     city,
     cityValue,
     name,
@@ -21,10 +16,13 @@ const ClassLocation = ({
     longitudeValue,
     latitude,
     latitudeValue,
-    onSubmit,
     address,
     addressValue,
-    gmap
+    gmap,
+    show,
+    handleClose,
+    onSubmitHandle,
+    modaltitle,
 }) => {
 
     
@@ -32,58 +30,30 @@ const ClassLocation = ({
         googleMapsApiKey: "AIzaSyBcj2ip9AhD5Q6MhtVMFREpApc6hBTmN9Y",
     });
 
-    const navigate = useNavigate()
-
-    
     return(
         <>
-            <button 
-                onClick={onClick}
-                type="button" 
-                className={className? className : "btn btn-save btn-add pe-4 ps-4 ms-3 fs-6" }
-                width='fit-content'
-                style={style}  
-                data-bs-toggle="modal" 
-                data-bs-target="#onlineClass"
-            >
-                {btnModalText}
-                <img src={btnModalImg} 
-                className={classNameImg?classNameImg:"ms-4"} 
-                alt="" />
-
-            </button>
-            <div 
-                className="modal fade" 
-                id="onlineClass" 
-                tabIndex="-1" 
-                aria-labelledby="exampleModalLabel" 
-                aria-hidden="true"
-            >
-            <div className="modal-dialog modal-lg">
-                <div className="modal-content">
-                <div className="modal-header mb-0">
-                    <h1 className="modal-title fs-3  label-title" id="exampleModalLabel">Location</h1>
-                    <button 
-                        type="button" 
-                        className="btn-close" 
-                        onClick={()=> navigate('/offlineClass/location', {replace:true})}
-                        data-bs-dismiss="modal" 
-                        aria-label="Close"></button>
+            <Modal show={show} onHide={handleClose} centered>
+            
+            <Modal.Header closeButton>
+                <Modal.Title className="fs-3  label-title">{modaltitle}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className=" rounded-5">
+                <div>
+                    {isLoaded ? (
+                        <div className="row">
+                            <div className="col-7 ">
+                                {gmap}
+                            </div>
+                        </div>
+                    ) : (
+                        <p>loading data</p>
+                    )}
                 </div>
-                <div className="modal-body mt-3">
-                {isLoaded ? (
-                    <div className="row mb-2">
-                    <div className="col-7 ">
-                        {gmap}
-                    </div>
-                    </div>
-                ) : (
-                    <p>loading data</p>
-                )}
-                <form onSubmit={onSubmit}>
+                <div className="col-12">
                     <TextField
                         label={'Name'}
-                        classNameInput={'mb-2'}
+                        classNameLabel={'mt-2 label-color'}
+                        classNameInput={'form-control textfield-bg  borderInput'}
                         placeholder={'GoFit Jakarta'}
                         type={'text'}
                         name={'name'}
@@ -91,9 +61,13 @@ const ClassLocation = ({
                         onChange={name}
                         value={nameValue}
                     />
+                </div>
+
+                <div className="col-12 ">
                     <TextField
                         label={'City'}
-                        classNameInput={'mb-2'}
+                        classNameLabel={'mt-2 label-color'}
+                        classNameInput={'form-control textfield-bg  borderInput'}
                         placeholder={'Jakarta'}
                         type={'text'}
                         name={'city'}
@@ -101,9 +75,12 @@ const ClassLocation = ({
                         onChange={city}
                         value={cityValue}
                     />
+                </div>
+                <div className="col-12 ">
                     <TextField
                         label={'Address'}
-                        classNameInput={'mb-2'}
+                        classNameLabel={'mt-2 label-color'}
+                        classNameInput={'form-control textfield-bg  borderInput'}
                         placeholder={'Jl. Otista No.251 Jakarta Timur'}
                         type={'text'}
                         name={'address'}
@@ -111,9 +88,12 @@ const ClassLocation = ({
                         onChange={address}
                         value={addressValue}
                     />
+                </div>
+                <div className="col-12">
                     <TextField
                         label={'Latitude'}
-                        classNameInput={'mb-2'}
+                        classNameLabel={'mt-2 label-color'}
+                        classNameInput={'form-control textfield-bg  borderInput'}
                         placeholder={'7125471291281241'}
                         type={'text'}
                         name={'latitude'}
@@ -121,39 +101,49 @@ const ClassLocation = ({
                         onChange={latitude}
                         value={latitudeValue}
                         // value={lat || data?.latitude}
-                    />
+                    /> 
+                </div>
+                <div  className="col-12">
                     <TextField
                         label={'Longitude'}
-                        classNameInput={'mb-2'}
+                        classNameLabel={'mt-2 label-color'}
+                        classNameInput={'form-control textfield-bg  borderInput'}
                         placeholder={'123486210381237'}
                         type={'text'}
                         name={'longitude'}
                         id={'longitude'}
                         onChange={longitude}
                         value={longitudeValue}
-                        // value={lng || data?.longitude}
                     />
-                    <div className="text-center mt-4 mb-2">
-                        <button
-                            data-bs-dismiss="modal"
-                            type="submit"
-                            className="btn btn-save col-12"
-                            disabled={
-                                !name ||
-                                !city ||
-                                !address ||
-                                !latitudeValue ||
-                                !longitudeValue
-                            }
-                        >
-                            Save
-                        </button>
-                    </div>
-                </form>
-                </div>
-                </div>
+                    </div>   
+                <div/>
+
+            <div className="col-12 text-center mt-4 mb-2">
+                {nameValue !== "" &&
+                cityValue !== "" &&
+                addressValue !== "" &&
+                latitudeValue !== ''  &&
+                longitudeValue !== ''
+                ? (
+                <ButtonComponent
+                    type={"submit"}
+                    className={"btn col-12 btn-save"}
+                    id={"submitEmail"}
+                    onClick={onSubmitHandle}
+                    buttonName={"Submit"}
+                />
+                ) : (
+                <button
+                    id="disabledbutton"
+                    className="btn w-100 col-12 fw-semibold fs-5"
+                    style={{ backgroundColor: "#DFDFDF" }}
+                    disabled>
+                    Submit
+                </button>
+                )}
             </div>
-            </div>
+            </Modal.Body>
+            </Modal>
         </>
     )
 }

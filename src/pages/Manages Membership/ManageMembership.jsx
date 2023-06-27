@@ -7,7 +7,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ButtonComponent from "../../elements/Buttons/ButtonComponent";
 import add from "../../assets/icons/add.svg";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { adminApi } from "../../api/Api";
 import { Puff } from "react-loader-spinner";
 import ModalMembership from "./ModalMembership";
@@ -16,31 +16,57 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 
 const ManageMembership = () => {
+  const token = useSelector((state) => state.tokenAuth);
+  const [isLoading, setIsLoading] = useState(true);
+  const carouselRef = useRef(null);
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [id, setId] = useState(null);
   const [data, setData] = useState([]);
-  const token = useSelector((state) => state.tokenAuth);
+  const [page, setPage] = useState(1);
+  const [shouldRenderLoadMore, setShouldRenderLoadMore] = useState(true);
 
-  const { response, isLoading, error, fetchData } = useAxios({
-    api: adminApi,
-    method: "get",
-    url: "/plans/all",
-    body: JSON.stringify({}),
-    header: JSON.stringify({}),
-  });
   const config = {
     headers: {
       Authorization: `Bearer ${token.token_jwt}`,
     },
   };
+  console.log(data);
+  const getData = async (page) => {
+    setIsLoading(true);
+    await axios
+      .get(`http://18.141.56.154:8000/plans/all?page=${page}`)
+      .then((response) => {
+        const responseData = response.data.data;
+        if (page === 1) {
+          setData(responseData);
+        }
+        if (page > 1) {
+          console.log(responseData);
+          setData([...data, ...responseData]);
+        }
+        if (responseData.length % 10 === 0) {
+          setShouldRenderLoadMore(true);
+        } else {
+          setShouldRenderLoadMore(false);
+        }
+      })
+      .catch((err) => {
+        console.log("====================================");
+        console.log(err);
+        console.log("====================================");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   const [membership, setMembership] = useState({
     title: "",
     duration: "",
     price: 0,
     description: "",
   });
-
   const onSubmitHandle = async (e) => {
     e.preventDefault();
     const body = {
@@ -59,8 +85,9 @@ const ManageMembership = () => {
           price: 0,
           description: "",
         });
+        setPage(1);
+        getData(1);
         handleClose();
-        fetchData();
       })
       .catch((err) => {
         console.log("====================================");
@@ -68,6 +95,7 @@ const ManageMembership = () => {
         console.log("====================================");
       });
   };
+
   const onSubmitEditHandle = async (e) => {
     e.preventDefault();
     const body = {
@@ -86,8 +114,9 @@ const ManageMembership = () => {
           price: 0,
           description: "",
         });
+        setPage(1);
+        getData(1);
         handleClose();
-        fetchData();
       })
       .catch((err) => {
         console.log("====================================");
@@ -100,11 +129,13 @@ const ManageMembership = () => {
       .delete(`http://18.141.56.154:8000/admin/plans/${id}`, config)
       .then(() => {
         alert("Data deleted successfully!");
-        fetchData();
+        setPage(1);
+        getData(1);
       })
       .catch((e) => {
         console.log("==============");
         console.log(e);
+        console.log("==============");
       });
   };
   const handleClose = () => {
@@ -137,6 +168,12 @@ const ManageMembership = () => {
       items: 1,
     },
   };
+
+  const handleLoadClick = () => {
+    setPage((prevPage) => prevPage + 1);
+    carouselRef.current.goToSlide(0);
+    getData(page + 1);
+  };
   const generalView = () => {
     return (
       <>
@@ -158,47 +195,49 @@ const ManageMembership = () => {
         ) : (
           <>
             <Carousel
+              ref={carouselRef}
               swipeable={true}
               draggable={true}
               responsive={responsive}
               ssr={true}
               keyBoardControl={true}
-              partialVisbile={true}
+              partialVisible={true}
               removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
-              itemClass="carousel-item-padding ">
-              {data?.map((items) => {
-                return (
-                  <>
-                    <div key={items.id}>
-                      <CardMembership
-                        // id={items.id}
-                        key={items.id}
-                        title={items.name}
-                        duration={items.duration}
-                        price={items.price}
-                        desc={items.description}
-                        onClickEdit={() => {
-                          setShowEdit(true);
-                          setId(items.id);
-                          setMembership({
-                            title: items.name,
-                            duration: items.duration,
-                            price: parseFloat(items.price),
-                            description: items.description,
-                          });
-                        }}
-                        onClickDelete={() => {
-                          HandleDelete(items.id);
-                        }}
-                      />
-                    </div>
-                  </>
-                );
-              })}
+              itemClass="carousel-item-padding">
+              {data
+                ?.sort((a, b) => b.id - a.id)
+                .map((items) => (
+                  <div key={items.id}>
+                    <CardMembership
+                      key={items.id}
+                      title={items.name}
+                      duration={items.duration}
+                      price={items.price}
+                      desc={items.description}
+                      onClickEdit={() => {
+                        setShowEdit(true);
+                        setId(items.id);
+                        setMembership({
+                          title: items.name,
+                          duration: items.duration,
+                          price: parseFloat(items.price),
+                          description: items.description,
+                        });
+                      }}
+                      onClickDelete={() => {
+                        HandleDelete(items.id);
+                      }}
+                    />
+                  </div>
+                ))}
+              {/* {hasMoreData && !isLoading && (
+                <div>
+                  <CardLoad />
+                </div>
+              )} */}
             </Carousel>
           </>
         )}
-
         <ModalMembership
           modaltitle={"Add Plan"}
           show={show}
@@ -275,21 +314,25 @@ const ManageMembership = () => {
       </>
     );
   };
+
   useEffect(() => {
-    if (response !== null) {
-      setData(response.data);
-    } else {
-      console.log("====================================");
-      console.log(error);
-      console.log("====================================");
-    }
-  }, [error, response]);
+    getData(page);
+  }, [page]);
   return (
     <>
       <div className="container mt-5" id="container">
         <div className="mb-5">
           <Cover text={"Membership"} list1={"Home"} img={member1} />
-          <div className="mt-5">
+          <div className="col-12 d-flex align-items-center justify-content-end mt-3">
+            {shouldRenderLoadMore && (
+              <button
+                onClick={handleLoadClick}
+                className="btn-load fw-semibold fs-5 rounded-3">
+                Load More Data
+              </button>
+            )}
+          </div>
+          <div className="mt-3">
             {isLoading ? (
               <>
                 <div className="d-flex align-items-center justify-content-center">
@@ -315,9 +358,7 @@ const ManageMembership = () => {
                 onClick={() => {
                   setShow(true);
                 }}
-                // imgClassName={""}
                 imgUrlStart={add}
-                // imgUrlEnd,
                 buttonName={"Add Membership Plan"}
               />
             </div>

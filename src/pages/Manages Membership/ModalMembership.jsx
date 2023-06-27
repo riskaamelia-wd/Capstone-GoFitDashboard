@@ -13,14 +13,13 @@ const ModalMembership = ({
   priceValue,
   description,
   descriptionValue,
-
   onSubmitHandle,
   modaltitle,
 }) => {
   return (
     <>
       <Modal show={show} onHide={handleClose} centered>
-        <Modal.Body className="modal-membership rounded-5">
+        <Modal.Body className="rounded-5">
           <div className="col-4">
             <p className="fs-4 modal-title fw-semibold">{modaltitle}</p>
           </div>
