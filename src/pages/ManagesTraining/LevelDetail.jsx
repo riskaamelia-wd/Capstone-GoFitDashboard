@@ -266,7 +266,8 @@ const LevelDetail = () => {
                   setShow(true);
                 }}
                 imgUrlEnd={add}
-                className={"btn rounded-circle bg-popUp p-3 pe-4"}
+                imgClassName={'text-center pe-2'}
+                className={"btn rounded-circle bg-popUp"}
             />
           </div>
       </div>
